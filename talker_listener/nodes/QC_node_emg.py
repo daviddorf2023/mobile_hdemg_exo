@@ -14,33 +14,25 @@ Publishers:
     Name: /h3/right_ankle_effort_controller/command' Type: Float64
 '''
 
-import rospy
-import random
 import numpy as np
 import pandas as pd
-from std_msgs.msg import Float64, Float64MultiArray
-from talker_listener.qc_predict import MUdecomposer
-from talker_listener.msg import hdemg
-from rospy.core import loginfo
+import rospy
 from h3_msgs.msg import State
-from scipy import signal
-import matplotlib.pyplot as plt
-import message_filters
-from sklearn.gaussian_process import GaussianProcessRegressor
-import joblib
-
+from std_msgs.msg import Float64
+from talker_listener.msg import hdemg
 
 path = rospy.get_param("/file_dir")
 
 # Filter parameters #
 nyquist = .5 * 100.0
-emg_window = 100 #samples
-torque_window = 50 #samples
+emg_window = 100  # samples
+torque_window = 50  # samples
 
 # Configuration for EMG data #
 muscles = [2, 3, 4]
 n = len(muscles)
-noisy_channels = [[],[],[]]
+noisy_channels = [[], [], []]
+
 
 class QC_node:
     def __init__(self):
@@ -53,8 +45,8 @@ class QC_node:
         self.emg_sub = rospy.Subscriber('hdEMG_stream', hdemg, self.get_sample)
 
         # Timer to send torque commands at 100 Hz
-        rospy.Timer(rospy.Duration(.01),self.send_torque_cmd)
-        
+        rospy.Timer(rospy.Duration(.01), self.send_torque_cmd)
+
         # Initialize arrays for data collection
         self.first_run = True
         self.batch_ready = False
@@ -66,8 +58,8 @@ class QC_node:
         self.theta = 0
 
         self.torque_cmd = 0
-        rospy.wait_for_message('/h3/robot_states', State,timeout=None)
-        rospy.wait_for_message('hdEMG_stream', State,timeout=None)
+        rospy.wait_for_message('/h3/robot_states', State, timeout=None)
+        rospy.wait_for_message('hdEMG_stream', State, timeout=None)
         while not rospy.is_shutdown():
             if rospy.get_param('calibrated') == True:
                 if self.first_run == True:
@@ -95,7 +87,7 @@ class QC_node:
 
             self.torque_pub.publish(self.torque_cmd)
 
-    def get_sample(self,hdEMG):
+    def get_sample(self, hdEMG):
         ''' Callback for the /hdEMG topic. 
         Organize the raw data into muscle groups, calculate the RMS of each channel over time and average each muscle group. Updates the class variable sample_array with the RMS emg values for
         each muscle and current joint angle measurement to create a 4 element list for torque estimation.   
@@ -107,9 +99,9 @@ class QC_node:
 
         samples = []
         for j in range(num_groups):
-            muscle = list(reading[64*j : 64*j + 64])
+            muscle = list(reading[64 * j: 64 * j + 64])
             if j in muscles:
-                samples.append([m**2 for m in muscle])
+                samples.append([m ** 2 for m in muscle])
 
         if self.sample_count < emg_window:
             self.emg_win.append(samples)
@@ -117,19 +109,19 @@ class QC_node:
             self.emg_win.pop(0)
             self.emg_win.append(samples)
 
-        smoothed_reading =  np.sqrt(np.mean(self.emg_win, axis=0))
+        smoothed_reading = np.sqrt(np.mean(self.emg_win, axis=0))
 
         sample = []
         for j in range(n):
             sample.append(np.mean(smoothed_reading[j]))
-        
+
         self.emg_array.append(sample)
 
         self.sample_array = sample + [self.theta]
 
-        self.sample_count += 1        
+        self.sample_count += 1
 
-    def sensor_callback(self,sensor_reading):
+    def sensor_callback(self, sensor_reading):
         ''' Callback for /h3/robot_states. Reads sensor messages from the h3 and saves them in class variables.
         '''
 
@@ -148,11 +140,10 @@ class QC_node:
         coef = rospy.get_param('emg_coef')
 
         if len(self.emg_array) > 0:
-
             torque_cmd = self.f(pd.DataFrame(self.sample_array), coef)
 
-            return -1*torque_cmd[0]
-        
+            return -1 * torque_cmd[0]
+
     def f(self, X, betas):
         '''The model to predict torque from RMS EMG
 
@@ -162,17 +153,22 @@ class QC_node:
             f (float[]): Array of emg predictions
         '''
 
-        ones = pd.DataFrame({'ones': np.ones(X.iloc[1,:].size) }).T
-        zeros = pd.DataFrame({'output': np.zeros(X.iloc[1,:].size) }).T
-        
-        RMS_TA = X.iloc[0,:]
-        RMS_GM = X.iloc[1,:]
-        RMS_SOL = X.iloc[2,:]
-        theta = X.iloc[3,:]
+        ones = pd.DataFrame({'ones': np.ones(X.iloc[1, :].size)}).T
+        zeros = pd.DataFrame({'output': np.zeros(X.iloc[1, :].size)}).T
 
-        f = (betas[0] * (RMS_TA - betas[1])).to_numpy() + (betas[2] * (RMS_TA*theta - betas[3])).to_numpy() + (betas[4] * (RMS_GM - betas[5])).to_numpy() + (betas[6] * (RMS_GM*theta - betas[7])).to_numpy() + (betas[8] * (RMS_SOL - betas[9])).to_numpy() + (betas[10] * (RMS_SOL*theta - betas[11])).to_numpy() + (betas[12]*(theta-betas[13])).to_numpy() + (betas[14] * ones).to_numpy() 
+        RMS_TA = X.iloc[0, :]
+        RMS_GM = X.iloc[1, :]
+        RMS_SOL = X.iloc[2, :]
+        theta = X.iloc[3, :]
+
+        f = (betas[0] * (RMS_TA - betas[1])).to_numpy() + (betas[2] * (RMS_TA * theta - betas[3])).to_numpy() + (
+                    betas[4] * (RMS_GM - betas[5])).to_numpy() + (betas[6] * (RMS_GM * theta - betas[7])).to_numpy() + (
+                        betas[8] * (RMS_SOL - betas[9])).to_numpy() + (
+                        betas[10] * (RMS_SOL * theta - betas[11])).to_numpy() + (
+                        betas[12] * (theta - betas[13])).to_numpy() + (betas[14] * ones).to_numpy()
 
         return f[0]
+
 
 if __name__ == '__main__':
     try:

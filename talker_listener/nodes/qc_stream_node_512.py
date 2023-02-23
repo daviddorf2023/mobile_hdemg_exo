@@ -9,16 +9,10 @@ Publishers:
 '''
 
 import rospy
-import socket
-import time
-import os
-import numpy as np
-import talker_listener.qc_communication as comm
-import pandas as pd
-import scipy as sp
-from std_msgs.msg import String, Float64, Float64MultiArray, MultiArrayDimension
+from std_msgs.msg import Float64MultiArray, MultiArrayDimension
 from talker_listener.msg import hdemg
-from scipy import signal
+
+import talker_listener.qc_communication as comm
 import talker_listener.qc_connect as connect
 
 

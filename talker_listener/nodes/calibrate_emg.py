@@ -14,38 +14,32 @@ Publishers:
     Name: /h3/right_ankle_position_controller/command Type: Float64
 '''
 
-import rospy
+import matplotlib.pyplot as plt
 import numpy as np
-import scipy as sp
 import pandas as pd
+import rospy
+import scipy as sp
+from h3_msgs.msg import State
 from scipy import signal
 from scipy.optimize import curve_fit
-from std_msgs.msg import Float64, Float64MultiArray
+from std_msgs.msg import Float64
 from talker_listener.msg import hdemg
-from talker_listener.qc_predict import MUdecomposer
-from sklearn import linear_model as lm
-from sklearn.model_selection import train_test_split
-import matplotlib.pyplot as plt
-from rospy.core import logdebug
-from h3_msgs.msg import State
-import message_filters
-from sklearn.gaussian_process import GaussianProcessRegressor
-import joblib
 
 # Filter parameters #
 nyquist = .5 * 100.0
 
 win = 40
-emg_window = 100 #samples
-torque_window = 25 #samples
+emg_window = 100  # samples
+torque_window = 25  # samples
 
 # Parameters to Organize Raw EMG Data #
-muscles = [2, 3, 4] # Channels of the inputs on the Quattrocento #MUST BE THE SAME IN BOTH FILES
+muscles = [2, 3, 4]  # Channels of the inputs on the Quattrocento #MUST BE THE SAME IN BOTH FILES
 n = len(muscles)
-noisy_channels = [[],[],[]]
+noisy_channels = [[], [], []]
 
 # Option to skip the calibration procedure for testing purposes
 skip = False
+
 
 class trial:
     ''' Object for a calibration task 
@@ -58,6 +52,7 @@ class trial:
         traj_shape (string) : "trap" for trapezoid, "sin" for sinusoid, "bi-sin" for a bidirectional sinusoid or "flat" for baseline 0% effort 
 
     '''
+
     def __init__(self, joint_angle, trial_length, direction, traj_shape, effort):
 
         self.r = rospy.Rate(2048)
@@ -77,7 +72,7 @@ class trial:
         self.smoothed_torque_array = []
 
         self.raw_emg_array = []
-        self.emg_array = [] 
+        self.emg_array = []
         self.smooth_emg_win = []
         self.emg_win = []
 
@@ -92,7 +87,7 @@ class trial:
         if self.direction == "PF":
             return np.min(self.torque_array)
         elif self.direction == "DF":
-            return np.max(self.torque_array) 
+            return np.max(self.torque_array)
 
     def traj(self, offset):
         ''' Create a reference torque trajectory of the specified shape
@@ -101,78 +96,79 @@ class trial:
             offset (float): Torque offset to subtract from the trajectory plot 
         '''
         if self.traj_shape == "flat":
-            #Create a straight-line trajectory for baseline collection 
+            # Create a straight-line trajectory for baseline collection
             return [0 for i in range(self.trial_length)]
-        
+
         elif self.traj_shape == "trap":
-            #Create a trapezoidal trajectory based on the MVC measurement 
+            # Create a trapezoidal trajectory based on the MVC measurement
             min = offset
-            max = self.MVC if self.direction is not "DF" else -1*self.MVC
+            max = self.MVC if self.direction != "DF" else -1 * self.MVC
             len = self.trial_length
 
-            step = int(len/5)
+            step = int(len / 5)
             max = self.effort * (max - min)
             desired_traj = []
-            for i in range(0, int(.5*step)):
+            for i in range(0, int(.5 * step)):
                 desired_traj.append(0)
-            for i in range(int(.5*step), 2*step):
-                y = (i*(max) / (step + int(.5*step))) - max/3 #2*min - max
+            for i in range(int(.5 * step), 2 * step):
+                y = (i * (max) / (step + int(.5 * step))) - max / 3  # 2*min - max
                 desired_traj.append(y)
-            for i in range(2*step, 3*step):
+            for i in range(2 * step, 3 * step):
                 desired_traj.append(max)
-            for i in range(3*step, int(4.5*step)):
-                y = ((-i*max)/(step + int(.5*step))) + 3*max #- 3*min
+            for i in range(3 * step, int(4.5 * step)):
+                y = ((-i * max) / (step + int(.5 * step))) + 3 * max  # - 3*min
                 desired_traj.append(y)
-            for i in range(int(4.5*step), 5*step):
+            for i in range(int(4.5 * step), 5 * step):
                 desired_traj.append(0)
 
             return desired_traj
-        
+
         elif self.traj_shape == "sin":
-            #Create a sinusoidal trajectory base on the MVC measurement
+            # Create a sinusoidal trajectory base on the MVC measurement
             min = offset
-            max = self.MVC if self.direction is not "DF" else -1*self.MVC
+            max = self.MVC if self.direction != "DF" else -1 * self.MVC
             len = self.trial_length
 
-            step = int(len/5)
-            max = (self.effort * (max - min))/2
+            step = int(len / 5)
+            max = (self.effort * (max - min)) / 2
             desired_traj = []
 
             for i in range(0, step):
-                desired_traj.append((i*max / step))
-            for i in range(step,4*step):
-                desired_traj.append((max * np.sin(((2*np.pi)/(3*step))*(i - step))) + max)
-            for i in range(4*step, 5*step):
-                desired_traj.append(-i*max/step + 5*max)
-            
+                desired_traj.append((i * max / step))
+            for i in range(step, 4 * step):
+                desired_traj.append((max * np.sin(((2 * np.pi) / (3 * step)) * (i - step))) + max)
+            for i in range(4 * step, 5 * step):
+                desired_traj.append(-i * max / step + 5 * max)
+
             return desired_traj
 
         elif self.traj_shape == "bi-sin":
-            #Create a bi-directional sinusoidal trajectory base on the MVC measurement
+            # Create a bi-directional sinusoidal trajectory base on the MVC measurement
             min = offset
-            max = self.MVC if self.direction is not "DF" else -1*self.MVC
+            max = self.MVC if self.direction != "DF" else -1 * self.MVC
             len = self.trial_length
 
-            step = int(len/5)
+            step = int(len / 5)
             max = self.effort * (max - min)
             desired_traj = []
 
-            for i in range(0, int(.5*step)):
+            for i in range(0, int(.5 * step)):
                 desired_traj.append(0)
-            for i in range(int(.5*step),int(4.5*step)):
-                desired_traj.append((max * np.sin(((2*np.pi)/(4*step))*(i - .5*step))))
-            for i in range(int(4.5*step), 5*step):
+            for i in range(int(.5 * step), int(4.5 * step)):
+                desired_traj.append((max * np.sin(((2 * np.pi) / (4 * step)) * (i - .5 * step))))
+            for i in range(int(4.5 * step), 5 * step):
                 desired_traj.append(0)
-            
+
             return desired_traj
+
 
 class calibrate:
     def __init__(self, trials):
 
-        self.trials = trials 
+        self.trials = trials
 
         self.r = rospy.Rate(2048)
-        
+
         # Initialize a timer that will be used to track the subscriber rates
         self.timer = rospy.get_time()
 
@@ -181,7 +177,7 @@ class calibrate:
         self.emg_sub = rospy.Subscriber('hdEMG_stream', hdemg, self.emg_calib)
 
         # Publisher for position control 
-        self.pos_pub = rospy.Publisher('/h3/right_ankle_position_controller/command',Float64, queue_size=0)
+        self.pos_pub = rospy.Publisher('/h3/right_ankle_position_controller/command', Float64, queue_size=0)
 
         # Initialize arrays for data collection
         self.start_time = rospy.Time.now().to_sec()
@@ -195,22 +191,26 @@ class calibrate:
         self.smoothed_torque_array = []
         self.torque_array_for_plot = []
 
-
         self.raw_emg_array = []
-        self.emg_array = [] 
+        self.emg_array = []
         self.smooth_emg_win = []
         self.emg_win = []
 
         self.cst_array = []
 
         if skip:
-            rospy.wait_for_message('/h3/robot_states', State,timeout=None)
-            rospy.wait_for_message('hdEMG_stream',hdemg,timeout=None)
-            rospy.set_param('emg_coef', [-8.57409162e-02, -1.00146085e+00, 2.54005172e-03, 1.60128219e-02, 8.90337001e-02, 1.58813251e+00, -3.65757650e-03, -2.47658331e-02, 5.08335815e-02, -2.35550813e-01, -1.54598354e-03, -7.65382330e-03, 5.86822916e-01, 2.87710463e+00, -1.37723825e+01])
-            rospy.set_param('cst_coef', [0.613430299271461, 0.9098084781400041, 0.409857422818683, -0.20047670400913495, 0.08541811441013507, -4.42430850813377])#[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.0])
+            rospy.wait_for_message('/h3/robot_states', State, timeout=None)
+            rospy.wait_for_message('hdEMG_stream', hdemg, timeout=None)
+            rospy.set_param('emg_coef',
+                            [-8.57409162e-02, -1.00146085e+00, 2.54005172e-03, 1.60128219e-02, 8.90337001e-02,
+                             1.58813251e+00, -3.65757650e-03, -2.47658331e-02, 5.08335815e-02, -2.35550813e-01,
+                             -1.54598354e-03, -7.65382330e-03, 5.86822916e-01, 2.87710463e+00, -1.37723825e+01])
+            rospy.set_param('cst_coef', [0.613430299271461, 0.9098084781400041, 0.409857422818683, -0.20047670400913495,
+                                         0.08541811441013507,
+                                         -4.42430850813377])  # [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.0])
             rospy.set_param('calibrated', True)
         else:
-            rospy.wait_for_message('hdEMG_stream',hdemg,timeout=None)
+            rospy.wait_for_message('hdEMG_stream', hdemg, timeout=None)
             rospy.loginfo("Starting Baseline")
             self.data_collection()
 
@@ -223,12 +223,12 @@ class calibrate:
 
         start_index = len(self.torque_array)
         start = rospy.Time.now()
-        duration = rospy.Duration.from_sec(5) 
+        duration = rospy.Duration.from_sec(5)
         while (rospy.Time.now() < start + duration):
             self.r.sleep()
 
-        MVC = np.max(np.abs(self.torque_array[start_index:])) #moving window average filter?
-        
+        MVC = np.max(np.abs(self.torque_array[start_index:]))  # moving window average filter?
+
         return MVC
 
     def get_max(self):
@@ -251,7 +251,7 @@ class calibrate:
         rospy.loginfo("MVC 2: ")
         rospy.loginfo(max2)
 
-        return float((max1 + max2)/2)
+        return float((max1 + max2) / 2)
 
     def calc_r2(self, ydata, xdata, betas):
         ''' Calculate the r squared value between the predicted and measured torque
@@ -269,15 +269,15 @@ class calibrate:
         xdata = xdata.T
 
         err = (ydata - self.f(xdata, betas)).to_numpy()
-        SSR = np.sum(err**2)
+        SSR = np.sum(err ** 2)
         norm = (ydata - np.mean(ydata)).to_numpy()
-        SSN = np.sum(norm**2)
+        SSN = np.sum(norm ** 2)
 
-        RMSE = np.sqrt(SSR/xdata.iloc[1,:].size)
+        RMSE = np.sqrt(SSR / xdata.iloc[1, :].size)
         r2 = 1 - (SSR / SSN)
 
         return r2, RMSE
-    
+
     def f(self, X, betas):
         '''The model to predict torque from RMS emg
 
@@ -285,15 +285,19 @@ class calibrate:
             f (float[]): Array of emg predictions
         '''
 
-        ones = pd.DataFrame({'ones': np.ones(X.iloc[1,:].size) }).T
-        zeros = pd.DataFrame({'output': np.zeros(X.iloc[1,:].size) }).T
-        
-        RMS_TA = X.iloc[0,:]
-        RMS_GM = X.iloc[1,:]
-        RMS_SOL = X.iloc[2,:]
-        theta = X.iloc[3,:]
+        ones = pd.DataFrame({'ones': np.ones(X.iloc[1, :].size)}).T
+        zeros = pd.DataFrame({'output': np.zeros(X.iloc[1, :].size)}).T
 
-        f = (betas[0] * (RMS_TA - betas[1])).to_numpy() + (betas[2] * (RMS_TA*theta - betas[3])).to_numpy() + (betas[4] * (RMS_GM - betas[5])).to_numpy() + (betas[6] * (RMS_GM*theta - betas[7])).to_numpy() + (betas[8] * (RMS_SOL - betas[9])).to_numpy() + (betas[10] * (RMS_SOL*theta - betas[11])).to_numpy() + (betas[12]*(theta-betas[13])).to_numpy() + (betas[14] * ones).to_numpy() 
+        RMS_TA = X.iloc[0, :]
+        RMS_GM = X.iloc[1, :]
+        RMS_SOL = X.iloc[2, :]
+        theta = X.iloc[3, :]
+
+        f = (betas[0] * (RMS_TA - betas[1])).to_numpy() + (betas[2] * (RMS_TA * theta - betas[3])).to_numpy() + (
+                    betas[4] * (RMS_GM - betas[5])).to_numpy() + (betas[6] * (RMS_GM * theta - betas[7])).to_numpy() + (
+                        betas[8] * (RMS_SOL - betas[9])).to_numpy() + (
+                        betas[10] * (RMS_SOL * theta - betas[11])).to_numpy() + (
+                        betas[12] * (theta - betas[13])).to_numpy() + (betas[14] * ones).to_numpy()
 
         return f[0]
 
@@ -305,12 +309,12 @@ class calibrate:
             df (Data Frame): Data frame containing measured torque, RMS emg, and joint angle
         '''
 
-        prediction = self.f(df.iloc[:,df.columns != 'Torque'].T, betas)
+        prediction = self.f(df.iloc[:, df.columns != 'Torque'].T, betas)
         expected = df['Torque'].to_numpy()
 
         err = (expected - prediction)
-        RMSE = np.sqrt(np.sum(err**2)/df.iloc[:,1].size)
-            
+        RMSE = np.sqrt(np.sum(err ** 2) / df.iloc[:, 1].size)
+
         return RMSE
 
     def data_collection(self):
@@ -318,7 +322,7 @@ class calibrate:
         '''
 
         for trial in self.trials:
-            
+
             self.fig, self.axs = plt.subplots()
 
             # Move to 0 degrees
@@ -334,9 +338,9 @@ class calibrate:
 
             self.torque_array = []
             self.smoothed_torque_array = []
-            
+
             duration = rospy.Duration.from_sec(trial.trial_length)
-            
+
             # Measure baseline torque at rest
             rospy.loginfo("Collecting baseline")
             rospy.sleep(5)
@@ -365,7 +369,7 @@ class calibrate:
             # Start real-time plot
             self.axs.plot(desired_traj, color='blue')
             self.axs.set_xlim(0, trial.trial_length)
-            self.axs.set_ylim(-1.5*trial.effort*trial.MVC, 1.5*trial.effort*trial.MVC)
+            self.axs.set_ylim(-1.5 * trial.effort * trial.MVC, 1.5 * trial.effort * trial.MVC)
             plt.pause(0.01)
 
             # Record indexing variables for plotting 
@@ -373,11 +377,11 @@ class calibrate:
             start = rospy.Time.now()
             self.start_time = start.to_sec()
             self.time = []
-            
+
             # Start data collection
             i = 0
             while (rospy.Time.now() < (start + duration)):
-                
+
                 try:
                     self.axs.plot(self.time, self.torque_array_for_plot[start_index:], color='red')
                 except:
@@ -393,12 +397,12 @@ class calibrate:
             trial.torque_array = self.smoothed_torque_array.copy()
             trial.emg_array = np.array(self.emg_array.copy())
             trial.cst_array = np.array(self.cst_array.copy())
-            
+
             # Prepare the next trial
             rospy.loginfo("REST")
             rospy.sleep(3)
             plt.close()
-        
+
         self.calibration()
 
     def calibration(self):
@@ -423,32 +427,33 @@ class calibrate:
 
         emg_df = pd.DataFrame({'Torque': y})
         cst_df = pd.DataFrame({'Torque': y})
-        
+
         for i in range(n):
-            x = signal.resample(self.trials[0].emg_array[:,i], len(self.trials[0].torque_array))
+            x = signal.resample(self.trials[0].emg_array[:, i], len(self.trials[0].torque_array))
             for j in range(1, len(self.trials)):
-                x = np.concatenate((x, signal.resample(self.trials[j].emg_array[:,i], len(self.trials[j].torque_array))))
-            
-            new_column = pd.DataFrame({'Muscle '+str(muscles[i]): x})
+                x = np.concatenate(
+                    (x, signal.resample(self.trials[j].emg_array[:, i], len(self.trials[j].torque_array))))
+
+            new_column = pd.DataFrame({'Muscle ' + str(muscles[i]): x})
             emg_df = pd.concat([emg_df, new_column], axis=1)
-        
-        angles = self.trials[0].joint_angle*np.ones(len(self.trials[0].torque_array))
+
+        angles = self.trials[0].joint_angle * np.ones(len(self.trials[0].torque_array))
         for i in range(len(self.trials)):
-            angles = np.concatenate((angles, self.trials[i].joint_angle*np.ones(len(self.trials[i].torque_array))))
-        
+            angles = np.concatenate((angles, self.trials[i].joint_angle * np.ones(len(self.trials[i].torque_array))))
+
         angles = pd.DataFrame({'Angles': angles})
-        emg_df = pd.concat([emg_df, angles],axis=1)
-        
+        emg_df = pd.concat([emg_df, angles], axis=1)
+
         emg_df = emg_df.dropna()
 
-        b, a = signal.butter(4, .5/nyquist, btype='lowpass')
+        b, a = signal.butter(4, .5 / nyquist, btype='lowpass')
         filtered = signal.filtfilt(b, a, emg_df, axis=0).tolist()
         filtered = np.array(filtered)
 
         # emg_df.iloc[:,0] = filtered[:,0]
-        emg_df.iloc[:,1] = filtered[:,1]
-        emg_df.iloc[:,2] = filtered[:,2]
-        emg_df.iloc[:,3] = filtered[:,3]
+        emg_df.iloc[:, 1] = filtered[:, 1]
+        emg_df.iloc[:, 2] = filtered[:, 2]
+        emg_df.iloc[:, 3] = filtered[:, 3]
         # emg_df.iloc[:,4] = filtered[:,4]
 
         path = rospy.get_param("/file_dir")
@@ -457,14 +462,15 @@ class calibrate:
         rospy.loginfo('EMG: ')
         print(emg_df)
 
-        p0 = np.zeros(15) #np.zeros(2*(n+1))
+        p0 = np.zeros(15)  # np.zeros(2*(n+1))
         p0[-1] = 1
-        emg_res = sp.optimize.minimize(self.err, p0, args=(emg_df)) #curve_fit(self.objective, X_emg.T, y_emg.T.to_numpy(), p0 = p0, check_finite=False)
+        emg_res = sp.optimize.minimize(self.err, p0, args=(
+            emg_df))  # curve_fit(self.objective, X_emg.T, y_emg.T.to_numpy(), p0 = p0, check_finite=False)
         emg_coef = emg_res.x
         emg_coef = [float(x) for x in emg_coef]
         print('EMG Coef: ', emg_coef)
 
-        emg_r2, emg_RMSE = self.calc_r2(emg_df['Torque'], emg_df.loc[:,emg_df.columns != 'Torque'], emg_coef)
+        emg_r2, emg_RMSE = self.calc_r2(emg_df['Torque'], emg_df.loc[:, emg_df.columns != 'Torque'], emg_coef)
         # rospy.loginfo("CST R^2, RMSE: ")
         # rospy.loginfo(cst_r2)
         # rospy.loginfo(cst_RMSE)
@@ -472,18 +478,18 @@ class calibrate:
         rospy.loginfo(emg_r2)
         rospy.loginfo(emg_RMSE)
 
-        rospy.set_param('emg_coef',emg_coef)
+        rospy.set_param('emg_coef', emg_coef)
         # rospy.set_param('cst_coef',cst_coef)
         rospy.set_param('calibrated', True)
 
-    def torque_calib(self,sensor_reading):
+    def torque_calib(self, sensor_reading):
         ''' Callback for the /h3/robot_states topic. Receives raw torque data and smooths it with a moving average. 
         '''
         # print("Measured Frequency: ", 1/(rospy.get_time() - self.timer))
         # self.timer = rospy.get_time()
 
         torque = sensor_reading.joint_torque_sensor[2]
-        
+
         self.raw_torque_array.append(torque)
         self.torque_array.append(torque)
         if len(self.torque_array) > 0:
@@ -491,13 +497,13 @@ class calibrate:
                 avg = np.mean(self.torque_array)
                 self.smoothed_torque_array.append(avg)
             else:
-                avg = np.sum(self.torque_array[-1*torque_window:]) / torque_window
+                avg = np.sum(self.torque_array[-1 * torque_window:]) / torque_window
                 self.smoothed_torque_array.append(avg)
-        
-            self.torque_array_for_plot.append(avg-self.offset)
+
+            self.torque_array_for_plot.append(avg - self.offset)
             self.time.append(rospy.Time.now().to_sec() - self.start_time)
 
-    def emg_calib(self,hdEMG):
+    def emg_calib(self, hdEMG):
         ''' Callback for the /hdEMG topic. Calculates RMS emg across time for each channel and average 64 channels together for each muscle.  
         '''
         # print(self.timer)
@@ -511,9 +517,9 @@ class calibrate:
         samples = []
         k = 0
         for j in range(num_groups):
-            muscle = list(reading[64*j : 64*j + 64])
+            muscle = list(reading[64 * j: 64 * j + 64])
             if j in muscles:
-                samples.append([m**2 for m in muscle])
+                samples.append([m ** 2 for m in muscle])
                 # samples.append([m**2 for ind, m in enumerate(muscle) if ind not in noisy_channels[k]])
                 k += 1
         # print(samples)
@@ -523,7 +529,7 @@ class calibrate:
             self.emg_win.pop(0)
             self.emg_win.append(samples)
 
-        smoothed_reading =  np.sqrt(np.mean(self.emg_win, axis=0))
+        smoothed_reading = np.sqrt(np.mean(self.emg_win, axis=0))
 
         sample = []
         for j in range(n):
@@ -538,17 +544,15 @@ if __name__ == '__main__':
     try:
         rospy.init_node('calibration_emg', log_level=rospy.DEBUG)
 
-        
         # Original #
-        baseline = trial(0.0,25, None, "flat", 0.0)
+        baseline = trial(0.0, 25, None, "flat", 0.0)
         PF0 = trial(0.0, 25, "PF", "trap", 0.50)
         PF10 = trial(0.175, 25, "PF", "trap", 0.50)
         PFn10 = trial(-0.175, 25, "PF", "trap", 0.50)
         DF0 = trial(0.0, 25, "DF", "trap", 0.50)
         DF10 = trial(0.175, 25, "DF", "trap", 0.50)
-        
+
         trials = [baseline, PF0, PF10, PFn10, DF0, DF10]
-        
 
         '''
         # Angle #

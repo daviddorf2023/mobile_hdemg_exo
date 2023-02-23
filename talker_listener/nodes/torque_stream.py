@@ -1,9 +1,8 @@
-import rospy
-import random
-from h3_msgs.msg import State
-from rospy.core import logdebug 
-import csv
 import pandas as pd
+import rospy
+
+from h3_msgs.msg import State
+
 
 def main():
     rospy.init_node('torque_stream', log_level=rospy.DEBUG)
@@ -15,8 +14,8 @@ def main():
     i = 0
 
     path = rospy.get_param("/file_dir")
-    df = pd.read_csv(path+"/src/talker_listener/raw_torque_34.csv")
-    df = df.iloc[:,1:].dropna()
+    df = pd.read_csv(path + "/src/talker_listener/raw_torque_34.csv")
+    df = df.iloc[:, 1:].dropna()
     data = df.to_numpy()
     # stream = open(path + "/src/talker_listener/raw_torque_13.csv")
     # csv_reader = csv.reader(stream, delimiter=' ')
@@ -27,7 +26,7 @@ def main():
 
     while not rospy.is_shutdown():
 
-        reading[2] = data[i] #random.randint(-3,3) #-2.0
+        reading[2] = data[i]  # random.randint(-3,3) #-2.0
         # if i < 3:
         #     reading[2] = 0
         # elif i < 8: 
@@ -47,7 +46,7 @@ def main():
         sample.joint_motor_torque = reading
         sample.joint_torque_sensor = reading
 
-        i += 1 #.01
+        i += 1  # .01
         pub.publish(sample)
         # if i > 26:
         #     i = 0

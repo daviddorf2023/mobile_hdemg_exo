@@ -8,24 +8,21 @@ Publishers:
     Name: 'hdEMG_stream' Type: talker_listener/hdemg
 '''
 
-import rospy
 import socket
 import time
-import os
-import numpy as np
-import talker_listener.qc_communication as comm
-import pandas as pd
-import scipy as sp
-from std_msgs.msg import String, Float64, Float64MultiArray, MultiArrayDimension
+
+import rospy
+from std_msgs.msg import Float64MultiArray, MultiArrayDimension
 from talker_listener.msg import hdemg
-from scipy import signal
+
+import talker_listener.qc_communication as comm
 
 
 def startup():
     # number of channels (408 for the quattrocento device)
-    nchan = 384+16+8
+    nchan = 384 + 16 + 8
     # sampling frequency (set in OT BioLab Light)
-    fsamp = 512 #2048
+    fsamp = 512  # 2048
     # number of bytes in sample (2 bytes for the quattrocento device)
     nbytes = 2
     # set duration of trial (seconds)
@@ -41,7 +38,7 @@ def startup():
 
     # Create a client socket which is used to connect to OT BioLab Light
     q_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    q_socket.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, nchan*fsamp*buffsize)
+    q_socket.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, nchan * fsamp * buffsize)
     q_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     q_socket.setsockopt(socket.SOL_TCP, socket.TCP_NODELAY, 1)
 
@@ -57,6 +54,7 @@ def startup():
     q_socket.send(stop_comm.encode())
     
     return q_socket, nchan, nbytes
+
 
 def record_print(q_socket, nchan, nbytes):
     start_comm = 'startTX'
@@ -76,7 +74,7 @@ def record_print(q_socket, nchan, nbytes):
         nchan,
         nbytes,
         output_milli_volts=False)
-    
+
     return sample_from_channels
 
 
@@ -84,9 +82,9 @@ if __name__ == '__main__':
 
     rospy.init_node('QC_stream_node_100')
 
-    r = rospy.Rate(512) # Match the Quattrocento publishing rate
+    r = rospy.Rate(512)  # Match the Quattrocento publishing rate
     pub = rospy.Publisher('hdEMG_stream', hdemg, queue_size=1)
-    
+
     q_socket, nchan, nbytes = startup()
 
     timer = rospy.get_time()
@@ -99,20 +97,19 @@ if __name__ == '__main__':
         stamped_sample = hdemg()
         stamped_sample.header.stamp = rospy.get_rostime()
         sample_count += 1
-        
-        if sample_count % 5 == 0: # Downsample to 100 Hz by publishing every 5th sample
-            
+
+        if sample_count % 5 == 0:  # Downsample to 100 Hz by publishing every 5th sample
+
             sample = Float64MultiArray()
             sample.data = reading
 
             dim = []
-            dim.append(MultiArrayDimension("rows", 1, 6*64))
+            dim.append(MultiArrayDimension("rows", 1, 6 * 64))
             dim.append(MultiArrayDimension("columns", 1, 1))
 
             sample.layout.dim = dim
 
             stamped_sample.data = sample
-
 
             pub.publish(stamped_sample)
 
