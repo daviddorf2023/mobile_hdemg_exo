@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.0.2)
 project(talker_listener)
 
+set(PYTHON_EXECUTABLE /home/arch/Projects/sralab/realtime-ros/venv/bin/python)
+
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
 
@@ -8,11 +10,11 @@ project(talker_listener)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  rospy
-  std_msgs
-  message_generation
-  h3_msgs
-)
+        rospy
+        std_msgs
+        message_generation
+        h3_msgs
+        )
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -49,9 +51,9 @@ catkin_python_setup()
 
 ## Generate messages in the 'msg' folder
 add_message_files(
-   FILES
-   State.msg
-   hdemg.msg
+        FILES
+        State.msg
+        hdemg.msg
 )
 
 ## Generate services in the 'srv' folder
@@ -70,8 +72,8 @@ add_message_files(
 
 ## Generate added messages and services with any dependencies listed here
 generate_messages(
-  DEPENDENCIES
-  std_msgs
+        DEPENDENCIES
+        std_msgs
 )
 
 ################################################
@@ -104,10 +106,10 @@ generate_messages(
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES talker_listener
-   CATKIN_DEPENDS rospy std_msgs message_runtime
-#  DEPENDS system_lib
+        #  INCLUDE_DIRS include
+        #  LIBRARIES talker_listener
+        CATKIN_DEPENDS rospy std_msgs message_runtime
+        #  DEPENDS system_lib
 )
 
 ###########
@@ -117,8 +119,8 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
-  ${catkin_INCLUDE_DIRS}
+        # include
+        ${catkin_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
@@ -163,16 +165,16 @@ include_directories(
 #catkin_install_python(PROGRAMS src/talker.py src/listener.py src/QC_node.py src/hdEMG_DCNN.py src/hdEMG_validate.py src/qc_communication.py src/qc_stream.py src/test_script.py DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 #)
 catkin_install_python(
-	PROGRAMS
-	nodes/QC_node_emg.py
-	nodes/QC_node_cst.py
-  nodes/qc_stream_node_512.py
-  nodes/qc_stream_node_100.py
-	nodes/emg_stream.py
-	nodes/calibrate_cst.py
-	nodes/calibrate_emg.py
-  nodes/torque_stream.py
-	DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+        PROGRAMS
+        nodes/QC_node_emg.py
+        nodes/QC_node_cst.py
+        nodes/qc_stream_node_512.py
+        nodes/qc_stream_node_100.py
+        nodes/emg_stream.py
+        nodes/calibrate_cst.py
+        nodes/calibrate_emg.py
+        nodes/torque_stream.py
+        DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
 ## Mark executables for installation
