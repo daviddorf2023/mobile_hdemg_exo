@@ -2,21 +2,23 @@
 
 import socket
 import time
-import os
+
 import numpy as np
-import talker_listener.qc_communication as comm
 import pandas as pd
 
+import talker_listener.qc_communication as comm
+
 # set save path
-path = "C:\\Users\\Jackson\\Documents\\Jackson\\northwestern\\SRALAB\\H3" # "C:/Users/jlevine/Desktop"
+path = "C:\\Users\\Jackson\\Documents\\Jackson\\northwestern\\SRALAB\\H3"  # "C:/Users/jlevine/Desktop"
+
+
 # set file name
-#datafile = "why_32768.csv"
+# datafile = "why_32768.csv"
 
 
 def record_print():
-
     # number of channels (408 for the quattrocento device)
-    nchan = 384+16+8
+    nchan = 384 + 16 + 8
     # sampling frequency (set in OT BioLab Light)
     fsamp = 2048
     # number of bytes in sample (2 bytes for the quattrocento device)
@@ -35,11 +37,9 @@ def record_print():
     ip_address = '127.0.0.1'
     port = 31000
 
-
-
     # Create a client socket which is used to connect to OT BioLab Light
     q_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    q_socket.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, nchan*fsamp*buffsize)
+    q_socket.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, nchan * fsamp * buffsize)
     q_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     q_socket.setsockopt(socket.SOL_TCP, socket.TCP_NODELAY, 1)
 
@@ -56,7 +56,7 @@ def record_print():
     # Loop for receiving, converting and displaying incoming data
     time1 = time.time()
     # while True:
-    for i in range(fsamp*nsec):
+    for i in range(fsamp * nsec):
         # read raw data from socket
         sbytes = comm.read_raw_bytes(
             q_socket,
@@ -72,11 +72,11 @@ def record_print():
         # print(sample_from_channels[384])
         timestamp.append(time.time())
         data.append(sample_from_channels)
-        #print(sample_from_channels)
+        # print(sample_from_channels)
         return sample_from_channels[0]
-        #pub.publish(sample_from_channels)
+        # pub.publish(sample_from_channels)
 
-    print(time.time()-time1)
+    print(time.time() - time1)
 
     # End communication with the socket
     q_socket.send(stop_comm.encode())
@@ -91,14 +91,17 @@ def record_print():
     auxnum = [str(n) for n in list(range(1, 17))]
     othernum = [str(n) for n in list(range(1, 9))]
 
-    inset = (['IN1-4']+['']*63)+(['IN5-8']+['']*63)
-    multset = (['MULT IN1']+['']*63)+(['MULT IN2']+['']*63)+(['MULT IN3']+['']*63)+(['MULT IN4']+['']*63)
-    auxset = (['AUX IN1-16']+['']*15)+(['OTHER']+['']*7)
+    inset = (['IN1-4'] + [''] * 63) + (['IN5-8'] + [''] * 63)
+    multset = (['MULT IN1'] + [''] * 63) + (['MULT IN2'] + [''] * 63) + (['MULT IN3'] + [''] * 63) + (
+            ['MULT IN4'] + [''] * 63)
+    auxset = (['AUX IN1-16'] + [''] * 15) + (['OTHER'] + [''] * 7)
 
-    chansets = ['']+inset+multset+auxset
-    numsets = ['time']+channum*6+auxnum+othernum
+    chansets = [''] + inset + multset + auxset
+    numsets = ['time'] + channum * 6 + auxnum + othernum
 
     df.columns = [chansets, numsets]
     return df.to_numpy()
-    #df.to_csv(os.path.join(path, datafile), index=False)
+    # df.to_csv(os.path.join(path, datafile), index=False)
+
+
 record_print()

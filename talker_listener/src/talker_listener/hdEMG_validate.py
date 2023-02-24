@@ -1,9 +1,7 @@
-## validate model
+# ## validate model
 # pip install import-ipynb
-#import import_ipynb
+# import import_ipynb
 from hdEMG_DCNN import load_data_mat, build_model, train_model, model_validate, load_model_custom
-import os
-from tensorflow.keras.models import load_model
 
 # initialize parameters
 trial = '5_50_GM'
@@ -15,37 +13,31 @@ mu = [0, 1, 2, 3]
 mucnt = len(mu)
 
 #################### build model ######################
-model = build_model(WS = window_size, n_output = mucnt)
+model = build_model(WS=window_size, n_output=mucnt)
 model.summary()
 
 #################### train model ######################
 # load train data
-x_train, y_train = load_data_mat(TR = trial, SG = train_seg, ST = step_size, WS = window_size, MU = mu, TF = 1, MutiSeg = 1)
+x_train, y_train = load_data_mat(TR=trial, SG=train_seg, ST=step_size, WS=window_size, MU=mu, TF=1, MutiSeg=1)
 # construct prefix string to save the trained model: cnn-5_50_GM-SG0-ST20-WS120-MU[0, 1, 2, 3]
 prefix = "cnn-{}-SG{}-ST{}-WS{}-MU{}".format(trial, train_seg, step_size, window_size, mu)
 print(prefix)
-model, tname = train_model(model, x_train, y_train, prefix, epochs = 100)
+model, tname = train_model(model, x_train, y_train, prefix, epochs=100)
 
 #################### test model ######################
 # load testing data
-x_test, y_test = load_data_mat(TR = trial, SG = test_seg, ST = step_size, WS = window_size, MU = mu)
+x_test, y_test = load_data_mat(TR=trial, SG=test_seg, ST=step_size, WS=window_size, MU=mu)
 # validate model and save the output as csv file
 prefix4test = "{}-TSG{}".format(prefix, test_seg)
 model_validate(model, x_test, y_test, prefix4test)
 
 ####################### real-time HD-EMG decomposition ########################
-import glob
-from tensorflow.keras.models import load_model
 import tensorflow as tf
-import import_ipynb
-import matplotlib.pyplot as plt
 import scipy.io as sio
 import time
 import numpy as np
 from os import path
 import glob
-import gc
-from IPython.display import clear_output
 
 # %gui qt
 from PyQt5.QtWidgets import QFileDialog
@@ -82,7 +74,7 @@ class MUdecomposer(object):
         return self.preds_binary
 
 
-######################### hdEMG generator to provide HDEMG signals ####################
+# ######################## hdEMG generator to provide HDEMG signals ####################
 class hdEMG(object):
     def __init__(self, fileName=None):
         if fileName == None:
@@ -117,7 +109,7 @@ class hdEMG(object):
         return EMG
 
 
-####################### real-time prediction to get processing time ########################
+# ###################### real-time prediction to get processing time ########################
 def processing_Time(modelFile=None, matFile=None, frames=500):
     if modelFile == None:
         modelFile = gui_fname()
@@ -154,6 +146,7 @@ def processing_Time(modelFile=None, matFile=None, frames=500):
     #     plt.show
     return tHist, mude, EMG
 
+
 # get model file
 modelFilter = ".\\best_model*SG{}*ST{}*WS{}*_f.h5".format(train_seg, step_size, window_size)
 print(modelFilter)
@@ -165,5 +158,5 @@ for modelFile in modelFiles[0:]:
     pPath = "\\".join(pItem[:-1])
     Tstamp = pItem[-1].split('_')[-2]
     matFile = "{}\\Processtime_{}.mat".format(pPath, Tstamp)
-    tHist, _, _ = processing_Time(modelFile, frames = 0)
-    sio.savemat(matFile, {"pTime":tHist})
+    tHist, _, _ = processing_Time(modelFile, frames=0)
+    sio.savemat(matFile, {"pTime": tHist})

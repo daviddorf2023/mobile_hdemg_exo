@@ -1,7 +1,3 @@
-import socket
-import time
-import numpy as np
-
 CONVERSION_FACTOR = 0.000286  # conversion factor needed to get values in mV
 
 
@@ -32,9 +28,9 @@ def bytes_to_integers(
         channel = sample_from_channels_as_bytes[channel_start:channel_end]
 
         # Convert channel's byte value to integer
-        value = convert_bytes_to_int(channel)#, bytes_in_sample)
+        value = convert_bytes_to_int(channel)  # , bytes_in_sample)
 
-        #MAKE SURE TO CHANGE THIS BACK^^^
+        # MAKE SURE TO CHANGE THIS BACK^^^
 
         # Convert bio measurement channels to milli volts if needed
         # The 4 last channels (Auxiliary and Accessory-channels)

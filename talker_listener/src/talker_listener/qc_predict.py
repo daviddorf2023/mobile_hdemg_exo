@@ -1,17 +1,19 @@
 #!python3
 
-import numpy as np
-import time
-import talker_listener.qc_communication as comm
-import tensorflow as tf
-from talker_listener.hdEMG_DCNN import load_model_custom
-from multiprocessing import Process, Queue
-import socket
 import os
+import socket
+import time
+from multiprocessing import Process, Queue
+
+import numpy as np
 import pandas as pd
-import scipy.io as sio
-#import matplotlib.pyplot as plt
-import math
+import tensorflow as tf
+
+import talker_listener.qc_communication as comm
+from talker_listener.hdEMG_DCNN import load_model_custom
+
+
+# import matplotlib.pyplot as plt
 
 
 class MUdecomposer(object):
@@ -47,7 +49,7 @@ def plot_spikes(spike, munum):
     fig.suptitle('Spiking Activity', fontsize=14)
     for mun in range(munum):
         # Draw a spike raster plot for each motor unit
-        plt.eventplot(np.argwhere(spikeset[mun, :]).T, color=colorcodes[mun], linelengths=0.5, lineoffsets=mun+1)
+        plt.eventplot(np.argwhere(spikeset[mun, :]).T, color=colorcodes[mun], linelengths=0.5, lineoffsets=mun + 1)
 
     # Give y axis label for the spike raster plot
     plt.ylabel('MU number')
@@ -71,8 +73,8 @@ def save_emg(data, timestamp, setnum, path, datafile):
     timestamps = timestamps - timestamps[0]
     raw_df = pd.DataFrame(np.column_stack((timestamps, dataset)))
 
-    channum = [str(n) for n in list(range(1, int(setnum/2 + 1)))]
-    chanset = (['Raw GM'] + [''] * int(setnum/2 - 1)) + (['Raw TA'] + [''] * int(setnum/2 - 1))
+    channum = [str(n) for n in list(range(1, int(setnum / 2 + 1)))]
+    chanset = (['Raw GM'] + [''] * int(setnum / 2 - 1)) + (['Raw TA'] + [''] * int(setnum / 2 - 1))
 
     chansets = [''] + chanset
     numsets = ['time'] + channum + channum
@@ -127,14 +129,15 @@ def emg_predict(emg_queue):
                 return s
 
 
-def emg_stream(queue, fsamp, nsec, q_socket, nchan, nbytes, chanset, setnum, stepsize, windowsize, matnorm, path, datafile, forcefile):
+def emg_stream(queue, fsamp, nsec, q_socket, nchan, nbytes, chanset, setnum, stepsize, windowsize, matnorm, path,
+               datafile, forcefile):
     data = []
     force = []
     timestamp = []
     print("streaming data...")
     time1 = time.time()
     # Loop for receiving, converting and segmenting incoming data
-    for i in range(fsamp*nsec):
+    for i in range(fsamp * nsec):
 
         # read raw data from socket
         sbytes = comm.read_raw_bytes(q_socket,
@@ -155,7 +158,7 @@ def emg_stream(queue, fsamp, nsec, q_socket, nchan, nbytes, chanset, setnum, ste
             queue.put(np.multiply(np.array(data[(i - windowsize + 1):]).reshape(1, windowsize, setnum), matnorm))
 
     queue.put('DONE')
-    print("emg_stream: " + str(time.time()-time1) + " seconds")
+    print("emg_stream: " + str(time.time() - time1) + " seconds")
 
     # End communication with the socket
     q_socket.send('stopTX'.encode())
@@ -179,14 +182,14 @@ nsec = 60
 buffsize = 5
 
 # set save path
-#path = "C:\\Users\\MSHORT\\PycharmProjects\\emgStreaming\\data\\pilot_20210524"  # "C:/Users/jlevine/Desktop"
+# path = "C:\\Users\\MSHORT\\PycharmProjects\\emgStreaming\\data\\pilot_20210524"  # "C:/Users/jlevine/Desktop"
 # path = "C:\\opt\\ros\\noetic\\catkin2_ws\\src\\talker_listener"
 # path = ""
 
 # initialize trial parameters
 trialnum = 3  # 1-3
 intensity = 20  # 10%,20%,30%
-angle = 0 # 0 or 20 degrees
+angle = 0  # 0 or 20 degrees
 muscle = 'GM'  # GM and TA
 shape = 'ramp'  # ramp or sine
 
@@ -201,8 +204,8 @@ numchan = 64
 
 # load model from h5 file
 # modelFile = "technaid_h3_ankle_ros_python/compilation/best_model_cnn-0_0_DF.otb+_Tibialis anterior_Niter150_FastICA_JL-SG0-ST20-WS120-MU[0, 1, 2, 3]_1618602878_f.h5"
-#modelFile = "best_model_cnn-0_0_PF.otb+_Gastrocnemius medialis_Niter150_FastICA_JL-SG0-ST20-WS120-MU[0, 1, 2, 3]_1618600237_f.h5"
-#modelFile = "best_model_cnn-20_0_PF.otb+_Gastrocnemius medialis_Niter150_FastICA_JL-SG0-ST20-WS120-MU[0, 1, 2, 3]_1619757623_f.h5"
+# modelFile = "best_model_cnn-0_0_PF.otb+_Gastrocnemius medialis_Niter150_FastICA_JL-SG0-ST20-WS120-MU[0, 1, 2, 3]_1618600237_f.h5"
+# modelFile = "best_model_cnn-20_0_PF.otb+_Gastrocnemius medialis_Niter150_FastICA_JL-SG0-ST20-WS120-MU[0, 1, 2, 3]_1619757623_f.h5"
 
 '''
 # set file name
@@ -222,7 +225,6 @@ matnorm = np.append(matnorm, matnorm)  # for both GM and TA
 # mude = MUdecomposer(os.path.join(path,modelFile))
 
 if __name__ == '__main__':
-
     # Create a client socket which is used to connect to OT BioLab Light
     ip_address = '127.0.0.1'
     port = 31000
@@ -246,11 +248,12 @@ if __name__ == '__main__':
     emg_queue = Queue()  # emg_stream() writes to emg_queue from _this_ process
 
     ### emg_predict() reads from qc_queue as a separate process
-    predict_emg = Process(target=emg_predict, args=(emg_queue, ))
+    predict_emg = Process(target=emg_predict, args=(emg_queue,))
     predict_emg.daemon = False
     predict_emg.start()  # Launch predict_emg() as a separate python process
 
-    emg_stream(emg_queue, fsamp, nsec, q_socket, nchan, nbytes, chanset, setnum, stepsize, windowsize, matnorm, path, datafile, forcefile)
+    emg_stream(emg_queue, fsamp, nsec, q_socket, nchan, nbytes, chanset, setnum, stepsize, windowsize, matnorm, path,
+               datafile, forcefile)
     predict_emg.join()  # wait for the reader to finish
 
     print("DONE")

@@ -1,10 +1,9 @@
 # from sklearn.decomposition import PCA
 # from sklearn.preprocessing import normalize
-#import matplotlib.pyplot as plt
-import numpy as np
-import scipy.io as sio
+# import matplotlib.pyplot as plt
 from os import path
-from sklearn.model_selection import train_test_split
+
+import scipy.io as sio
 from sklearn.utils import shuffle
 
 
@@ -80,7 +79,6 @@ def load_data_mat(TR, SG=0, ST=10, MU=1, WS=120, TF=0, MutiSeg=0):
 
 
 import tensorflow.keras.backend as K
-from tensorflow.keras.metrics import Metric
 from tensorflow.keras.callbacks import Callback
 import tensorflow as tf
 
@@ -130,13 +128,10 @@ class AccuracyCallback(Callback):
         logs['{}'.format(self.metric_name)] = np.mean(self.metric)  # replace it with your metrics
 
 
-import tensorflow.keras as keras
 # import keras
-from tensorflow.keras.preprocessing.sequence import TimeseriesGenerator
-from tensorflow.keras.models import Sequential, load_model, Model
-from tensorflow.keras.layers import Dense, Flatten, Activation, Input
-from tensorflow.keras.layers import Conv1D, MaxPooling1D, Conv2D, MaxPooling2D, BatchNormalization, Dropout, LSTM
-from tensorflow.keras.regularizers import l2
+from tensorflow.keras.models import Sequential, Model
+from tensorflow.keras.layers import Dense, Flatten, Input
+from tensorflow.keras.layers import Conv1D, MaxPooling1D, Dropout
 
 
 # create convolutional neural network with sequential model
@@ -209,12 +204,11 @@ def get_cnn1d_api(shape_in, shape_out, nn_nodes=[128, 128, 128, 64, 256]):
 
 
 # use tensorboard for display
-from tensorflow.keras.callbacks import TensorBoard, EarlyStopping, ModelCheckpoint, LambdaCallback
+from tensorflow.keras.callbacks import TensorBoard, EarlyStopping, ModelCheckpoint
 import time
-#import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import os
 from tensorflow.keras.models import load_model
 from sklearn.model_selection import train_test_split
 
