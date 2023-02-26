@@ -202,12 +202,15 @@ class calibrate:
             rospy.wait_for_message('/h3/robot_states', State, timeout=None)
             rospy.wait_for_message('hdEMG_stream', hdemg, timeout=None)
             rospy.set_param('emg_coef',
-                            [-8.57409162e-02, -1.00146085e+00, 2.54005172e-03, 1.60128219e-02, 8.90337001e-02,
-                             1.58813251e+00, -3.65757650e-03, -2.47658331e-02, 5.08335815e-02, -2.35550813e-01,
-                             -1.54598354e-03, -7.65382330e-03, 5.86822916e-01, 2.87710463e+00, -1.37723825e+01])
-            rospy.set_param('cst_coef', [0.613430299271461, 0.9098084781400041, 0.409857422818683, -0.20047670400913495,
-                                         0.08541811441013507,
-                                         -4.42430850813377])  # [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.0])
+                            [-8.57409162e-02, -1.00146085e+00, 2.54005172e-03,
+                             1.60128219e-02, 8.90337001e-02, 1.58813251e+00,
+                             -3.65757650e-03, -2.47658331e-02, 5.08335815e-02,
+                             -2.35550813e-01, -1.54598354e-03, -7.65382330e-03,
+                             5.86822916e-01, 2.87710463e+00, -1.37723825e+01])
+            rospy.set_param('cst_coef', [0.613430299271461, 0.9098084781400041, 0.409857422818683,
+                                         -0.20047670400913495, 0.08541811441013507, -4.42430850813377])
+            # [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2.0])
+
             rospy.set_param('calibrated', True)
         else:
             rospy.wait_for_message('hdEMG_stream', hdemg, timeout=None)
@@ -294,10 +297,10 @@ class calibrate:
         theta = X.iloc[3, :]
 
         f = (betas[0] * (RMS_TA - betas[1])).to_numpy() + (betas[2] * (RMS_TA * theta - betas[3])).to_numpy() + (
-                    betas[4] * (RMS_GM - betas[5])).to_numpy() + (betas[6] * (RMS_GM * theta - betas[7])).to_numpy() + (
-                        betas[8] * (RMS_SOL - betas[9])).to_numpy() + (
-                        betas[10] * (RMS_SOL * theta - betas[11])).to_numpy() + (
-                        betas[12] * (theta - betas[13])).to_numpy() + (betas[14] * ones).to_numpy()
+                betas[4] * (RMS_GM - betas[5])).to_numpy() + (betas[6] * (RMS_GM * theta - betas[7])).to_numpy() + (
+                    betas[8] * (RMS_SOL - betas[9])).to_numpy() + (
+                    betas[10] * (RMS_SOL * theta - betas[11])).to_numpy() + (
+                    betas[12] * (theta - betas[13])).to_numpy() + (betas[14] * ones).to_numpy()
 
         return f[0]
 
@@ -517,7 +520,9 @@ class calibrate:
         samples = []
         k = 0
         for j in range(num_groups):
+            # Split reading into 64 channel groups
             muscle = list(reading[64 * j: 64 * j + 64])
+            # select j values of 2, 3, 4. Skips first 128 channels from IN1..IN8
             if j in muscles:
                 samples.append([m ** 2 for m in muscle])
                 # samples.append([m**2 for ind, m in enumerate(muscle) if ind not in noisy_channels[k]])
@@ -529,6 +534,7 @@ class calibrate:
             self.emg_win.pop(0)
             self.emg_win.append(samples)
 
+        # RMS across each channel for each muscle over the emg_win
         smoothed_reading = np.sqrt(np.mean(self.emg_win, axis=0))
 
         sample = []
