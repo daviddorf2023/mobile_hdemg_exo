@@ -3,12 +3,12 @@
 calibration_emg Node
 
 This node subscribes to the torque measurements from the exoskeleton and the high-density EMG data from the intermediate streaming node, collects and
-processes the data using a trained CNN to predict muscle activation, and finally fits a model with the processed data. 
+processes the data using a trained CNN to predict muscle activation, and finally fits a model with the processed data.
 
 Subscribers:
-    Name: /h3/robot_states Type: h3_msgs/State         Published Rate: 100 Hz 
-    
-    Name: /hdEMG_stream    Type: talker_listener/hdemg Published Rate: 100 Hz 
+    Name: /h3/robot_states Type: h3_msgs/State         Published Rate: 100 Hz
+
+    Name: /hdEMG_stream    Type: talker_listener/hdemg Published Rate: 100 Hz
 
 Publishers:
     Name: /h3/right_ankle_position_controller/command Type: Float64
@@ -25,41 +25,39 @@ from scipy.optimize import curve_fit
 from std_msgs.msg import Float64
 from talker_listener.msg import hdemg
 
-from talker_listener.qc_predict import MUdecomposer
-
 # Neural Net Set-Up #
-path = rospy.get_param("/file_dir")
-model_file = path + "/src/talker_listener/" + "best_model_cnn-allrun5_c8b_mix4-SG0-ST20-WS40-MU[0, 1, 2, 3]_1644222946_f.h5"
-model = MUdecomposer(model_file)
+# path = rospy.get_param("/file_dir")
+# model_file = path + "/src/talker_listener/" + "best_model_cnn-allrun5_c8b_mix4-SG0-ST20-WS40-MU[0, 1, 2, 3]_1644222946_f.h5"
+# model = MUdecomposer(model_file)
 
 # Filter parameters #
-nyquist = .5 * 510
+# nyquist = .5 * 510
 
-win = 40
+# win = 40
 
 torque_window = 25  # samples
-prediction_step_size = 20  # samples
-cst_window = 40
+# prediction_step_size = 20  # samples
+# cst_window = 40
 
 # Parameters to Organize Raw EMG Data #
 muscles = [2, 3, 4]  # Channels of the inputs on the Quattrocento #MUST BE THE SAME IN BOTH FILES
 n = len(muscles)
-noisy_channels = [[], [], []]
+# noisy_channels = [[], [], []]
 
-sample = np.zeros((n, cst_window, 64))
+# sample = np.zeros((n, cst_window, 64))
 
 # Option to skip the calibration procedure for testing purposes
 skip = False
 
 
 class trial:
-    ''' Object for a calibration task 
-    
-    Args: 
+    ''' Object for a calibration task
+
+    Args:
         joint_angle (float) : Position command in radians to lock exoskeleton
         trial length (float) : Number of seconds for the torque trajectory
         direction (string) : "PF" for Plantar flexion or "DF" for dorsiflexion
-        traj_shape (string) : "trap" for trapezoid, "sin" for sinusoid, "bi-sin" for a bidirectional sinusoid or "flat" for baseline 0% effort 
+        traj_shape (string) : "trap" for trapezoid, "sin" for sinusoid, "bi-sin" for a bidirectional sinusoid or "flat" for baseline 0% effort
 
     '''
 
@@ -89,6 +87,7 @@ class trial:
         self.emg_end_index = 0
         self.torque_end_index = 0
 
+    # TODO: hasn't worked super well - play with this?
     def torque_offset(self):
         ''' Calculate the torque offset for the trial
         '''
@@ -106,7 +105,7 @@ class trial:
         ''' Create a reference torque trajectory of the specified shape
 
         Args:
-            offset (float): Torque offset to subtract from the trajectory plot 
+            offset (float): Torque offset to subtract from the trajectory plot
         '''
         if self.traj_shape == "flat":
             # Create a straight-line trajectory for baseline collection
@@ -184,7 +183,8 @@ class calibrate:
 
         self.trials = trials
 
-        self.r = rospy.Rate(2048)
+        # self.r = rospy.Rate(2048)
+        self.r = rospy.Rate(512)
 
         # Initialize a timer that will be used to track the subscriber rates
         self.timer = rospy.get_time()
@@ -192,8 +192,9 @@ class calibrate:
         # Subscribers for the torque and hd-EMG publishers
         self.torque_sub = rospy.Subscriber('/h3/robot_states', State, self.torque_calib)
         self.emg_sub = rospy.Subscriber('hdEMG_stream', hdemg, self.emg_calib)
+        # self.emg_sub = rospy.Subscriber('hdEMG_stream_processed', hdemg, self.emg_calib)
 
-        # Publisher for position control 
+        # Publisher for position control
         self.pos_pub = rospy.Publisher('/h3/right_ankle_position_controller/command', Float64, queue_size=0)
 
         # Initialize arrays for data collection
@@ -215,6 +216,7 @@ class calibrate:
         if skip:
             rospy.wait_for_message('/h3/robot_states', State, timeout=None)
             rospy.wait_for_message('hdEMG_stream', hdemg, timeout=None)
+            # TODO: pull from file?
             rospy.set_param('cst_coef',
                             [-8.57409162e-02, -1.00146085e+00, 2.54005172e-03, 1.60128219e-02, 8.90337001e-02,
                              1.58813251e+00, -3.65757650e-03, -2.47658331e-02, 5.08335815e-02, -2.35550813e-01,
@@ -222,6 +224,7 @@ class calibrate:
             rospy.set_param('calibrated', True)
         else:
             rospy.wait_for_message('hdEMG_stream', hdemg, timeout=None)
+            # rospy.wait_for_message('hdEMG_stream_processed', hdemg, timeout=None)
             rospy.loginfo("Starting Baseline")
             self.data_collection()
 
@@ -238,7 +241,7 @@ class calibrate:
         while (rospy.Time.now() < start + duration):
             self.r.sleep()
 
-        MVC = np.max(np.abs(self.torque_array[start_index:]))  # moving window average filter?
+        MVC = np.max(np.abs(self.torque_array[start_index:]))  # TODO: moving window average filter? smoothed_torque?
         return MVC
 
     def get_max(self):
@@ -269,7 +272,7 @@ class calibrate:
         Args:
             ydata (Data Frame): Measured torque
             xdata (Data Frame): Data from muscles and joint angle
-            betas (float[]): Coefficients of best fit 
+            betas (float[]): Coefficients of best fit
         Returns:
             r2 (float): r-squared measurement of prediction
             RMSE: root mean square error of prediction
@@ -292,7 +295,7 @@ class calibrate:
         '''The model to predict torque from CST estimation
 
         Args:
-            X (Data Frame): Data frame containing a column for each muscle and one column for joint angle        
+            X (Data Frame): Data frame containing a column for each muscle and one column for joint angle
         Returns:
             f (float[]): Array of emg predictions
         '''
@@ -305,10 +308,10 @@ class calibrate:
         theta = X.iloc[3, :]
 
         f = (betas[0] * (RMS_TA - betas[1])).to_numpy() + (betas[2] * (RMS_TA * theta - betas[3])).to_numpy() + (
-                    betas[4] * (RMS_GM - betas[5])).to_numpy() + (betas[6] * (RMS_GM * theta - betas[7])).to_numpy() + (
-                        betas[8] * (RMS_SOL - betas[9])).to_numpy() + (
-                        betas[10] * (RMS_SOL * theta - betas[11])).to_numpy() + (
-                        betas[12] * (theta - betas[13])).to_numpy() + (betas[14] * ones).to_numpy()
+                betas[4] * (RMS_GM - betas[5])).to_numpy() + (betas[6] * (RMS_GM * theta - betas[7])).to_numpy() + (
+                    betas[8] * (RMS_SOL - betas[9])).to_numpy() + (
+                    betas[10] * (RMS_SOL * theta - betas[11])).to_numpy() + (
+                    betas[12] * (theta - betas[13])).to_numpy() + (betas[14] * ones).to_numpy()
 
         return f[0]
 
@@ -387,7 +390,7 @@ class calibrate:
             self.axs.set_ylim(-1.5 * trial.effort * trial.MVC, 1.5 * trial.effort * trial.MVC)
             plt.pause(0.01)
 
-            # Record indexing variables for plotting 
+            # Record indexing variables for plotting
             start_index = len(self.torque_array_for_plot)
             start = rospy.Time.now()
             self.start_time = start.to_sec()
@@ -439,7 +442,9 @@ class calibrate:
         raw_torque_df.to_csv(path + "/src/talker_listener/raw_torque.csv")
 
         raw_emg_df = pd.DataFrame(np.array(self.raw_emg_array))
-        raw_emg_df.to_csv(path + "/src/talker_listener/raw_emg.csv")
+        raw_emg_df.to_csv(path + "/src/talker_listener/emg_processed.csv")
+
+        # TODO: signal qc_stream_node to save raw data
 
         # Save values to help index raw data
         emg_index_list = []
@@ -457,29 +462,30 @@ class calibrate:
         file.close()
 
         # Find the normalization value for each muscle and save in the parameter server
-        emg_norm_vals = [0 for i in range(n)]
-        for trial in self.trials:
-            # Maximum value for each muscle
-            for i in range(n):
-                if np.max(trial.emg_array[:, i, :]) > emg_norm_vals[i]:
-                    emg_norm_vals[i] = np.max(trial.emg_array[:, i, :])
-
-        rospy.set_param('emg_norm_vals', [float(val) for val in
-                                          emg_norm_vals])  # Convert norm values to python floats instead of numpy floats
+        # emg_norm_vals = [0 for i in range(n)]
+        # for trial in self.trials:
+        #     # Maximum value for each muscle
+        #     for i in range(n):
+        #         if np.max(trial.emg_array[:, i, :]) > emg_norm_vals[i]:
+        #             emg_norm_vals[i] = np.max(trial.emg_array[:, i, :])
+        #
+        # rospy.set_param('emg_norm_vals', [float(val) for val in
+        #                                   emg_norm_vals])  # Convert norm values to python floats instead of numpy floats
 
         # Normalize each emg array, predict CSTs, and organize predictions into one data frame
         t = 0
         for trial in self.trials:
-            for i in range(n):
-                trial.emg_array[:, i, :] /= emg_norm_vals[i]
+            # for i in range(n):
+            #     trial.emg_array[:, i, :] /= emg_norm_vals[i]
 
-            data = np.array(trial.emg_array).reshape(trial.emg_array.shape[0],
-                                                     trial.emg_array.shape[1] * trial.emg_array.shape[2])
-            print(data.shape)
+            # data = np.array(trial.emg_array).reshape(trial.emg_array.shape[0],
+            #                                          trial.emg_array.shape[1] * trial.emg_array.shape[2])
+            # print(data.shape)
 
-            cst = self.cst_predict(data)
-            print(cst.shape)
-
+            # cst = self.cst_predict(data)
+            # print(cst.shape)
+            #
+            cst = trial.emg_array
             if t == 0:
                 y = np.array(trial.torque_array - trial.torque_offset())
                 y = signal.resample(y, cst.shape[0])
@@ -524,67 +530,67 @@ class calibrate:
         rospy.set_param('cst_coef', cst_coef)
         rospy.set_param('calibrated', True)
 
-    def cst_predict(self, data):
-        ''' Organize raw data into batches and feed into the trained CNN to predict motor unit activation for each muscle, and convolve over a 40ms hanning window to estimate the cumulative spike train 
-
-        Return:
-            CST (float[]): Motor unit activation convolved over a 40ms hanning window
-        '''
-
-        sample_count2 = 0
-        sample_count = 0
-        win = []
-        cst_array = []
-        batch_ready = False
-        for i in range(data.shape[0]):  # read each array raw
-            reading = data[i, :]  # raw by raw
-
-            samples = []
-            for j in range(n):  # 6 groups
-                muscle = list(reading[64 * j: 64 * j + 64])  # muscle-> group 2, 3, 4
-                samples.append(muscle)
-
-            for i in range(n):  # 2 3 4
-                if sample_count2 < cst_window:
-                    sample[i][sample_count2] = samples[i]
-                    sample_count2 += 1
-                else:rawMUdecomposer(model_file)
-                    deleted = np.delete(sample[i], 0, axis=0)
-                    sample[i] = np.append(deleted, [np.array(samples[i])], axis=0)
-                    if (sample_count % prediction_step_size) == 0:
-                        batch_ready = True
-                        sample_count2 = 0
-
-            if batch_ready:
-                nueral_drive = model.predict_MUs(sample)  # input layer (None, 40, 64)
-                nueral_drive = nueral_drive.numpy()
-
-                cst = []
-                for i in range(n):
-                    cst.append(np.sum(nueral_drive[:, i]))
-                cst_array.append(cst)
-                batch_ready = False
-
-            sample_count += 1
-
-        cst_array = np.array(cst_array)
-
-        window_hanning = []
-        window_hanning = np.hanning(np.round(0.2 * 512))
-
-        cst_han1 = np.array(signal.convolve(cst_array[:, 0], window_hanning, mode='valid'))
-        cst_han2 = np.array(signal.convolve(cst_array[:, 1], window_hanning, mode='valid'))
-        cst_han3 = np.array(signal.convolve(cst_array[:, 2], window_hanning, mode='valid'))
-        cst_han = np.concatenate([cst_han1, cst_han2, cst_han3])
-        cst_han = np.array([[cst_han1], [cst_han2], [cst_han3]])
-        # (3, 1, hanningaxis) -> (hanningaxis, 1, 3)
-        cst_hanT = cst_han.T
-        cst_han = cst_hanT.reshape(len(cst_han1), 3)
-
-        return np.array(cst_han)
+    # def cst_predict(self, data):
+    #     ''' Organize raw data into batches and feed into the trained CNN to predict motor unit activation for each muscle, and convolve over a 40ms hanning window to estimate the cumulative spike train
+    #
+    #     Return:
+    #         CST (float[]): Motor unit activation convolved over a 40ms hanning window
+    #     '''
+    #
+    #     sample_count2 = 0
+    #     sample_count = 0
+    #     win = []
+    #     cst_array = []
+    #     batch_ready = False
+    #     for i in range(data.shape[0]):  # read each array raw
+    #         reading = data[i, :]  # raw by raw
+    #
+    #         samples = []
+    #         for j in range(n):  # 6 groups
+    #             muscle = list(reading[64 * j: 64 * j + 64])  # muscle-> group 2, 3, 4
+    #             samples.append(muscle)
+    #
+    #         for i in range(n):  # 2 3 4
+    #             if sample_count2 < cst_window:
+    #                 sample[i][sample_count2] = samples[i]
+    #                 sample_count2 += 1
+    #             else:
+    #                 deleted = np.delete(sample[i], 0, axis=0)
+    #                 sample[i] = np.append(deleted, [np.array(samples[i])], axis=0)
+    #             if (sample_count % prediction_step_size) == 0:
+    #                 batch_ready = True
+    #                 sample_count2 = 0
+    #
+    #     if batch_ready:
+    #         nueral_drive = model.predict_MUs(sample)  # input layer (None, 40, 64)
+    #         nueral_drive = nueral_drive.numpy()
+    #
+    #         cst = []
+    #         for i in range(n):
+    #             cst.append(np.sum(nueral_drive[:, i]))
+    #         cst_array.append(cst)
+    #         batch_ready = False
+    #
+    #     sample_count += 1
+    #
+    #     cst_array = np.array(cst_array)
+    #
+    #     window_hanning = []
+    #     window_hanning = np.hanning(np.round(0.2 * 512))
+    #
+    #     cst_han1 = np.array(signal.convolve(cst_array[:, 0], window_hanning, mode='valid'))
+    #     cst_han2 = np.array(signal.convolve(cst_array[:, 1], window_hanning, mode='valid'))
+    #     cst_han3 = np.array(signal.convolve(cst_array[:, 2], window_hanning, mode='valid'))
+    #     cst_han = np.concatenate([cst_han1, cst_han2, cst_han3])
+    #     cst_han = np.array([[cst_han1], [cst_han2], [cst_han3]])
+    #     # (3, 1, hanningaxis) -> (hanningaxis, 1, 3)
+    #     cst_hanT = cst_han.T
+    #     cst_han = cst_hanT.reshape(len(cst_han1), 3)
+    #
+    #     return np.array(cst_han)
 
     def torque_calib(self, sensor_reading):
-        ''' Callback for the /h3/robot_states topic. Receives raw torque data and smooths it with a moving average. 
+        ''' Callback for the /h3/robot_states topic. Receives raw torque data and smooths it with a moving average.
         '''
 
         # print("Measured Frequency: ", 1/(rospy.get_time() - self.timer))
@@ -606,7 +612,7 @@ class calibrate:
             self.time.append(rospy.Time.now().to_sec() - self.start_time)
 
     def emg_calib(self, hdEMG):
-        ''' Callback for the /hdEMG topic. Organize the raw data into muscle groups to save only the relevant values.  
+        ''' Callback for the /hdEMG topic. Organize the raw data into muscle groups to save only the relevant values.
         '''
 
         # print(self.timer)
@@ -615,17 +621,18 @@ class calibrate:
 
         reading = hdEMG.data.data
         self.raw_emg_array.append(reading)
+        #
+        # num_groups = len(reading) // 64
+        #
+        # samples = []
+        # for j in range(num_groups):
+        #     muscle = list(reading[64 * j: 64 * j + 64])
+        #     if j in muscles:
+        #         samples.append(
+        #             [s if (ind is not noisy_channels[muscles.index(j)]) else 0 for ind, s in enumerate(muscle)])
 
-        num_groups = len(reading) // 64
-
-        samples = []
-        for j in range(num_groups):
-            muscle = list(reading[64 * j: 64 * j + 64])
-            if j in muscles:
-                samples.append(
-                    [s if (ind is not noisy_channels[muscles.index(j)]) else 0 for ind, s in enumerate(muscle)])
-
-        self.emg_array.append(samples)
+        # self.emg_array.append(samples)
+        self.emg_array.append(reading)
 
 
 if __name__ == '__main__':
@@ -699,8 +706,6 @@ if __name__ == '__main__':
         
         trials = [baseline, sin10, sin0, sinm10]
         '''
-
-        trials = [PF10]
 
         calibration = calibrate(trials)
         rospy.spin()

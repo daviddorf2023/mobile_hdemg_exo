@@ -5,6 +5,11 @@
     <param name="file_dir" value = "$(find talker_listener)" />
     <param name="calibrated" value = 'false'/>
 
+    <param name="QC_SAMPLING_FREQUENCY" value = '512'/>
+    <param name="NODE_SAMPLING_FREQUENCY" value = '512'/>
+    <param name="MUSCLE_COUNT" value = '4'/>
+    <param name="EMG_PROCESS_METHOD" value = 'rms'/>
+
     <group unless="$(arg sim)">
         <node name="QC_stream_node_512" pkg="talker_listener" type="qc_stream_node_512.py" output="screen" if="$(eval arg('method') == 'cst')"/>
         <node name="QC_stream_node_100" pkg="talker_listener" type="qc_stream_node_100.py" output="screen" if="$(eval arg('method') == 'emg')"/>

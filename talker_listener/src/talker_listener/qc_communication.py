@@ -1,8 +1,13 @@
+import socket
+
+from talker_listener.qc_connect_config import FsampVal, create_connection_confString, \
+    create_disconnect_confString
+
 CONVERSION_FACTOR = 0.000286  # conversion factor needed to get values in mV
 
 
 def read_raw_bytes(connection, number_of_all_channels, bytes_in_sample):
-    buffer_size = number_of_all_channels * bytes_in_sample
+    buffer_size = number_of_all_channels * bytes_in_sample * 512
     new_bytes = connection.recv(buffer_size)
     return new_bytes
 
@@ -39,3 +44,43 @@ def bytes_to_integers(
             value *= CONVERSION_FACTOR
         channel_values.append(value)
     return channel_values
+
+
+# ---------- Connection ----------
+
+HOST = "192.168.0.10"
+TCP_PORT = 23456
+
+
+# Connect to Quattrocento
+def connect(refresh_rate, sampling_frequency, muscle_count):
+    NumChanSel = muscle_count - 1
+    FSampSel = FsampVal.index(sampling_frequency)
+
+    confString = create_connection_confString(FSampSel, NumChanSel)
+    # ConfString[39] = 99 for MUSCLE_COUNT = 3
+    # ConfString[39] = 241 for MUSCLE_COUNT = 4
+    # confString[39] = 99  # should be equal to the crc8 of ConfString
+
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.connect((HOST, TCP_PORT))
+    # print(confString)
+    s.sendall(bytes(confString))
+
+    print(f"Connected to Quattrocento at {HOST}:{TCP_PORT}!")
+    print(f"Using refresh_rate={refresh_rate}, "
+          f"sampling_frequency={sampling_frequency}, "
+          f"muscle_count={muscle_count}!")
+
+    return s
+
+
+# Disconnect from Quattrocento
+def disconnect(sock):
+    confString = create_disconnect_confString()
+
+    # print(confString)
+    sock.sendall(bytes(confString))
+    sock.close()
+
+    print(f"Disconnected from Quattrocento at {HOST}:{TCP_PORT}!")

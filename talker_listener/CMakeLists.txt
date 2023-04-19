@@ -166,6 +166,8 @@ include_directories(
 #)
 catkin_install_python(
         PROGRAMS
+        nodes/qc_stream_node.py
+        nodes/calibrate_node.py
         nodes/QC_node_emg.py
         nodes/QC_node_cst.py
         nodes/qc_stream_node_512.py
