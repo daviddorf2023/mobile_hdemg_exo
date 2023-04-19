@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.0.2)
 project(talker_listener)
 
-set(PYTHON_EXECUTABLE /home/arch/Projects/sralab/realtime-ros/venv/bin/python)
+set(PYTHON_EXECUTABLE /home/research23/realtime-ros/venv/bin/python)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
