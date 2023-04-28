@@ -2,6 +2,10 @@
 
 ## Overview
 
+This branch contains work done over Spring and Summer 2023 using the ROS package for the Technaid H3 Ankle Exoskeleton. The package is designed to run on a laptop and a Raspberry Pi. The laptop runs the talker_listener package, which reads data from the OTB Quattrocento and H3 Ankle Exoskeleton and publishes the data to the ROS network. The Raspberry Pi runs the H3 package, which reads the data from the ROS network and sends torque commands to the exoskeleton. Work is currently being done to improve the torque predictions, reduce latency, and to add a user interface to the package. The main focus is to eventually implement the package on the exoskeleton's onboard computer with the Muovi EMG system, and using ethernet to connect the exoskeleton and EMG system to the computer.
+
+## Signal Processing
+
 This package provides the framework to estimate torque from high-density EMG inputs across 3 muscles. There are two primary methods to train a model for these predictions: root-mean-square EMG signals or muscle activation estimated from a convolutional neural net. The current model is a nonlinear physiologically informed equation considering muscle activity, joint angle, and the interaction between these variables. Future work may consider other models or prediction methods.
 
 ## Talker_Listener Package Contents
