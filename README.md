@@ -37,15 +37,13 @@ This package reads data from the OTB Quattrocento and H3 Ankle exoskeleton. To c
 
 <p align="center">
 
-<img src="talker_listener/img/hardware_annotated.png" />
 
 Connect the Quattrocento's ethernet port to a port on the router. The exoskeleton plugs into the control box.
-|  |  |
-|--|--|
-| <img src="talker_listener/img/controller_1_annotated.png" width="1049/100">| <img src="talker_listener/img/controller_2_annotated.png" width="1050/100" />|
-|<img src="talker_listener/img/raspberry_pi_1_annotated.png" width="1054/100" /> |<img src="talker_listener/img/raspberry_pi_2_annotated.png" width="1053/100" />|
 
-<img src="talker_listener/img/router_annotated.png" width="1053/100" />
+## System Architecture
+![1](https://user-images.githubusercontent.com/113081373/235328773-ffa0187e-727e-4f93-92ef-227c38e79d4b.png)
+![Router](https://user-images.githubusercontent.com/113081373/235329612-d5902e09-958b-4029-939b-f378cc29b74d.png)
+![2](https://user-images.githubusercontent.com/113081373/235328776-5697ee2a-a1f7-4a73-8f57-ad972e56eb3e.png)
 
 </p>
 
