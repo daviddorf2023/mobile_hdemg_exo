@@ -43,7 +43,7 @@ Connect the Quattrocento's ethernet port to a port on the router. The exoskeleto
 ## System Architecture
 ![1](https://user-images.githubusercontent.com/113081373/235328773-ffa0187e-727e-4f93-92ef-227c38e79d4b.png)
 ![Router](https://user-images.githubusercontent.com/113081373/235329612-d5902e09-958b-4029-939b-f378cc29b74d.png)
-![Ankle_H3_Architecture](https://user-images.githubusercontent.com/113081373/235991865-2b4c00a6-9283-4d25-a279-4f61fb4bded3.png)
+![Ankle_Exo_Architecture](https://github.com/Technaid-S-L/technaid_h3_ankle_ros_python/assets/113081373/696ab24d-819a-4ee9-8313-eded34762003)
 
 
 </p>
