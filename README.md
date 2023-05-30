@@ -41,9 +41,15 @@ This package reads data from the OTB Quattrocento and H3 Ankle exoskeleton. To c
 Connect the Quattrocento's ethernet port to a port on the router. The exoskeleton plugs into the control box.
 
 ## System Architecture
+### 2022 Architecture Block Diagram
 ![1](https://user-images.githubusercontent.com/113081373/235328773-ffa0187e-727e-4f93-92ef-227c38e79d4b.png)
+### 2022 Physical Components
 ![Router](https://user-images.githubusercontent.com/113081373/235329612-d5902e09-958b-4029-939b-f378cc29b74d.png)
+### New System Architecture
 ![Ankle_Exo_Architecture](https://github.com/Technaid-S-L/technaid_h3_ankle_ros_python/assets/113081373/696ab24d-819a-4ee9-8313-eded34762003)
+### Latency Debugging Circuit
+- The current system suffers from latency issues where the exoskeleton will only move approximately 1-2 seconds after the user activates their corresponding muscle group. The latency debugging system uses phase difference analysis with a known waveform to the EMG, as well as a timestamped ping to the exoskeleton.
+![Ankle_H3_Architecture](https://github.com/Technaid-S-L/technaid_h3_ankle_ros_python/assets/113081373/62495b80-8f78-4ac4-9237-b38e3f170b3a)
 
 
 </p>
