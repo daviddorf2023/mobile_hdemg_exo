@@ -48,8 +48,7 @@ Connect the Quattrocento's ethernet port to a port on the router. The exoskeleto
 ### New System Architecture
 ![Ankle_Exo_Architecture](https://github.com/Technaid-S-L/technaid_h3_ankle_ros_python/assets/113081373/696ab24d-819a-4ee9-8313-eded34762003)
 ### Latency Debugging Circuit
-- The current system suffers from latency issues where the exoskeleton will only move approximately 1-2 seconds after the user activates their corresponding muscle group. The latency debugging system uses phase difference analysis with a known waveform to the EMG, as well as a timestamped ping to the exoskeleton.
-![Ankle_H3_Architecture](https://github.com/Technaid-S-L/technaid_h3_ankle_ros_python/assets/113081373/62495b80-8f78-4ac4-9237-b38e3f170b3a)
+![Ankle_H3_Architecture](https://github.com/Technaid-S-L/technaid_h3_ankle_ros_python/assets/113081373/ea557a77-9da8-4e65-bdcc-37ac103beec7)
 
 
 </p>
