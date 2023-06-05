@@ -8,7 +8,7 @@ This branch contains work done over Spring and Summer 2023 using the ROS package
 
 This package provides the framework to estimate torque from high-density EMG inputs across 3 muscles. There are two primary methods to train a model for these predictions: root-mean-square EMG signals or muscle activation estimated from a convolutional neural net. The current model is a nonlinear physiologically informed equation considering muscle activity, joint angle, and the interaction between these variables. Future work may consider other models or prediction methods.
 
-## Talker_Listener Package Contents
+## Talker Listener Package Contents
 
 * calibrate_CST
 * calibrate_EMG
@@ -30,15 +30,9 @@ This package provides the framework to estimate torque from high-density EMG inp
 
     * Nodes used in simulation mode to mimic the torque and emg streams using pre-recorded raw emg and raw torque csv files. 
 
-## Set-Up
+## Latency Analyzer Node
+* This node uses the Jetson Orin Nano GPIO pin 33 as a PWM output that sends a waveform to the auxilliary input of the EMG processing unit (Quattrocento or Muovi+Pro). It measures the phase difference and divides it by the known frequency of the signal to get the total latency across the entire EMG signal processing stage. The ankle exoskeleton datasheet by Technaid states that the latency of their system is approximately 0.7ms, but this node serves the purpose of measuring the time it takes for the Jetson Orin Nano and EMG system to process signals and generate a torque command from them.
 
-### -- Hardware --
-This package reads data from the OTB Quattrocento and H3 Ankle exoskeleton. To connect these devices, we use a dedicated router. A Raspberry Pi provides the interface for the exoskeleton controller via a PEAK CAN bus.
-
-<p align="center">
-
-
-Connect the Quattrocento's ethernet port to a port on the router. The exoskeleton plugs into the control box.
 
 ## System Architecture
 ### 2022 Architecture Block Diagram
