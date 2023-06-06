@@ -1,0 +1,36 @@
+h3:
+  # Publish all joint states -----------------------------------
+  joint_state_controller:
+    type: joint_state_controller/JointStateController
+    publish_rate: 100 #100  
+  
+  # Stiffness Controllers ---------------------------------------
+  right_hip_stiffness_controller:
+    type: joint_stiffness_controller/JointStiffnessController
+    joint: right_hip
+  right_knee_stiffness_controller:
+    type: joint_stiffness_controller/JointStiffnessController
+    joint: right_knee
+  right_ankle_stiffness_controller:
+    type: joint_stiffness_controller/JointStiffnessController
+    joint: right_ankle
+  left_hip_stiffness_controller:
+    type: joint_stiffness_controller/JointStiffnessController
+    joint: left_hip
+  left_knee_stiffness_controller:
+    type: joint_stiffness_controller/JointStiffnessController
+    joint: left_knee
+  left_ankle_stiffness_controller:
+    type: joint_stiffness_controller/JointStiffnessController
+    joint: left_ankle
+  robot_config_controller:
+    type: h3_config_controller/H3ConfigController 
+    robot_name: exo_h3
+    control_type: [2, 2, 2, 2, 2, 2]
+    min_angle: [-1.7453, 0, -0.4363, -1.7453, 0, -0.4363]
+    max_angle: [0.4363, 1.7453, 0.4363, 0.4363, 1.7453, 0.4363]
+    assistance: [100, 100, 100, 100, 100, 100]  
+  robot_state_controller:
+    type: h3_robot_state_controller/H3RobotStateController
+    robot_name: exo_h3
+    publish_rate: 100

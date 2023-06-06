@@ -1,0 +1,79 @@
+
+#h3 hardware interface description
+h3:
+    loop_hz: 100
+    CAN_port: 81  # View PCANBasic library 81->PCAN_USBBUS1 82-> PCAN_USBBUS2
+    external_CAN_mode: 3   # The Main Controller sends the measurement of the sensors with, 1-> 8-bit of resolution, 3-> 16-bit of resolution.
+    recording_convention: 0 # 0-> H3, 1->ROS, default: 0
+    recording_mode: 0 # 0-> Inputs, 1->InputsOutputs defaut: 0
+    robot_name: "exo_h3"
+    joints: ["right_hip", "right_knee", "right_ankle", "left_hip", "left_knee", "left_ankle"] # order of joints: RH, RK, RA, LH, LK, LA
+    #joints: ["rh", "rk", "ra", "lh", "lk", "la"] # order of joints: RH, RK, RA, LH, LK, LA
+    #Joint limits
+    joint_limits:
+        right_hip:
+            has_position_limits: true
+            min_position: -1.7453
+            max_position:  0.4363
+            has_velocity_limits: true
+            max_velocity: 100.0
+            has_effort_limits: true
+            max_effort: 100.0
+        right_knee:
+            has_position_limits: true
+            min_position: 0.0000
+            max_position: 1.7453
+            has_velocity_limits: true
+            max_velocity: 100.0
+            has_effort_limits: true
+            max_effort: 100.0
+        right_ankle:
+            has_position_limits: true
+            min_position: -0.4363
+            max_position: 0.4363
+            has_velocity_limits: true
+            max_velocity: 100.0
+            has_effort_limits: true
+            max_effort: 100.0
+            
+        left_hip:
+            has_position_limits: true
+            min_position: -1.7453
+            max_position:  0.4363
+            has_velocity_limits: true
+            max_velocity: 100.0
+            has_effort_limits: true
+            max_effort: 100.0
+        left_knee:
+            has_position_limits: true
+            min_position: 0.0000
+            max_position: 1.7453
+            has_velocity_limits: true
+            max_velocity: 100.0
+            has_effort_limits: true
+            max_effort: 100.0
+        left_ankle:
+            has_position_limits: true
+            min_position: -0.4363
+            max_position: 0.4363
+            has_velocity_limits: true
+            max_velocity: 100.0
+            has_effort_limits: true
+            max_effort: 10.0    
+
+    # Internal_controllers
+    modify_internal_controllers: false 
+    position_kp: [180.0, 180.0, 180.0, 180.0, 180.0, 180.0]
+    position_ki: [1.9, 1.9, 1.9, 1.9, 1.9, 1.9]
+    position_kd: [2.9, 2.9, 2.9, 2.9, 2.9, 2.9]
+    position_i_clamp: [80.0, 80.0, 80.0, 80.0, 80.0, 80.0]
+    stiffness_kp: [180.0, 180.0, 180.0, 180.0, 180.0, 180.0]
+    stiffness_ki: [0, 0, 0, 0, 0, 0]
+    stiffness_kd: [2.9, 2.9, 2.9, 2.9, 2.9, 2.9]
+    stiffness_i_clamp: [80.0, 80.0, 80.0, 80.0, 80.0, 80.0]
+    torque_kp: [100.0, 100.0, 50.0, 100.0, 100.0, 50.0]
+    torque_ki: [0.5, 0.5, 0.5, 0.5, 0.5, 0.5]
+    torque_kd: [0.8, 0.8, 0.8, 0.8, 0.8, 0.8]
+    torque_i_clamp: [40.0, 40.0, 40.0, 40.0, 40.0, 40.0]
+    
+

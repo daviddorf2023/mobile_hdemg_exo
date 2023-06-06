@@ -1,0 +1,10 @@
+<launch>
+    <rosparam file="$(find h3_control_client)/config/h3_task_controller.yaml" command="load"/>
+    <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
+    output="screen" ns="/h3" args="/h3/state_controller 
+    /h3/config_controller
+    /h3/task_controller
+    /h3/joint_state_controller">
+    </node>
+
+</launch>

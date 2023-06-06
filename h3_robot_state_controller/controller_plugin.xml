@@ -1,0 +1,7 @@
+<library path="lib/libh3_robot_state_controller">
+  <class name="h3_robot_state_controller/H3RobotStateController" type="h3_robot_state_controller::H3RobotStateController" base_class_type="controller_interface::ControllerBase">
+  <description>
+    This is a controller plugin to publish Exo-H3 state.
+  </description>
+  </class>
+</library>
