@@ -42,10 +42,8 @@ if output_pin is None:
 def pwm_node():
     rospy.init_node('pwm_node')
     rate = rospy.Rate(100)
-    pub = rospy.Publisher('/h3/robot_states', State, queue_size=10)
-    # pub.publish(State()) # initialize publisher for sending torque data, should timestamp how long it takes to do this
 
-    # Pin Setup:
+    # Generate the PWM signal with 50% duty cycle
     # Board pin-numbering scheme
     GPIO.setmode(GPIO.BOARD)
     # set pin as an output pin with optional initial state of HIGH
