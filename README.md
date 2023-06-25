@@ -9,10 +9,13 @@ This node uses the Jetson Orin Nano GPIO pin 33 as a PWM output that sends a wav
 
 ## System Architecture
 ### 2022 Architecture Block Diagram
-![1](https://user-images.githubusercontent.com/113081373/235328773-ffa0187e-727e-4f93-92ef-227c38e79d4b.png)
+![Ankle_H3_Architecture](https://github.com/Technaid-S-L/technaid_h3_ankle_ros_python/assets/113081373/0e073ecc-cda5-4430-9385-55306924cff4)
+
 ### 2022 Physical Components
 ![Router](https://user-images.githubusercontent.com/113081373/235329612-d5902e09-958b-4029-939b-f378cc29b74d.png)
+
 ### New System Architecture
-![Ankle_Exo_Architecture](https://github.com/Technaid-S-L/technaid_h3_ankle_ros_python/assets/113081373/696ab24d-819a-4ee9-8313-eded34762003)
+![Ankle_H3_Architecture (1)](https://github.com/Technaid-S-L/technaid_h3_ankle_ros_python/assets/113081373/6e45970b-43e6-428e-a39c-b9c8e290a595)
+
 ### Latency Debugging Circuit
 ![Ankle_H3_Architecture](https://github.com/Technaid-S-L/technaid_h3_ankle_ros_python/assets/113081373/ea557a77-9da8-4e65-bdcc-37ac103beec7)
