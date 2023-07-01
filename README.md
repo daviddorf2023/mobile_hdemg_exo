@@ -7,12 +7,50 @@ This branch contains work done over Spring and Summer 2023 using the ROS package
 ## Latency Analyzer Node
 This node uses the Jetson Orin Nano GPIO pin 33 as a PWM output that sends a waveform to the auxilliary input of the EMG processing unit (Quattrocento or Muovi+Pro). It measures the phase difference and divides it by the known frequency of the signal to get the total latency across the entire EMG signal processing stage. The ankle exoskeleton datasheet by Technaid states that the latency of their system is approximately 0.7ms, but this node serves the purpose of measuring the time it takes for the Jetson Orin Nano and EMG system to process signals and generate a torque command from them.
 
+## Setup
+### Jetson Orin Nano
+- Please refer to the setup instructions here: https://developer.nvidia.com/embedded/learn/get-started-jetson-orin-nano-devkit
+- The Jetson Orin Nano OS image in the NVIDIA setup is currently a modified version of Ubuntu 20.04 which supports ROS Noetic
+
+### ROS Noetic
+- Please refer to the setup instructions here: http://wiki.ros.org/noetic/Installation/Ubuntu
+
+### PCAN
+The Technaid H3 Exoskeleton uses PEAK CAN as its CAN interface. The PEAK CAN driver package and the PCAN Basic API must be installed on the device with the following steps:
+- Download the Linux driver package from https://www.peak-system.com/Drivers.523.0.html?&L=1
+- Download the Linux PCAN Basic API from https://www.peak-system.com/PCAN-Basic.239.0.html?&L=1
+- Extract the two downloaded ZIP files and move the two extracted folders to /usr/include/
+- In the driver directory, run the following commands in a terminal window to build the driver packages:
+  - ```sudo apt-get install libpopt-dev```
+  - ```sudo make clean all```
+  - ```sudo make install```
+  - ```sudo modprobe pcan```
+
+###  Repository
+- Create a directory with a subdirectory called ```src```
+- Navigate into ```src``` and clone the GitHub repository with ```git clone https://github.com/Technaid-S-L/technaid_h3_ankle_ros_python```
+- Switch the Git branch to MSR_Project_2023 with ```git checkout MSR_Project_2023```
+
+### Build
+- Go back to the directory containing ```src``` and run ```catkin_make```
+
+### Launch
+- Source a ROS workspace with ```source devel/setup.bash```
+- Launch the system with ```roslaunch talker_listener h3_launch.launch sim:=arg1 method:=arg2```
+  - arg1 can be: ```TRUE``` for simulated EMG hardware using prerecorded test data, or ```FALSE``` for when the EMG hardware is connected
+  - arg2 can be: ```emg``` for CNN processing of EMG data, ```cst``` for RMS processing of EMG data, or ```latency``` for using the latency analyzer system
+
 ## System Architecture
 ### 2022 Architecture Block Diagram
-![1](https://user-images.githubusercontent.com/113081373/235328773-ffa0187e-727e-4f93-92ef-227c38e79d4b.png)
+![Ankle_H3_Architecture](https://github.com/Technaid-S-L/technaid_h3_ankle_ros_python/assets/113081373/0e073ecc-cda5-4430-9385-55306924cff4)
+
 ### 2022 Physical Components
 ![Router](https://user-images.githubusercontent.com/113081373/235329612-d5902e09-958b-4029-939b-f378cc29b74d.png)
-### New System Architecture
-![Ankle_Exo_Architecture](https://github.com/Technaid-S-L/technaid_h3_ankle_ros_python/assets/113081373/696ab24d-819a-4ee9-8313-eded34762003)
+
+### 2023 Architecture Block Diagram
+![2](https://github.com/Technaid-S-L/technaid_h3_ankle_ros_python/assets/113081373/f5318645-71ee-4055-bbe1-ec8127fc091b)
+
+
 ### Latency Debugging Circuit
-![Ankle_H3_Architecture](https://github.com/Technaid-S-L/technaid_h3_ankle_ros_python/assets/113081373/ea557a77-9da8-4e65-bdcc-37ac103beec7)
+![3](https://github.com/Technaid-S-L/technaid_h3_ankle_ros_python/assets/113081373/55c1f7ca-96dd-4099-8f54-fb197453ab6c)
+

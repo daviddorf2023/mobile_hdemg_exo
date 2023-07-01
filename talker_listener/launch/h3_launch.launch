@@ -33,4 +33,9 @@
         <node name="QC_node_emg" pkg="talker_listener" type="QC_node_emg.py" output="screen"/>
     </group>
 
+    <group if="$(eval arg('method') == 'latency')">
+        <node name="latency_analyzer" pkg="talker_listener" type="latency_analyzer.py" output="screen"/>
+        <node name="calibration_cst" pkg="talker_listener" type="calibrate_cst.py" output="screen"/>
+        <node name="QC_node_cst" pkg="talker_listener" type="QC_node_cst.py" output="screen"/>
+    </group>
 </launch>

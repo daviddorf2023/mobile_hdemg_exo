@@ -176,6 +176,7 @@ catkin_install_python(
         nodes/calibrate_cst.py
         nodes/calibrate_emg.py
         nodes/torque_stream.py
+        nodes/latency_analyzer.py
         DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
