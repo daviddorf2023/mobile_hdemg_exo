@@ -53,16 +53,18 @@ In order to use PWM and other additional GPIO modifications, the steps below mus
   - arg2 can be: ```emg``` for CNN processing of EMG data, ```cst``` for RMS processing of EMG data, or ```latency``` for using the latency analyzer system
 
 ## System Architecture
-### 2022 Architecture Block Diagram
-![Ankle_H3_Architecture](https://github.com/Technaid-S-L/technaid_h3_ankle_ros_python/assets/113081373/0e073ecc-cda5-4430-9385-55306924cff4)
 
-### 2022 Physical Components
+### Previous System Architecture [2022]
+#### 2022 Block Diagram
+![Ankle_H3_Architecture](https://github.com/Technaid-S-L/technaid_h3_ankle_ros_python/assets/113081373/0e073ecc-cda5-4430-9385-55306924cff4)
+#### Physical Components
 ![Router](https://user-images.githubusercontent.com/113081373/235329612-d5902e09-958b-4029-939b-f378cc29b74d.png)
 
-### 2023 Architecture Block Diagram
+### New System Architecture
+#### Architecture Block Diagram
 ![2](https://github.com/Technaid-S-L/technaid_h3_ankle_ros_python/assets/113081373/f5318645-71ee-4055-bbe1-ec8127fc091b)
-
-
-### Latency Debugging Circuit
+#### Latency Debugging Circuit
 ![3](https://github.com/Technaid-S-L/technaid_h3_ankle_ros_python/assets/113081373/55c1f7ca-96dd-4099-8f54-fb197453ab6c)
+#### Power Architecture
+![exo_power](https://github.com/Technaid-S-L/technaid_h3_ankle_ros_python/assets/113081373/665022e3-4449-47c9-a03d-fe992bb653dc)
 
