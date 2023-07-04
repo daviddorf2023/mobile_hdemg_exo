@@ -26,6 +26,18 @@ The Technaid H3 Exoskeleton uses PEAK CAN as its CAN interface. The PEAK CAN dri
   - ```sudo make install```
   - ```sudo modprobe pcan```
 
+### GPIO Pin Configuration
+In order to use PWM and other additional GPIO modifications, the steps below must be taken:
+- Download the NVIDIA GPIO interface library with `git clone https://github.com/NVIDIA/jetson-gpio.git`
+- In the root of the cloned directory, run `sudo python3 setup.py install`
+- Run the following commands to add permissions to access the GPIO user group:
+  - `sudo groupadd -f -r gpio`
+  - `sudo usermod -a -G gpio your_user_name` and replace your_user_name with the one in your command line interface
+  - `sudo cp lib/python/Jetson/GPIO/99-gpio.rules /etc/udev/rules.d/`
+  - `sudo udevadm control --reload-rules && sudo udevadm trigger`
+  - `sudo /opt/nvidia/jetson-io/jetson-io.py` and change Pin 33 in the pinmux configuration to enable PWM on Pin 33. Save and reboot when prompted for the hardware changes to properly initiate.
+  - [Optional] Run `python3 simple_pwm.py` from the Jetson GPIO repository cloned previously to test PWM on Pin 33. If a 3V LED is attached to Pin 33 and GND it should dim and brighten from the changing PWM GPIO output. Alternatively, test the pin with an oscilloscope to read the square wave.
+
 ###  Repository
 - Create a directory with a subdirectory called ```src```
 - Navigate into ```src``` and clone the GitHub repository with ```git clone https://github.com/Technaid-S-L/technaid_h3_ankle_ros_python```
