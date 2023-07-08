@@ -50,7 +50,7 @@ In order to use PWM and other additional GPIO modifications, the steps below mus
 - Source a ROS workspace with ```source devel/setup.bash```
 - Launch the system with ```roslaunch talker_listener h3_launch.launch sim:=arg1 method:=arg2```
   - arg1 can be: ```TRUE``` for simulated EMG hardware using prerecorded test data, or ```FALSE``` for when the EMG hardware is connected
-  - arg2 can be: ```emg``` for CNN processing of EMG data, ```cst``` for RMS processing of EMG data, or ```latency``` for using the latency analyzer system
+  - arg2 can be: ```cst``` for CNN processing of EMG data, ```emg``` for RMS processing of EMG data, or ```latency``` for using the latency analyzer system
 
 ## System Architecture
 
@@ -60,7 +60,7 @@ In order to use PWM and other additional GPIO modifications, the steps below mus
 #### Physical Components
 ![Router](https://user-images.githubusercontent.com/113081373/235329612-d5902e09-958b-4029-939b-f378cc29b74d.png)
 
-### New System Architecture
+### New System Architecture [2023]
 #### Architecture Block Diagram
 ![2](https://github.com/Technaid-S-L/technaid_h3_ankle_ros_python/assets/113081373/f5318645-71ee-4055-bbe1-ec8127fc091b)
 #### Latency Debugging Circuit
