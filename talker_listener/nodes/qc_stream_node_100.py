@@ -33,7 +33,7 @@ def startup():
     start_comm = 'startTX'
     stop_comm = 'stopTX'
 
-    ip_address = '127.0.0.1'
+    ip_address = '169.254.1.10' # Quattrocento IP, see its display. Use 'sudo nmcli connection show' to see connection details
     port = 31000
 
     # Create a client socket which is used to connect to OT BioLab Light
