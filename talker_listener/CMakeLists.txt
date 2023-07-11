@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.0.2)
 project(talker_listener)
 
-set(PYTHON_EXECUTABLE /usr/bin/python)
+# set(PYTHON_EXECUTABLE /usr/bin/env python3)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -166,17 +166,9 @@ include_directories(
 #)
 catkin_install_python(
         PROGRAMS
-        nodes/qc_stream_node.py
         nodes/calibrate_node.py
-        nodes/QC_node_emg.py
-        nodes/QC_node_cst.py
-        nodes/qc_stream_node_512.py
-        nodes/qc_stream_node_100.py
-        nodes/emg_stream.py
-        nodes/calibrate_cst.py
-        nodes/calibrate_emg.py
-        nodes/torque_stream.py
-        nodes/latency_analyzer.py
+        nodes/emg_stream_node.py
+        nodes/torque_stream_node.py
         DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

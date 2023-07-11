@@ -1,6 +1,6 @@
 import socket
 
-from talker_listener.qc_connect_config import FsampVal, create_connection_confString, \
+from talker_listener.qc.qc_connect_config import FsampVal, create_connection_confString, \
     create_disconnect_confString
 
 CONVERSION_FACTOR = 0.000286  # conversion factor needed to get values in mV
@@ -48,12 +48,12 @@ def bytes_to_integers(
 
 # ---------- Connection ----------
 
-HOST = "192.168.0.10"
+HOST = "169.254.1.10"
 TCP_PORT = 23456
 
 
 # Connect to Quattrocento
-def connect(refresh_rate, sampling_frequency, muscle_count):
+def connect(refresh_rate, sampling_frequency, muscle_count) -> socket:
     NumChanSel = muscle_count - 1
     FSampSel = FsampVal.index(sampling_frequency)
 

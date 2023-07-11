@@ -3,13 +3,15 @@ import rospy
 from std_msgs.msg import Float64MultiArray, MultiArrayDimension
 from talker_listener.msg import hdemg
 
-from talker_listener.moving_window import MovingWindow
+from talker_listener.utils.moving_window import MovingWindow
 
 
 class EMGProcessorRMS:
+    window: MovingWindow
+    data = []
+
     def __init__(self):
         self.window = MovingWindow(100)
-        self.data = []
 
     def process_reading(self, reading):
         self.window.append(reading)

@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 import tensorflow as tf
 
-import talker_listener.qc_communication as comm
+import talker_listener.qc.qc_communication as comm
 from talker_listener.hdEMG_DCNN import load_model_custom
 
 

@@ -6,7 +6,7 @@ import time
 import numpy as np
 import pandas as pd
 
-import talker_listener.qc_communication as comm
+import talker_listener.qc.qc_communication as comm
 
 # set save path
 path = "C:\\Users\\Jackson\\Documents\\Jackson\\northwestern\\SRALAB\\H3"  # "C:/Users/jlevine/Desktop"

@@ -5,37 +5,13 @@
     <param name="file_dir" value = "$(find talker_listener)" />
     <param name="calibrated" value = 'false'/>
 
-    <param name="QC_SAMPLING_FREQUENCY" value = '512'/>
-    <param name="NODE_SAMPLING_FREQUENCY" value = '512'/>
     <param name="MUSCLE_COUNT" value = '4'/>
     <param name="EMG_PROCESS_METHOD" value = 'rms'/>
+    
+    <node name="emg_stream_node" pkg="talker_listener" type="emg_stream_node.py" output="screen" />
+    <!-- <node name="torque_stream_node" pkg="talker_listener" type="torque_stream_node.py" output="screen" /> -->
+    <node name="calibrate_node" pkg="talker_listener" type="calibrate_node.py" output="screen" />
 
-    <group unless="$(arg sim)">
-        <node name="QC_stream_node_512" pkg="talker_listener" type="qc_stream_node_512.py" output="screen" if="$(eval arg('method') == 'cst')"/>
-        <node name="QC_stream_node_100" pkg="talker_listener" type="qc_stream_node_100.py" output="screen" if="$(eval arg('method') == 'emg')"/>
-    </group>
+    <include file="$(find h3_launch)/launch/h3_launch_torque_control.launch" />
 
-    <group if="$(arg sim)">
-        <node name="emg_stream" pkg="talker_listener" type="emg_stream.py" output="screen">
-            <param name="method" type="string" value="$(arg method)"/>
-        </node>
-
-        <node name="torque_stream" pkg="talker_listener" type="torque_stream.py" output="screen"/>
-    </group>
-
-    <group if="$(eval arg('method') == 'cst')">
-        <node name="calibration_cst" pkg="talker_listener" type="calibrate_cst.py" output="screen" />
-        <node name="QC_node_cst" pkg="talker_listener" type="QC_node_cst.py" output="screen"/>
-    </group>
-
-    <group if="$(eval arg('method') == 'emg')">
-        <node name="calibration_emg" pkg="talker_listener" type="calibrate_emg.py" output="screen"/>
-        <node name="QC_node_emg" pkg="talker_listener" type="QC_node_emg.py" output="screen"/>
-    </group>
-
-    <group if="$(eval arg('method') == 'latency')">
-        <node name="latency_analyzer" pkg="talker_listener" type="latency_analyzer.py" output="screen"/>
-        <node name="calibration_cst" pkg="talker_listener" type="calibrate_cst.py" output="screen"/>
-        <node name="QC_node_cst" pkg="talker_listener" type="QC_node_cst.py" output="screen"/>
-    </group>
 </launch>

@@ -13,13 +13,14 @@ CST_prediction_step_size = 40  # samples
 
 
 class EMGProcessorCST:
+    raw_readings = []
+    sample_count = 0
+    norms = []
+
+    cst_readings = []
+    model: MUdecomposer
+
     def __init__(self):
-        self.raw_readings = []
-        self.sample_count = 0
-        self.norms = []
-
-        self.cst_readings = []
-
         # Neural Net Set-Up
         path = rospy.get_param("/file_dir")
         model_file = path + "/src/talker_listener/" + "best_model_cnn-allrun5_c8b_mix4-SG0-ST20-WS40-MU[0, 1, 2, 3]_1644222946_f.h5"
@@ -42,9 +43,9 @@ class EMGProcessorCST:
     def calculate_mu(self):
         """
         Predict motor unit activation for each muscle using 'CST_prediction_step_size' samples.
-        Implicitly downsamples to 'NODE_SAMPLING_FREQUENCY/CST_prediction_step_size'
+        Implicitly downsamples to 'SAMPLING_FREQUENCY/CST_prediction_step_size'
         """
-        raw_readings = np.array(self.raw_readings[-1 * CST_prediction_step_size:])
+        raw_readings = np.array(self.raw_readings[-CST_prediction_step_size:])
         muscle_count = raw_readings.shape[1]
 
         for i in range(muscle_count):

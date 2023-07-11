@@ -2,7 +2,9 @@ import collections.abc
 
 
 class MovingWindow(collections.abc.MutableSequence):
-    def __init__(self, length, *args):
+    length: int
+
+    def __init__(self, length: int, *args):
         self.length = length
         self.list = list()
         self.extend(list(args))
