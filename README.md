@@ -38,6 +38,13 @@ In order to use PWM and other additional GPIO modifications, the steps below mus
   - `sudo /opt/nvidia/jetson-io/jetson-io.py` and change Pin 33 in the pinmux configuration to enable PWM on Pin 33. Save and reboot when prompted for the hardware changes to properly initiate.
   - [Optional] Run `python3 simple_pwm.py` from the Jetson GPIO repository cloned previously to test PWM on Pin 33. If a 3V LED is attached to Pin 33 and GND it should dim and brighten from the changing PWM GPIO output. Alternatively, test the pin with an oscilloscope to read the square wave.
 
+### Enabling Local Ethernet Connection [Quattrocento]
+- Go to Network Settings and click the Settings cog next to the wired connection
+![image](https://github.com/Technaid-S-L/technaid_h3_ankle_ros_python/assets/129555676/06c2e7d8-c9d6-4c1e-af8d-c4f1bb2bb229)
+- Access the IPv4 tab and enable Link-Local Only, then hit Apply
+![image](https://github.com/Technaid-S-L/technaid_h3_ankle_ros_python/assets/129555676/8e9aafcb-7f32-4bde-a696-5cb6eadc8b61)
+
+
 ###  Repository
 - Create a directory with a subdirectory called ```src```
 - Navigate into ```src``` and clone the GitHub repository with ```git clone https://github.com/Technaid-S-L/technaid_h3_ankle_ros_python```
