@@ -36,13 +36,6 @@ class TrialRunner:
         self._torque_smoother = TorqueSmoother()
         self._timescale = TimescaleAxis()
         self.side_id = rospy.get_param("/side_id")
-        
-        # Initialize the text-to-speech engine
-        self.engine = pyttsx3.init()
-        self.engine.setProperty('rate', 150)
-        self.engine.setProperty('volume', 1.0)
-        self.voices = self.engine.getProperty('voices')
-        self.engine.setProperty('voice', self.voices[2].id)
 
         # Create a tkinter window
         self.window = tk.Tk()
@@ -54,13 +47,15 @@ class TrialRunner:
         self.window.attributes('-fullscreen', True)
 
         # Create a label to display the messages
-        self.message_label = tk.Label(self.window, font=("Calibri", 100), pady=20)
+        self.message_label = tk.Label(self.window, font=("Calibri", 80), pady=20)
         self.message_label.pack(expand=True)
 
-        # Define the messages and their durations in seconds
-        self.messages = [("Ready",2), ("Set",2), ("Go",2), ("Press your foot down", 5), ("Relax your foot", 3), ("Lift your foot up", 5), ("Relax your foot", 3), ("Great job!", 1)]
-
-
+        # Initialize the text-to-speech engine
+        self.engine = pyttsx3.init()
+        self.engine.setProperty('rate', 150)
+        self.engine.setProperty('volume', 1.0)
+        self.voices = self.engine.getProperty('voices')
+        self.engine.setProperty('voice', self.voices[2].id)
 
     def __enter__(self):
         # Subscribers for the torque and hd-EMG publishers
@@ -77,9 +72,9 @@ class TrialRunner:
         elif (self.side_id == 5):
             self._position_pub = rospy.Publisher('/h3/left_ankle_position_controller/command', Float64, queue_size=0)
         elif (self.side_id == 1):
-            self._position_pub = rospy.Publisher('/h3/right_ankle_position_controller/command', Float64, queue_size=0) # arbitrary
+            self._position_pub = rospy.Publisher('/h3/right_ankle_position_controller/command', Float64, queue_size=0) # arbitrary, side_id 1 used for simulation
         else:
-            raise NameError("Side ID must be 2 or 5")
+            raise NameError("Side ID must be 1 [sim], 2 [right ankle], or 5 [left ankle]")
         return self
 
     def __exit__(self, *args):
@@ -94,26 +89,15 @@ class TrialRunner:
     @property
     def _offset_torque_array(self):
         return self._torque_smoother.offset_torque_array
-
-    # Function to speak the given text
-    def speak_text(self, text):
-        self.engine.say(text)
-        self.engine.runAndWait()
-
-    # Function to update the message on the screen
-    # def update_message(self):
-    #     for message, duration in self.messages:
-    #         self.message_label.config(text=message)
-    #         self.message_label.update()
-    #         self.window.update()
-    #         self.speak_text(message)
-    #         time.sleep(duration)
+    
 
     def collect_trial_data(self):
         if self._torque_sub is None or self._emg_sub is None or self._position_pub is None:
             raise NameError("One of self.torque_sub, self.emg_sub, self.pos_pub is None. Cannot run calibrate()")
 
         for trial in self.trials:
+            print(f"Running trial: {trial}")
+
             self._set_exo_angle(trial.joint_angle)
 
             baseline_torque, min_torque = self._collect_baseline_torque()
@@ -138,8 +122,6 @@ class TrialRunner:
             self._torque_smoother.offset = baseline_torque
             countdown = RospyCountdown(rospy.Duration.from_sec(trial.duration))
             while countdown.is_time_left():
-                # TODO: is self._torque_array - baseline_torque faster than
-                # torque_smoother tracking offset_torque_array?
                 axs.plot(self._timescale.axis, self._offset_torque_array, color='red')
                 plt.pause(.01)
                 self._r.sleep()
@@ -147,19 +129,23 @@ class TrialRunner:
             trial.emg_array = self._emg_array.copy()
             trial.torque_array = self._torque_array.copy()
             plt.close()
+    
+    def update_gui(self, message):
+        self.engine.say(message)
+        self.engine.runAndWait()
+        self.message_label.config(text=message)
+        self.message_label.update()
+        self.window.update()
 
     def _collect_baseline_torque(self):
         print("Collecting baseline torque...")
 
         self._reset_measures()
-        for message, duration in self.messages:
-            self.message_label.config(text=message)
-            self.message_label.update()
-            self.window.update()
-            self.speak_text(message)
-            time.sleep(duration)
+        message = "Please relax your foot"
+        self.update_gui(message)
 
         print("REST")
+        
         rospy.sleep(5)
         baseline_torque = np.median(self._torque_array)
         min_torque = np.min(np.abs(self._torque_array))
@@ -171,28 +157,43 @@ class TrialRunner:
         print("Collecting max torque...")
 
         self._reset_measures()
-        countdown = RospyCountdown(rospy.Duration.from_sec(5))
 
+        countdown = RospyCountdown(rospy.Duration.from_sec(5))
+        message = "Please press your foot down"
+        self.update_gui(message)
         print("GO!")
+
         while countdown.is_time_left():
             self._r.sleep()
         mvc1 = np.max(np.abs(self._torque_array))
         print(f"MVC1: {mvc1}")
 
+        message = "Please relax your foot"
+        self.update_gui(message)
         print("REST")
         rospy.sleep(5)
 
         self._reset_measures()
         countdown.reset()
 
+        message = "Please lift your foot up"
+        self.update_gui(message)
         print("GO!")
         while countdown.is_time_left():
             self._r.sleep()
         mvc2 = np.max(np.abs(self._torque_array))
         print(f"MVC2: {mvc1}")
 
+        message = "Please relax your foot"
+        self.update_gui(message)
         print("REST")
         rospy.sleep(5)
+
+        # Close the window when finished
+        self.window.destroy()
+
+        # Start the tkinter event loop
+        self.window.mainloop()
 
         return np.average([mvc1, mvc2])
 
@@ -205,12 +206,3 @@ class TrialRunner:
         self._emg_array.clear()
         self._torque_smoother.reset()
         self._timescale.reset()
-
-    # Start the countdown
-    # update_message()
-
-    # # Close the window when finished
-    # window.destroy()
-
-    # # Start the tkinter event loop
-    # window.mainloop()
