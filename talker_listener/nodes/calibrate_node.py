@@ -29,4 +29,7 @@ if __name__ == '__main__':
     calibrator.calibrate()
     rospy.set_param("calibrated", True)
 
+    print("Calibration complete. EMG coefficients:")
+    print(rospy.get_param("emg_coef"))
+
     rospy.spin()

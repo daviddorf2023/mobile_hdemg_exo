@@ -11,6 +11,11 @@ from talker_listener.utils.rospy_countdown import RospyCountdown
 from talker_listener.utils.timescale_axis import TimescaleAxis
 from talker_listener.utils.torque_smoother import TorqueSmoother
 
+import tkinter as tk
+import time
+import pyttsx3
+import rospy
+
 
 class TrialRunner:
     _r: rospy.Rate
@@ -30,18 +35,51 @@ class TrialRunner:
         self._r = rospy.Rate(2048)
         self._torque_smoother = TorqueSmoother()
         self._timescale = TimescaleAxis()
+        self.side_id = rospy.get_param("/side_id")
+        
+        # Initialize the text-to-speech engine
+        self.engine = pyttsx3.init()
+        self.engine.setProperty('rate', 150)
+        self.engine.setProperty('volume', 1.0)
+        self.voices = self.engine.getProperty('voices')
+        self.engine.setProperty('voice', self.voices[2].id)
+
+        # Create a tkinter window
+        self.window = tk.Tk()
+
+        # Set the window title
+        self.window.title("Shirley Ryan AbilityLab - Patient Instruction for Ankle Exoskeleton")
+
+        # Set the window to fullscreen
+        self.window.attributes('-fullscreen', True)
+
+        # Create a label to display the messages
+        self.message_label = tk.Label(self.window, font=("Calibri", 100), pady=20)
+        self.message_label.pack(expand=True)
+
+        # Define the messages and their durations in seconds
+        self.messages = [("Ready",2), ("Set",2), ("Go",2), ("Press your foot down", 5), ("Relax your foot", 3), ("Lift your foot up", 5), ("Relax your foot", 3), ("Great job!", 1)]
+
+
 
     def __enter__(self):
         # Subscribers for the torque and hd-EMG publishers
         self._torque_sub = rospy.Subscriber('/h3/robot_states', State,
-                                            lambda x: self._torque_smoother.process_reading(x.joint_torque_sensor[1]))
+                                            lambda x: self._torque_smoother.process_reading(x.joint_torque_sensor[self.side_id]))
         self._emg_sub = rospy.Subscriber('hdEMG_stream_processed', hdemg,
                                          lambda x: self._emg_array.append(x.data.data))
         self._timescale_sub = rospy.Subscriber('/h3/robot_states', State,
                                                lambda x: self._timescale.timestamp())
 
         # Publisher for position control
-        self._position_pub = rospy.Publisher('/h3/right_ankle_position_controller/command', Float64, queue_size=0)
+        if (self.side_id == 2):
+            self._position_pub = rospy.Publisher('/h3/right_ankle_position_controller/command', Float64, queue_size=0)
+        elif (self.side_id == 5):
+            self._position_pub = rospy.Publisher('/h3/left_ankle_position_controller/command', Float64, queue_size=0)
+        elif (self.side_id == 1):
+            self._position_pub = rospy.Publisher('/h3/right_ankle_position_controller/command', Float64, queue_size=0) # arbitrary
+        else:
+            raise NameError("Side ID must be 2 or 5")
         return self
 
     def __exit__(self, *args):
@@ -56,6 +94,20 @@ class TrialRunner:
     @property
     def _offset_torque_array(self):
         return self._torque_smoother.offset_torque_array
+
+    # Function to speak the given text
+    def speak_text(self, text):
+        self.engine.say(text)
+        self.engine.runAndWait()
+
+    # Function to update the message on the screen
+    # def update_message(self):
+    #     for message, duration in self.messages:
+    #         self.message_label.config(text=message)
+    #         self.message_label.update()
+    #         self.window.update()
+    #         self.speak_text(message)
+    #         time.sleep(duration)
 
     def collect_trial_data(self):
         if self._torque_sub is None or self._emg_sub is None or self._position_pub is None:
@@ -100,6 +152,12 @@ class TrialRunner:
         print("Collecting baseline torque...")
 
         self._reset_measures()
+        for message, duration in self.messages:
+            self.message_label.config(text=message)
+            self.message_label.update()
+            self.window.update()
+            self.speak_text(message)
+            time.sleep(duration)
 
         print("REST")
         rospy.sleep(5)
@@ -147,3 +205,12 @@ class TrialRunner:
         self._emg_array.clear()
         self._torque_smoother.reset()
         self._timescale.reset()
+
+    # Start the countdown
+    # update_message()
+
+    # # Close the window when finished
+    # window.destroy()
+
+    # # Start the tkinter event loop
+    # window.mainloop()

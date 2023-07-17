@@ -2,14 +2,28 @@
 
     <arg name = 'sim' default = 'false'/> 
     <arg name = 'method' default = 'emg' />
+    <arg name="side" default = 'left'/>
     <param name="file_dir" value = "$(find talker_listener)" />
     <param name="calibrated" value = 'false'/>
-
     <param name="MUSCLE_COUNT" value = '4'/>
     <param name="EMG_PROCESS_METHOD" value = 'rms'/>
     
     <node name="emg_stream_node" pkg="talker_listener" type="emg_stream_node.py" output="screen" />
-    <!-- <node name="torque_stream_node" pkg="talker_listener" type="torque_stream_node.py" output="screen" /> -->
+
+    <group if="$(eval arg('side') == 'left')">
+        <param name="side_id" value='5'/>
+    </group>
+
+    <group if="$(eval arg('side') == 'right')">
+        <param name="side_id" value='2'/>
+    </group>
+
+    <group if="$(arg sim)">
+        <node name="torque_stream_node" pkg="talker_listener" type="torque_stream_node.py" output="screen" />
+        <param name="side_id" value='1'/>
+    </group>
+
+
     <node name="calibrate_node" pkg="talker_listener" type="calibrate_node.py" output="screen" />
 
     <include file="$(find h3_launch)/launch/h3_launch_torque_control.launch" />
