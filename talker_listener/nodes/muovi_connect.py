@@ -5,33 +5,6 @@ import matplotlib.pyplot as plt
 import time
 
 
-def CRC8(Vector, Len):
-    crc = 0
-    j = 0
-
-    while Len > 0:
-        Extract = Vector[j]
-        for i in range(8, 0, -1):
-            Sum = crc % 2 ^ Extract % 2
-            crc //= 2
-
-            if Sum > 0:
-                str = np.zeros(8)
-                a = format(crc, '08b')
-                b = format(140, '08b')
-                for k in range(8):
-                    str[k] = not (a[k] == b[k])
-
-                crc = int(''.join(str.astype(int).astype(str)), 2)
-
-            Extract //= 2
-
-        Len -= 1
-        j += 1
-
-    return crc
-
-
 TCPPort = 54320
 NumCycles = 10
 OffsetEMG = 1
@@ -39,7 +12,7 @@ PlotTime = 1
 
 # Refer to the communication protocol for details about these variables:
 ProbeEN = 1  # 1=Probe enabled, 0 = probe disabled
-EMG = 1  # 1=EMG, 0=EEG
+EMG = 0  # 1=EMG, 0=EEG
 Mode = 0  # 0=64Ch Monop, 1=64Ch with remove average, 2=64Ch ImpCk, 3=64Ch Test
 
 # Conversion factor for the bioelectrical signals to get the values in mV
@@ -60,7 +33,7 @@ if Mode > 7:
     print("Error, set ModeX values between 0 and 7")
     exit()
 
-# Create the command to send to sessantaquattro
+# Create the command to send to Muovi+Pro
 Command = 0
 if ProbeEN == 1:
     Command = 0 + EMG * 8 + Mode * 2 + 1
@@ -104,7 +77,7 @@ Ramp, = plt.plot(0)
 plt.xlim([0, sampFreq])
 plt.ylim([-33000, 33000])
 
-# Send the command to sessantaquattro
+# Send the command to Muovi+Pro
 client_socket.send(struct.pack('B', Command))
 
 if ProbeEN == 0:
@@ -140,7 +113,7 @@ if EMG == 0:
         ind = np.where(data_i >= 8388608)
         data_i[ind] = data_i[ind] - 16777216
 
-        # Plot the EEG signals
+        # Plot the EMG signals
         plt.subplot(3, 1, 1)
         plt.cla()
         for j in range(NumChan - 6):
@@ -156,6 +129,7 @@ if EMG == 0:
         ind = np.where(data_i[NumChan - 1, :] < 0)
         Trigger[ind] = 1
         Buffer = data_i[NumChan - 1, :]
+        print(Buffer)
         Buffer[ind] = data_i[NumChan - 1, ind] + 32768
 
         plt.subplot(3, 3, 7)
@@ -165,10 +139,10 @@ if EMG == 0:
         Trig.set_ydata(Trigger)
 
         plt.subplot(3, 3, 9)
-        Ramp.set_ydata(data_i[NumChan, :])
+        # Ramp.set_ydata(data_i[NumChan, :])
 
         plt.draw()
-        plt.pause(0.001)
+        plt.pause(0.01)
 
     # Stop the data transfer and eventually the recording on MicroSD card
     client_socket.send(struct.pack('B', Command - 1))
@@ -183,6 +157,7 @@ else:
     # Main plot loop
     for i in range(NumCycles):
         print(i)
+        print("16 bit resolution mode")
 
         # Wait here until one second of data has been received
         while len(data) < blockData:
@@ -207,7 +182,8 @@ else:
         ind = np.where(data_i[NumChan - 1, :] < 0)
         Trigger[ind] = 1
 
-        Buffer = data_i[NumChan - 1, :]
+        Buffer = np.array(data_i[NumChan - 1, :])
+        print(Buffer)
         Buffer[ind] = data_i[NumChan - 1, ind] + 32768
 
         plt.subplot(3, 3, 7)
@@ -217,7 +193,7 @@ else:
         Trig.set_ydata(Trigger)
 
         plt.subplot(3, 3, 9)
-        Ramp.set_ydata(data_i[NumChan, :])
+        # Ramp.set_ydata(data_i[NumChan, :])
 
         plt.draw()
         plt.pause(0.001)
