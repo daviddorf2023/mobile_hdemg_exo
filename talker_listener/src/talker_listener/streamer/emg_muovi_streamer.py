@@ -1,56 +1,45 @@
-from socket import socket
-
-import talker_listener.muovi.muovi_communication as comm
-from talker_listener.muovi.muovi_connect_config import NumChanVal
+import socket
+import struct
+import numpy as np
 
 NBYTES = 2
 REFRESH_RATE = 1 / 32
 MUOVI_SAMPLING_FREQUENCY = 512
+NUMCYCLES = 20  # Number of data recordings
+CONVFACT = 0.000286  # Conversion factor for the bioelectrical signals to get the values in mV
+NUMCHAN = 70
 
 class EMGMUOVIStreamer:
-    _muscle_count: int
 
-    _muovi_socket: socket
+    _muovi_socket: socket.socket
     _sample_count: int = 0
 
     def __init__(self, muscle_count: int):
         self._muscle_count = muscle_count
-
-    @property
-    def muscle_count(self) -> int:
-        return self._muscle_count
+        self.t = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.conn, self.addr = self.t.accept()
+        self.blockData = 2*NUMCHAN*MUOVI_SAMPLING_FREQUENCY  # Define the length of the data block to be recorded
 
     @property
     def sample_frequency(self) -> int:
         return MUOVI_SAMPLING_FREQUENCY
 
-    def initialize(self):
-        self._muovi_socket = comm.connect(REFRESH_RATE, MUOVI_SAMPLING_FREQUENCY, self._muscle_count)
+    def connect(self):
+        self.t.bind(('0.0.0.0', 54321))
+        print('Waiting for connection...')
+        self.t.listen(1)
+        print('Connected to the Muovi+ probe')
+        self.conn.send(struct.pack('B', 9))  # Send the command to Muovi+ probe
 
-    def close(self):
-        comm.disconnect(self._muovi_socket)
+    def disconnect(self):
+        self.conn.close()
+        self.t.close()
+        print("Disconnected from the Muovi+ probe")
 
-    def stream_data(self):
-        # with 4 muscles, emg_reading is an array of 408 ints (408 channels = (8*16) + (4*64) + 16 + 8)
-        emg_reading = self._process_socket_data(self._muovi_socket, self._muscle_count)
+    def stream_data(self, blockData):
+        emg_reading = b''
+        while len(emg_reading) < blockData:
+            emg_reading += self.conn.recv(blockData - len(emg_reading))  # Receive data until the expected size of data is reached
+        emg_reading = np.frombuffer(emg_reading, dtype=np.int16).reshape((NUMCHAN, MUOVI_SAMPLING_FREQUENCY))  # Read one second of data into signed integer
         self._sample_count += 1
         return emg_reading
-
-    @staticmethod
-    def _process_socket_data(q_socket, muscle_count):
-        nchan = NumChanVal[muscle_count - 1]
-
-        # read raw data from socket
-        sbytes = comm.read_raw_bytes(
-            q_socket,
-            nchan,
-            NBYTES)
-
-        # convert the bytes into integer values
-        sample_from_channels = comm.bytes_to_integers(
-            sbytes,
-            nchan,
-            NBYTES,
-            output_milli_volts=False)
-
-        return sample_from_channels
