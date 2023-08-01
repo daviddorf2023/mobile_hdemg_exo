@@ -57,7 +57,7 @@ In order to use PWM and other additional GPIO modifications, the steps below mus
 - Source a ROS workspace with ```source devel/setup.bash```
 - Launch the system with ```roslaunch talker_listener h3_launch.launch sim:=arg1 method:=arg2 side:=arg3```
   - arg1 can be: ```true``` for simulated EMG hardware using prerecorded test data, or ```false``` for when the EMG hardware is connected
-  - arg2 can be: ```cst``` for CNN processing of EMG data, ```emg``` for RMS processing of EMG data, or ```latency``` for using the latency analyzer system
+  - arg2 can be: ```cst``` for CNN processing of EMG data, ```rms``` for RMS processing of EMG data, ```sim``` for simulated data, or ```latency``` for using the latency analyzer system
   - arg3 can be: ```left``` for the left ankle exoskeleton, or ```right``` for the right ankle exoskeleton
 
 ## System Architecture
