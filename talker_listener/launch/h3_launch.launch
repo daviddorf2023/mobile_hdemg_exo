@@ -12,15 +12,15 @@
     
     <node name = 'emg_stream_node' pkg = 'talker_listener' type = 'emg_stream_node.py' output = 'screen' />
 
-    <group if = '$(eval arg('side') == 'left')'>
+    <group if = '$(eval arg("side") == "left")'>
         <param name = 'side_id' value='5'/> <!-- 5 for left dataframe column index -->
     </group>
 
-    <group if = '$(eval arg('side') == 'right')'>
+    <group if = '$(eval arg("side") == "right")'>
         <param name = 'side_id' value = '2'/> <!-- 2 for right dataframe column index -->
     </group>
 
-    <group if = '$(eval arg('device') == 'sim')'>
+    <group if = '$(eval arg("device") == "sim")'>
         <node name = 'torque_stream_node' pkg = 'talker_listener' type = 'torque_stream_node.py' output = 'screen' />
         <param name = 'side_id' value = '1'/> <!-- 1 [overrides left/right] for simulation dataframe column index -->
     </group>

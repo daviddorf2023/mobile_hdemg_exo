@@ -2,7 +2,20 @@
 
 ## Overview
 
-This branch contains work done over Spring and Summer 2023 using the ROS package for the Technaid H3 Ankle Exoskeleton. The package is designed to run on a laptop and a Raspberry Pi. The laptop runs the talker_listener package, which reads data from the OTB Quattrocento and H3 Ankle Exoskeleton and publishes the data to the ROS network. The Raspberry Pi runs the H3 package, which reads the data from the ROS network and sends torque commands to the exoskeleton. Work is currently being done to improve the torque predictions, reduce latency, and to add a user interface to the package. The main focus is to eventually implement the package on the exoskeleton's onboard computer with the Muovi EMG system, and using ethernet to connect the exoskeleton and EMG system to the computer.
+This branch contains work done over Spring and Summer 2023 using the ROS package for the Technaid H3 Ankle Exoskeleton. The package is designed to run on a Jetson Orin Nano, but can also work on any Ubuntu 20.04 system. However, the latency analyzer system only runs on systems with GPIO and PWM pins. The Jetson Orin Nano launches the EMG and ankle exoskeleton ROS packages. The EMG package, ```talker_listener``` connects to and reads data from the OTB Quattrocento, Muovi+ Pro, or simulation dataframes. The H3 packages control and read/write torque data from the exoskeleton. More information about the H3 exoskeleton are in a documentation PDF within this repository. This repository also includes a latency analyzer to measure system processing time across each individual physical component, as well as each program running on the exoskeleton and Orin Nano.
+
+## Dependencies
+### Required
+- Ubuntu 20.04
+- Python 3
+- TensorFlow
+- Numpy 1.22
+- SKlearn
+- Pyttsx3 [Text to speech]
+- Tkinter, PyQt [GUI]
+### Recommended
+- Git
+- Pip
 
 ## Latency Analyzer Node
 This node uses the Jetson Orin Nano GPIO pin 33 as a PWM output that sends a waveform to the auxilliary input of the EMG processing unit (Quattrocento or Muovi+Pro). It measures the phase difference and divides it by the known frequency of the signal to get the total latency across the entire EMG signal processing stage. The ankle exoskeleton datasheet by Technaid states that the latency of their system is approximately 0.7ms, but this node serves the purpose of measuring the time it takes for the Jetson Orin Nano and EMG system to process signals and generate a torque command from them.
@@ -55,9 +68,9 @@ In order to use PWM and other additional GPIO modifications, the steps below mus
 
 ### Launch
 - Source a ROS workspace with ```source devel/setup.bash```
-- Launch the system with ```roslaunch talker_listener h3_launch.launch sim:=arg1 method:=arg2 side:=arg3```
-  - arg1 can be: ```true``` for simulated EMG hardware using prerecorded test data, or ```false``` for when the EMG hardware is connected
-  - arg2 can be: ```cst``` for CNN processing of EMG data, ```rms``` for RMS processing of EMG data, ```sim``` for simulated data, or ```latency``` for using the latency analyzer system
+- Launch the system with ```roslaunch talker_listener h3_launch.launch device:=arg1 method:=arg2 side:=arg3```
+  - arg1 can be: ```sim``` for simulated EMG hardware using prerecorded test data, ```muovi``` for when the Muovi+ probe is connected, or ```qc``` for when the Quattrocento is connected. Defaults to ```qc```
+  - arg2 can be: ```cst``` for cumulative spike train CNN processing of EMG data, ```rms``` for RMS processing of EMG data, ```sim``` for simulated data, or ```latency``` for using the latency analyzer system
   - arg3 can be: ```left``` for the left ankle exoskeleton, or ```right``` for the right ankle exoskeleton
 
 ## System Architecture

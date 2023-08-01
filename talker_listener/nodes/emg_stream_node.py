@@ -6,21 +6,23 @@ import rospy
 from std_msgs.msg import Float64MultiArray, MultiArrayDimension
 from talker_listener.msg import hdemg
 
-# from talker_listener.processors.emg_process_cst import EMGProcessorCST
 from talker_listener.processors.emg_process_rms import EMGProcessorRMS
-from talker_listener.streamer.emg_process_cst import EMGProcessorCST
+
+# TODO: Fix scikit-learn issues
+# from talker_listener.processors.emg_process_cst import EMGProcessorCST
+
 from talker_listener.streamer.emg_file_streamer import EMGFileStreamer
 from talker_listener.streamer.emg_qc_streamer import EMGQCStreamer
 from talker_listener.streamer.emg_muovi_streamer import EMGMUOVIStreamer
 
-QC_MUSCLE_COUNT = 4
-MUOVI_MUSCLE_COUNT = 4  # TODO: Change based on number of probes
+QC_MUSCLE_COUNT = 3
+MUOVI_MUSCLE_COUNT = 1  # TODO: Change based on number of probes
 SIM_MUSCLE_COUNT = 4
 
 # Launch file arguments
 
-EMG_STREAM_METHOD = rospy.get_param("/method")
-EMG_PROCESS_METHOD = rospy.get_param("/emg_process_method")
+EMG_DEVICE = rospy.get_param("/device")
+EMG_PROCESS_METHOD = rospy.get_param("/method")
 
 
 def topic_publish_reading(publisher: rospy.topics.Publisher, reading: "list[int]"):
@@ -45,24 +47,24 @@ if __name__ == '__main__':
     processed_pub = rospy.Publisher('hdEMG_stream_processed', hdemg, queue_size=1)
 
     streamer = None
-    if EMG_STREAM_METHOD == 'qc':
+    if EMG_DEVICE == 'qc':
         streamer = EMGQCStreamer(QC_MUSCLE_COUNT)
         MUSCLE_COUNT = QC_MUSCLE_COUNT
-    elif EMG_STREAM_METHOD == 'muovi':
+    elif EMG_DEVICE == 'muovi':
         streamer = EMGMUOVIStreamer(MUOVI_MUSCLE_COUNT)
         MUSCLE_COUNT = MUOVI_MUSCLE_COUNT
-    elif EMG_STREAM_METHOD == 'file':
+    elif EMG_DEVICE == 'file':
         path = rospy.get_param("/file_dir")
         path += "/src/talker_listener/raw_emg_34.csv"
-        streamer = EMGFileStreamer(4, 512, path)
         MUSCLE_COUNT = SIM_MUSCLE_COUNT
-    streamer.initialize()
+        streamer = EMGFileStreamer(MUSCLE_COUNT, 512, path)
+    streamer.initialize()  # Moved from outside if statement
 
     processor = None
     if EMG_PROCESS_METHOD == 'rms':
         processor = EMGProcessorRMS()
     elif EMG_PROCESS_METHOD == 'cst':
-        processor = EMGProcessorCST()
+        processor = EMGProcessorCST()  # TODO: Fix scikit-learn issues
 
     # data = []
     r = rospy.Rate(streamer.sample_frequency)  # Match the streamer's publishing rate
@@ -77,13 +79,23 @@ if __name__ == '__main__':
         topic_publish_reading(raw_pub, emg_reading)
         # data.append(emg_reading)
 
-        # First MUSCLE_COUNT * 32 channels are for IN1..IN8, two INs per muscle
-        offset = MUSCLE_COUNT * 32
-        # Each MULTIPLE IN has 64 channels
-        hdemg_reading = emg_reading[offset:offset + MUSCLE_COUNT * 64]
-        raw_muscle_reading = []
-        for i in range(MUSCLE_COUNT):
-            raw_muscle_reading.append(hdemg_reading[i * 64:(i + 1) * 64])
+        if EMG_DEVICE == 'qc': 
+            # First MUSCLE_COUNT * 32 channels are for IN1..IN8, two INs per muscle
+            offset = 128
+            # Each MULTIPLE IN has 64 channels
+            hdemg_reading = emg_reading[offset:offset + MUSCLE_COUNT * 64]
+            raw_muscle_reading = []
+            for i in range(MUSCLE_COUNT):
+                raw_muscle_reading.append(hdemg_reading[i * 64:(i + 1) * 64])
+        if EMG_DEVICE == 'muovi': 
+            # Each Muovi+ probe has 70 channels
+            raw_muscle_reading = []
+            # Keep only first 64 channels, last 6 are IMU data
+            hdemg_reading = emg_reading[:64]
+            for i in range(MUSCLE_COUNT):
+                raw_muscle_reading.append(emg_reading)
+        
+        # TODO: Verify that data processing is accurate by measuring shape of QC packets and compare
 
         # TODO: remove noisy channels
         # TODO: notch filter 60hz powerline

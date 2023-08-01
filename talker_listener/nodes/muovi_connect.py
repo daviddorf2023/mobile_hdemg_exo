@@ -19,33 +19,37 @@ conn.send(struct.pack('B', 9))  # Send the command to Muovi+ probe
 blockData = 2*NUMCHAN*SAMPFREQ  # Define the length of the data block to be recorded
 
 # Data processing/plotting
-for i in range(NUMCYCLES):
+while(1):
     data = b''
-    while len(data) < blockData:
-        data += conn.recv(blockData - len(data))  # Receive data until the expected size of data is reached
-    data = np.frombuffer(data, dtype=np.int16).reshape((NUMCHAN, SAMPFREQ))  # Read one second of data into signed integer
+    # while len(data) < blockData:
+    #     data += conn.recv(blockData - len(data))  # Receive data until the expected size of data is reached
+    # data = np.frombuffer(data, dtype=np.int16).reshape((NUMCHAN, SAMPFREQ))  # Read one second of data into signed integer
+    data += conn.recv(blockData)
+    data = np.frombuffer(data, dtype=np.int16)
+    data = data[:64]
+    print(data)
 
-    # Plot the EMG signals (the first 64 channels)
-    plt.subplot(2, 1, 1)
-    plt.cla()
-    plt.title('EMG signals')
-    for j in range(NUMCHAN-6):
-        plt.plot(data[j, :]*CONVFACT + (j-1))
-    plt.xlim([0, SAMPFREQ])
-    plt.ylim([-1, ((NUMCHAN-6))])
+    # # Plot the EMG signals (the first 64 channels)
+    # plt.subplot(2, 1, 1)
+    # plt.cla()
+    # plt.title('EMG signals')
+    # for j in range(NUMCHAN-6):
+    #     plt.plot(data[j, :]*CONVFACT + (j-1))
+    # plt.xlim([0, SAMPFREQ])
+    # plt.ylim([-1, ((NUMCHAN-6))])
 
-    # Plot the IMU (the 3 channels from channel 64 to 67)
-    plt.subplot(2, 1, 2)
-    plt.cla()
-    plt.title('IMU signals')
-    for j in range(NUMCHAN-5, NUMCHAN-2):
-        plt.plot(data[j, :])
-    plt.xlim([0, SAMPFREQ])
-    plt.ylim([-33000, 33000])
+    # # Plot the IMU (the 3 channels from channel 64 to 67)
+    # plt.subplot(2, 1, 2)
+    # plt.cla()
+    # plt.title('IMU signals')
+    # for j in range(NUMCHAN-5, NUMCHAN-2):
+    #     plt.plot(data[j, :])
+    # plt.xlim([0, SAMPFREQ])
+    # plt.ylim([-33000, 33000])
 
-    # Animation
-    plt.draw()
-    plt.pause(0.0001)
+    # # Animation
+    # plt.draw()
+    # plt.pause(0.0001)
 
 # Close the TCP socket
 conn.close()
