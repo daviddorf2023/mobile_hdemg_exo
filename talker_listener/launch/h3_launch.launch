@@ -1,31 +1,32 @@
 <launch>
+    <arg name = 'device' default = 'qc' /> <!-- qc, sim, muovi -->
+    <arg name = 'method' default = 'cst' /> <!-- cst, rms -->
+    <arg name = 'side' default = 'left'/> <!-- left, right -->
 
-    <arg name = 'sim' default = 'false'/> 
-    <arg name = 'method' default = 'emg' />
-    <arg name="side" default = 'left'/>
-    <param name="file_dir" value = "$(find talker_listener)" />
-    <param name="calibrated" value = 'false'/>
-    <param name="MUSCLE_COUNT" value = '4'/>
-    <param name="EMG_PROCESS_METHOD" value = 'rms'/>
+    <param name = 'device' value = '$(arg device)' />
+    <param name = 'method' value = '$(arg method)' />
+    <param name = 'side' value = '$(arg side)' />
+
+    <param name = 'file_dir' value = '$(find talker_listener)' />
+    <param name = 'calibrated' value = 'false'/>
     
-    <node name="emg_stream_node" pkg="talker_listener" type="emg_stream_node.py" output="screen" />
+    <node name = 'emg_stream_node' pkg = 'talker_listener' type = 'emg_stream_node.py' output = 'screen' />
 
-    <group if="$(eval arg('side') == 'left')">
-        <param name="side_id" value='5'/>
+    <group if = '$(eval arg('side') == 'left')'>
+        <param name = 'side_id' value='5'/> <!-- 5 for left dataframe column index -->
     </group>
 
-    <group if="$(eval arg('side') == 'right')">
-        <param name="side_id" value='2'/>
+    <group if = '$(eval arg('side') == 'right')'>
+        <param name = 'side_id' value = '2'/> <!-- 2 for right dataframe column index -->
     </group>
 
-    <group if="$(arg sim)">
-        <node name="torque_stream_node" pkg="talker_listener" type="torque_stream_node.py" output="screen" />
-        <param name="side_id" value='1'/>
+    <group if = '$(eval arg('device') == 'sim')'>
+        <node name = 'torque_stream_node' pkg = 'talker_listener' type = 'torque_stream_node.py' output = 'screen' />
+        <param name = 'side_id' value = '1'/> <!-- 1 [overrides left/right] for simulation dataframe column index -->
     </group>
 
+    <node name = 'calibrate_node' pkg = 'talker_listener' type = 'calibrate_node.py' output = 'screen' />
 
-    <node name="calibrate_node" pkg="talker_listener" type="calibrate_node.py" output="screen" />
-
-    <include file="$(find h3_launch)/launch/h3_launch_torque_control.launch" />
+    <include file = '$(find h3_launch)/launch/h3_launch_torque_control.launch' />
 
 </launch>

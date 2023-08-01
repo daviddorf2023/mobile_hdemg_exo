@@ -8,28 +8,19 @@ from talker_listener.msg import hdemg
 
 # from talker_listener.processors.emg_process_cst import EMGProcessorCST
 from talker_listener.processors.emg_process_rms import EMGProcessorRMS
+from talker_listener.streamer.emg_process_cst import EMGProcessorCST
 from talker_listener.streamer.emg_file_streamer import EMGFileStreamer
 from talker_listener.streamer.emg_qc_streamer import EMGQCStreamer
+from talker_listener.streamer.emg_muovi_streamer import EMGMUOVIStreamer
 
-MUSCLE_COUNT = 4
+QC_MUSCLE_COUNT = 4
+MUOVI_MUSCLE_COUNT = 4  # TODO: Change based on number of probes
+SIM_MUSCLE_COUNT = 4
 
+# Launch file arguments
 
-# EMG streaming methods
-class EMGStreamMethod(Enum):
-    QC = "qc"
-    FILE = "file"
-
-
-EMG_STREAM_METHOD = EMGStreamMethod.QC
-
-
-# EMG processing methods
-class EMGProcessMethod(Enum):
-    RMS = "rms"
-    CST = "cst"
-
-
-EMG_PROCESS_METHOD = EMGProcessMethod.RMS
+EMG_STREAM_METHOD = rospy.get_param("/method")
+EMG_PROCESS_METHOD = rospy.get_param("/emg_process_method")
 
 
 def topic_publish_reading(publisher: rospy.topics.Publisher, reading: "list[int]"):
@@ -54,18 +45,23 @@ if __name__ == '__main__':
     processed_pub = rospy.Publisher('hdEMG_stream_processed', hdemg, queue_size=1)
 
     streamer = None
-    if EMG_STREAM_METHOD == EMGStreamMethod.QC:
-        streamer = EMGQCStreamer(MUSCLE_COUNT)
-    elif EMG_STREAM_METHOD == EMGStreamMethod.FILE:
+    if EMG_STREAM_METHOD == 'qc':
+        streamer = EMGQCStreamer(QC_MUSCLE_COUNT)
+        MUSCLE_COUNT = QC_MUSCLE_COUNT
+    elif EMG_STREAM_METHOD == 'muovi':
+        streamer = EMGMUOVIStreamer(MUOVI_MUSCLE_COUNT)
+        MUSCLE_COUNT = MUOVI_MUSCLE_COUNT
+    elif EMG_STREAM_METHOD == 'file':
         path = rospy.get_param("/file_dir")
         path += "/src/talker_listener/raw_emg_34.csv"
         streamer = EMGFileStreamer(4, 512, path)
+        MUSCLE_COUNT = SIM_MUSCLE_COUNT
     streamer.initialize()
 
     processor = None
-    if EMG_PROCESS_METHOD == EMGProcessMethod.RMS:
+    if EMG_PROCESS_METHOD == 'rms':
         processor = EMGProcessorRMS()
-    elif EMG_PROCESS_METHOD == EMGProcessMethod.CST:
+    elif EMG_PROCESS_METHOD == 'cst':
         processor = EMGProcessorCST()
 
     # data = []
