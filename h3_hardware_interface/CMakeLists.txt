@@ -24,7 +24,7 @@ INCLUDE_DIRS include
 
 include_directories( include ${catkin_INCLUDE_DIRS})
 
-add_library(h3_hardware_interface src/h3_hardware_interface.cpp src/h3_handle.cpp src/h3_logger)
+add_library(h3_hardware_interface src/h3_hardware_interface.cpp src/h3_handle.cpp src/h3_logger.cpp)
 add_dependencies(h3_hardware_interface h3_hardware_interface)
 
 add_executable(h3_hardware_interface_node src/h3_hardware_interface_node.cpp)
