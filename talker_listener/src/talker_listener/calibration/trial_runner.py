@@ -12,7 +12,6 @@ from talker_listener.utils.timescale_axis import TimescaleAxis
 from talker_listener.utils.torque_smoother import TorqueSmoother
 
 import tkinter as tk
-import time
 import pyttsx3
 import rospy
 
