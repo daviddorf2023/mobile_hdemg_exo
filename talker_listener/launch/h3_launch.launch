@@ -1,12 +1,14 @@
 <launch>
     <arg name = 'device' default = 'qc' /> <!-- qc, sim, muovi -->
-    <arg name = 'method' default = 'rms' /> <!-- cst, rms, latency -->
+    <arg name = 'method' default = 'rms' /> <!-- cst, rms -->
+    <arg name = 'latency_analyzer' default = 'false' /> <!-- true, false -->
     <arg name = 'side' default = 'left'/> <!-- left, right -->
     <arg name = 'muscle_count' default = '1' /> <!-- 1, 2, 3, 4, 5, 6 -->
 
     <param name = 'device' value = '$(arg device)' />
     <param name = 'method' value = '$(arg method)' />
     <param name = 'side' value = '$(arg side)' />
+    <param name = 'pwm_output_pin' value = '33' />
 
     <param name = 'file_dir' value = '$(find talker_listener)' />
     <param name = 'calibrated' value = 'false'/>
