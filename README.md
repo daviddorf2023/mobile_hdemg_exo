@@ -68,10 +68,12 @@ In order to use PWM and other additional GPIO modifications, the steps below mus
 
 ### Launch
 - Source a ROS workspace with ```source devel/setup.bash```
-- Launch the system with ```roslaunch talker_listener h3_launch.launch device:=arg1 method:=arg2 side:=arg3```
+- Launch the system with ```roslaunch talker_listener h3_launch.launch device:=arg1 method:=arg2 side:=arg3 latency_analyzer:=arg4 muscle_count:=arg5```
   - arg1 can be: ```sim``` for simulated EMG hardware using prerecorded test data, ```muovi``` for when the Muovi+ probe is connected, or ```qc``` for when the Quattrocento is connected. Defaults to ```qc```
-  - arg2 can be: ```cst``` for cumulative spike train CNN processing of EMG data, ```rms``` for RMS processing of EMG data, ```sim``` for simulated data, or ```latency``` for using the latency analyzer system
-  - arg3 can be: ```left``` for the left ankle exoskeleton, or ```right``` for the right ankle exoskeleton
+  - arg2 can be: ```cst``` for cumulative spike train CNN processing of EMG data, ```rms``` for RMS processing of EMG data, ```sim``` for simulated data, or ```latency``` for using the latency analyzer system. Defaults to ```rms```
+  - arg3 can be: ```left``` for the left ankle exoskeleton, or ```right``` for the right ankle exoskeleton. Defaults to ```left```
+  - arg4 can be: ```true``` for turning the latency analyzer feature on, or ```false``` to keep it off. Defaults to ```false```
+  - arg5 can be a number from 0 to 6, depending on the number of muscle groups being measured by the EMG system
 
 ## System Architecture
 
