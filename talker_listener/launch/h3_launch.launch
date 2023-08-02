@@ -1,6 +1,6 @@
 <launch>
     <arg name = 'device' default = 'qc' /> <!-- qc, sim, muovi -->
-    <arg name = 'method' default = 'cst' /> <!-- cst, rms -->
+    <arg name = 'method' default = 'rms' /> <!-- cst, rms, latency -->
     <arg name = 'side' default = 'left'/> <!-- left, right -->
 
     <param name = 'device' value = '$(arg device)' />
