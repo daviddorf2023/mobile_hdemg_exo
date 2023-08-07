@@ -7,8 +7,8 @@ CONVERSION_FACTOR = 0.000286  # conversion factor needed to get values in mV
 
 
 def read_raw_bytes(connection, number_of_all_channels, bytes_in_sample):
-    buffer_size = number_of_all_channels * bytes_in_sample * 512
-    new_bytes = connection.recv(buffer_size)
+    buffer_size = number_of_all_channels * bytes_in_sample * 512  # TODO: Make a argument for frequency and use it here
+    new_bytes = connection.recv(buffer_size)  # TODO: Program gets stuck here
     return new_bytes
 
 

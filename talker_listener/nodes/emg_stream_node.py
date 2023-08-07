@@ -39,7 +39,7 @@ class EMGStreamNode:
         if EMG_PROCESS_METHOD == 'rms':
             self.processor = EMGProcessorRMS()
         elif EMG_PROCESS_METHOD == 'cst':
-            self.processor = EMGProcessorCST()  # TODO: Fix scikit-learn issues
+            self.processor = EMGProcessorCST()
     
     def topic_publish_reading(publisher: rospy.topics.Publisher, reading: "list[int]"):
         stamped_sample = hdemg()
@@ -63,6 +63,7 @@ class EMGStreamNode:
         GPIO.cleanup()
 
     def run_emg(self):
+        print("Running EMG")
         emg_reading = self.streamer.stream_data()
         self.topic_publish_reading(self.raw_pub, emg_reading)
         if LATENCY_ANALYZER_MODE:
