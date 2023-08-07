@@ -1,10 +1,17 @@
-# from sklearn.decomposition import PCA
-# from sklearn.preprocessing import normalize
-# import matplotlib.pyplot as plt
+import time
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
 from os import path
-
 import scipy.io as sio
-from sklearn.utils import shuffle
+import tensorflow as tf
+import tensorflow.keras.backend as K
+from tensorflow.keras.callbacks import Callback
+from tensorflow.keras.models import Sequential, Model, load_model
+from tensorflow.keras.layers import Dense, Flatten, Input
+from tensorflow.keras.layers import Conv1D, MaxPooling1D, Dropout
+from tensorflow.keras.callbacks import TensorBoard, EarlyStopping, ModelCheckpoint
+
 
 
 # load data from mat files
@@ -67,20 +74,15 @@ def load_data_mat(TR, SG=0, ST=10, MU=1, WS=120, TF=0, MutiSeg=0):
     y_data = np.array(y_data)
     y_data = y_data.T
     if TF == 1:
-        x_data, y_data = shuffle(x_data, y_data)
+        x_data, y_data = tf.random.shuffle(x_data, y_data)
     elif TF > 0:
-        x_data, _, y_data, _ = train_test_split(x_data, y_data, test_size=1.0 - TF)
+        x_data, _, y_data, _ = tf.split(x_data, y_data, test_size=1.0 - TF)
     else:
         print('no shuffle')
     y_data = y_data.T
     y_data = list(y_data)
 
     return x_data, y_data
-
-
-import tensorflow.keras.backend as K
-from tensorflow.keras.callbacks import Callback
-import tensorflow as tf
 
 
 # import neptune
@@ -128,12 +130,6 @@ class AccuracyCallback(Callback):
         logs['{}'.format(self.metric_name)] = np.mean(self.metric)  # replace it with your metrics
 
 
-# import keras
-from tensorflow.keras.models import Sequential, Model
-from tensorflow.keras.layers import Dense, Flatten, Input
-from tensorflow.keras.layers import Conv1D, MaxPooling1D, Dropout
-
-
 # create convolutional neural network with sequential model
 def get_cnn1d_model(shape_in, shape_out, nn_nodes=[128, 128, 128, 64, 256]):
     '''Create a keras model.'''
@@ -176,14 +172,13 @@ def get_cnn1d_api(shape_in, shape_out, nn_nodes=[128, 128, 128, 64, 256]):
     cnn = MaxPooling1D(pool_size=2)(cnn)
     cnn = Dropout(0.5)(cnn)
 
-    # create seperate layers for each motor unit
+    # create separate layers for each motor unit
     outputs = []
     for k in range(1, shape_out + 1):
         cnn_2 = Conv1D(filters=nn_nodes[2], kernel_size=3, activation='relu')(cnn)
         cnn_2 = Conv1D(filters=nn_nodes[3], kernel_size=3, activation='relu')(cnn_2)
         cnn_2 = MaxPooling1D(pool_size=2)(cnn_2)
         cnn_2 = Dropout(0.5)(cnn_2)
-
         cnn_2 = Flatten()(cnn_2)
         s2 = Dense(nn_nodes[4], activation='relu')(cnn_2)
         s2 = Dropout(0.5)(s2)
@@ -201,16 +196,6 @@ def get_cnn1d_api(shape_in, shape_out, nn_nodes=[128, 128, 128, 64, 256]):
     # tie together
     model = Model(inputs=visible, outputs=outputs)
     return model, loss, metrics
-
-
-# use tensorboard for display
-from tensorflow.keras.callbacks import TensorBoard, EarlyStopping, ModelCheckpoint
-import time
-# import matplotlib.pyplot as plt
-import numpy as np
-import pandas as pd
-from tensorflow.keras.models import load_model
-from sklearn.model_selection import train_test_split
 
 
 # build model with configuration
@@ -243,10 +228,10 @@ def train_model(model, x_data, y_data, prefix, epochs=100):
     tname = int(time.time())
     batch_size = 64
 
-    # create tersorboard
+    # create tensorboard
     log_name = "hdEMG_{}_{}".format(prefix, tname)
     tensorboard = TensorBoard(log_dir=".\\logs\\{}".format(log_name))
-    # check tenorboard by running
+    # check tensorboard by running
     # tensorboard --logdir C:\Users\Yue\Documents\mudecomp\logs\ # in the anaconda prompt command line
     # tensorboard --logdir C:\Users\ywen.SMPP\Documents\mudecomp\logs\
 

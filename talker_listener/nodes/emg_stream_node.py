@@ -4,7 +4,7 @@ import rospy
 from std_msgs.msg import Float64MultiArray, MultiArrayDimension
 from talker_listener.msg import hdemg
 from talker_listener.processors.emg_process_rms import EMGProcessorRMS
-# from talker_listener.processors.emg_process_cst import EMGProcessorCST # TODO: Fix scikit-learn issues preventing CST from working
+from talker_listener.processors.emg_process_cst import EMGProcessorCST
 from talker_listener.streamer.emg_file_streamer import EMGFileStreamer
 from talker_listener.streamer.emg_qc_streamer import EMGQCStreamer
 from talker_listener.streamer.emg_muovi_streamer import EMGMUOVIStreamer
@@ -19,8 +19,11 @@ PWM_OUTPUT_PIN = rospy.get_param("/pwm_output_pin")
 
 class EMGStreamNode:
     def __init__(self):
-        self.p = GPIO.PWM(PWM_OUTPUT_PIN, 50) # 50 Hz
         self.streamer = None  # Stream EMG data from the selected device
+        self.raw_pub = rospy.Publisher('hdEMG_stream', hdemg, queue_size=1)
+        self.processed_pub = rospy.Publisher('hdEMG_stream_processed', hdemg, queue_size=1)
+        if LATENCY_ANALYZER_MODE:
+            self.p = GPIO.PWM(PWM_OUTPUT_PIN, 50) # 50 Hz
         if EMG_DEVICE == 'qc':
             self.streamer = EMGQCStreamer(MUSCLE_COUNT)
         elif EMG_DEVICE == 'muovi':
@@ -29,6 +32,8 @@ class EMGStreamNode:
             self.path = rospy.get_param("/file_dir")
             self.path += "/src/talker_listener/raw_emg_34.csv"
             self.streamer = EMGFileStreamer(MUSCLE_COUNT, 512, self.path)
+        rospy.init_node('emg_stream_node')
+        self.r = rospy.Rate(self.streamer.sample_frequency)  # Match the streamer's publishing rate
         self.streamer.initialize()
         self.processor = None  # Process EMG data using the selected method
         if EMG_PROCESS_METHOD == 'rms':
@@ -59,7 +64,7 @@ class EMGStreamNode:
 
     def run_emg(self):
         emg_reading = self.streamer.stream_data()
-        self.topic_publish_reading(raw_pub, emg_reading)
+        self.topic_publish_reading(self.raw_pub, emg_reading)
         if LATENCY_ANALYZER_MODE:
             self.pwm_setup()
         if EMG_DEVICE == 'qc': 
@@ -77,18 +82,15 @@ class EMGStreamNode:
             hdemg_reading = emg_reading[:64]
             for i in range(MUSCLE_COUNT):
                 raw_muscle_reading.append(emg_reading)
+
         self.processor.process_reading(raw_muscle_reading)
-        self.processor.publish_reading(processed_pub)
-        r.sleep()
+        self.processor.publish_reading(self.processed_pub)
+        self.r.sleep()
 
 if __name__ == '__main__':
-    rospy.init_node('emg_stream_node')
-    raw_pub = rospy.Publisher('hdEMG_stream', hdemg, queue_size=1)
-    processed_pub = rospy.Publisher('hdEMG_stream_processed', hdemg, queue_size=1)
-    streamer = EMGStreamNode()
-    r = rospy.Rate(streamer.sample_frequency)  # Match the streamer's publishing rate
+    emg_stream_node = EMGStreamNode()
     while not rospy.is_shutdown():
-        streamer.run_emg()
+        emg_stream_node.run_emg()
     if LATENCY_ANALYZER_MODE:
-        streamer.pwm_cleanup()
-    streamer.close()
+        emg_stream_node.pwm_cleanup()
+    emg_stream_node.close()

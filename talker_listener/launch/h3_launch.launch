@@ -7,9 +7,11 @@
 
     <param name = 'device' value = '$(arg device)' />
     <param name = 'method' value = '$(arg method)' />
+    <param name = 'latency_analyzer' value = '$(arg latency_analyzer)' />
     <param name = 'side' value = '$(arg side)' />
-    <param name = 'pwm_output_pin' value = '33' />
+    <param name = 'muscle_count' value = '$(arg muscle_count)' />
 
+    <param name = 'pwm_output_pin' value = '33' />
     <param name = 'file_dir' value = '$(find talker_listener)' />
     <param name = 'calibrated' value = 'false'/>
     
