@@ -23,7 +23,10 @@ class EMGStreamNode:
         self.raw_pub = rospy.Publisher('hdEMG_stream', hdemg, queue_size=1)
         self.processed_pub = rospy.Publisher('hdEMG_stream_processed', hdemg, queue_size=1)
         if LATENCY_ANALYZER_MODE:
+            GPIO.setmode(GPIO.BOARD)
+            GPIO.setup(PWM_OUTPUT_PIN, GPIO.OUT, initial=GPIO.HIGH)
             self.p = GPIO.PWM(PWM_OUTPUT_PIN, 50) # 50 Hz
+            self.p.start(50) # 50% duty cycle
         if EMG_DEVICE == 'qc':
             self.streamer = EMGQCStreamer(MUSCLE_COUNT)
         elif EMG_DEVICE == 'muovi':
@@ -53,11 +56,6 @@ class EMGStreamNode:
         stamped_sample.data = sample
         publisher.publish(stamped_sample)
 
-    def pwm_setup(self):
-        GPIO.setmode(GPIO.BOARD)
-        GPIO.setup(PWM_OUTPUT_PIN, GPIO.OUT, initial=GPIO.HIGH)
-        self.p.start(50) # 50% duty cycle
-    
     def pwm_cleanup(self):
         self.p.stop()
         GPIO.cleanup()
@@ -65,8 +63,6 @@ class EMGStreamNode:
     def run_emg(self):
         emg_reading = self.streamer.stream_data()
         self.topic_publish_reading(self.raw_pub, emg_reading)
-        if LATENCY_ANALYZER_MODE:
-            self.pwm_setup()
         if EMG_DEVICE == 'qc': 
             # First MUSCLE_COUNT * 32 channels are for IN1..IN8, two INs per muscle
             offset = 128
