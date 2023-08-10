@@ -14,6 +14,7 @@
     <param name = 'pwm_output_pin' value = '33' />
     <param name = 'file_dir' value = '$(find talker_listener)' />
     <param name = 'calibrated' value = 'false'/>
+    <param name = 'connected_to_emg' value = 'false'/>
     
     <node name = 'emg_stream_node' pkg = 'talker_listener' type = 'emg_stream_node.py' output = 'screen' />
     <node name = 'calibrate_node' pkg = 'talker_listener' type = 'calibrate_node.py' output = 'screen' />

@@ -8,7 +8,10 @@ from talker_listener.calibration.trial_runner import TrialRunner
 
 if __name__ == '__main__':
     rospy.init_node('calibrate_node')
-    rospy.sleep(5)
+
+    while not rospy.get_param("/connected_to_emg"):
+        print("Waiting for EMG connection...")
+        rospy.sleep(1)
     print("Calibrating...")
 
     baseline = Trial(0, TrialDirection.NoDirection, TrajectoryShape.Flat, 0, 25)

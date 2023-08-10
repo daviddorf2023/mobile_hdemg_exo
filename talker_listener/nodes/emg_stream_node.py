@@ -41,7 +41,7 @@ class EMGStreamNode:
         elif EMG_PROCESS_METHOD == 'cst':
             self.processor = EMGProcessorCST()
     
-    def topic_publish_reading(publisher: rospy.topics.Publisher, reading: "list[int]"):
+    def topic_publish_reading(self, publisher: rospy.topics.Publisher, reading: "list[int]"):
         stamped_sample = hdemg()
         stamped_sample.header.stamp = rospy.get_rostime()
         sample = Float64MultiArray()
@@ -63,7 +63,6 @@ class EMGStreamNode:
         GPIO.cleanup()
 
     def run_emg(self):
-        print("Running EMG")
         emg_reading = self.streamer.stream_data()
         self.topic_publish_reading(self.raw_pub, emg_reading)
         if LATENCY_ANALYZER_MODE:
@@ -87,6 +86,9 @@ class EMGStreamNode:
         self.processor.process_reading(raw_muscle_reading)
         self.processor.publish_reading(self.processed_pub)
         self.r.sleep()
+    
+    def close(self):
+        self.streamer.close()
 
 if __name__ == '__main__':
     emg_stream_node = EMGStreamNode()
