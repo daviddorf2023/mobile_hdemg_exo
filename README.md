@@ -2,7 +2,7 @@
 
 ## Overview
 
-This branch contains work done over Spring and Summer 2023 using the ROS package for the Technaid H3 Ankle Exoskeleton. The package is designed to run on a Jetson Orin Nano, but can also work on any Ubuntu 20.04 system. However, the latency analyzer system only runs on systems with GPIO and PWM pins. The Jetson Orin Nano launches the EMG and ankle exoskeleton ROS packages. The EMG package, ```talker_listener``` connects to and reads data from the OTB Quattrocento, Muovi+ Pro, or simulation dataframes. The H3 packages control and read/write torque data from the exoskeleton. More information about the H3 exoskeleton are in a documentation PDF within this repository. This repository also includes a latency analyzer to measure system processing time across each individual physical component, as well as each program running on the exoskeleton and Orin Nano.
+This branch contains work done over Spring and Summer 2023 using the ROS package for the Technaid H3 Ankle Exoskeleton. The package is designed to run on a Jetson Orin Nano, but can also work on any Ubuntu 20.04 system. However, the latency analyzer system only runs on systems with GPIO and PWM pins. The Jetson Orin Nano launches the EMG and ankle exoskeleton ROS packages. The EMG package, ```talker_listener``` connects to and reads data from the OTB Quattrocento, Muovi+ Pro, or simulation dataframes. The H3 packages control and read/write torque data from the exoskeleton. More information about the H3 exoskeleton is in a documentation PDF within this repository. This repository also includes a latency analyzer to measure system processing time across each individual physical component, as well as each program running on the exoskeleton and Orin Nano.
 
 ## Dependencies
 ### Required
