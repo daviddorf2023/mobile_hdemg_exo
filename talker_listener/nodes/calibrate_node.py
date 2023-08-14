@@ -10,7 +10,6 @@ if __name__ == '__main__':
     rospy.init_node('calibrate_node')
 
     while not rospy.get_param("/connected_to_emg"):
-        print("Waiting for EMG connection...")
         rospy.sleep(1)
     print("Calibrating...")
 

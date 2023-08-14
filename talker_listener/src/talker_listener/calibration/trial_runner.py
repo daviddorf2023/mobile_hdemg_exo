@@ -95,16 +95,12 @@ class TrialRunner:
             raise NameError("One of self.torque_sub, self.emg_sub, self.pos_pub is None. Cannot run calibrate()")
 
         for trial in self.trials:
-            print(f"Running trial: {trial}")
-
             self._set_exo_angle(trial.joint_angle)
-
             baseline_torque, min_torque = self._collect_baseline_torque()
             trial.baseline_torque = baseline_torque
             trial.min_torque = min_torque
 
             if trial.direction != TrialDirection.NoDirection:
-                print(f"Apply Max {trial.direction.value} torque")
                 trial.MVC_torque = self._collect_max_torque()
             else:
                 trial.MVC_torque = 2.0

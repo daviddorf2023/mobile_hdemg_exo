@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import rospy
+import numpy as np
 from std_msgs.msg import Float64MultiArray, MultiArrayDimension
 from talker_listener.msg import hdemg
 from talker_listener.processors.emg_process_rms import EMGProcessorRMS
@@ -15,9 +16,9 @@ import time
 EMG_DEVICE = rospy.get_param("/device")
 EMG_PROCESS_METHOD = rospy.get_param("/method")
 LATENCY_ANALYZER_MODE = rospy.get_param("/latency_analyzer")
-MUSCLE_COUNT = rospy.get_param("/muscle_count")
-PWM_OUTPUT_PIN = rospy.get_param("/pwm_output_pin")
-SAMPLING_FREQUENCY = rospy.get_param("/sampling_frequency")
+MUSCLE_COUNT = rospy.get_param("/muscle_count", int)
+PWM_OUTPUT_PIN = rospy.get_param("/pwm_output_pin", int)
+SAMPLING_FREQUENCY = rospy.get_param("/sampling_frequency", int)
 
 class EMGStreamNode:
     """
@@ -39,16 +40,18 @@ class EMGStreamNode:
         self.streamer = None  # Stream EMG data from the selected device
         self.raw_pub = rospy.Publisher('hdEMG_stream', hdemg, queue_size=1)
         self.processed_pub = rospy.Publisher('hdEMG_stream_processed', hdemg, queue_size=1)
+        self.raw_muscle_reading = []
+        self.pwm_output_reading = []
 
         # Initialize the PWM output pin
         if LATENCY_ANALYZER_MODE:
             self.start_time = time.time()
             GPIO.setmode(GPIO.BOARD)
             GPIO.setup(PWM_OUTPUT_PIN, GPIO.OUT, initial=GPIO.HIGH)
-            self.p = GPIO.PWM(PWM_OUTPUT_PIN, 1) # 1 Hz
+            self.p = GPIO.PWM(PWM_OUTPUT_PIN, 20) # 50 Hz
             self.p.start(50) # 50% duty cycle
             self.pwm_time = (time.time() - self.start_time)
-            print("PWM started" + str(self.pwm_start_time))
+            print("PWM started " + str(self.pwm_time) + " seconds after start")
         
         # Initialize the EMG streamer
         if EMG_DEVICE == 'qc':
@@ -103,35 +106,34 @@ class EMGStreamNode:
         """
         emg_reading = self.streamer.stream_data()
         self.topic_publish_reading(self.raw_pub, emg_reading)
-        if EMG_DEVICE == 'qc':
-            # The first 128 channels are from the auxiliary ports on the back of the Quattrocento
-            if LATENCY_ANALYZER_MODE:
-                offset = 0
-            else:
-                offset = 128
-            hdemg_reading = emg_reading[offset:offset + MUSCLE_COUNT * 64]  # Each MULTIPLE IN has 64 channels
-            raw_muscle_reading = []
-            for i in range(MUSCLE_COUNT):
-                raw_muscle_reading.append(hdemg_reading[i * 64:(i + 1) * 64])
-        elif EMG_DEVICE == 'muovi': 
-            # Each Muovi+ probe has 70 channels
-            raw_muscle_reading = []
-            # Keep only first 64 channels, last 6 are IMU data
-            hdemg_reading = emg_reading[:64]
-            for i in range(MUSCLE_COUNT):
-                raw_muscle_reading.append(emg_reading)
 
-        self.processor.process_reading(raw_muscle_reading)
+        if EMG_DEVICE == 'qc':
+            offset = 32 * MUSCLE_COUNT
+            hdemg_reading = emg_reading[offset:offset + MUSCLE_COUNT * 64]  # Each MULTIPLE IN has 64 channels
+            for i in range(MUSCLE_COUNT):
+                self.raw_muscle_reading.append(hdemg_reading[i * 64:(i + 1) * 64])
+                if LATENCY_ANALYZER_MODE:
+                    self.pwm_output_reading.append(emg_reading[96 * MUSCLE_COUNT])
+
+        elif EMG_DEVICE == 'muovi': 
+            hdemg_reading = emg_reading[:64]  # Each Muovi+ probe has 70 channels. Keep only first 64 channels, last 6 are IMU data
+            for i in range(MUSCLE_COUNT):
+                self.raw_muscle_reading.append(emg_reading)
+
+        self.processor.process_reading(self.raw_muscle_reading)
         self.processor.publish_reading(self.processed_pub)
         self.r.sleep()
 
-    def close(self):
-        self.streamer.close()
 
 if __name__ == '__main__':
     emg_stream_node = EMGStreamNode()
     while not rospy.is_shutdown():
         emg_stream_node.run_emg()
+    raw_muscle_numpy = np.array(emg_stream_node.raw_muscle_reading)
+    np.savetxt("/home/sralexo/Downloads/exo/src/technaid_h3_ankle_ros_python/talker_listener/src/talker_listener/raw_emg.csv", raw_muscle_numpy, delimiter=",")
+    print(raw_muscle_numpy.shape)
     if LATENCY_ANALYZER_MODE:
-        emg_stream_node.pwm_cleanup()
-    emg_stream_node.close()
+        pwm_output_numpy = np.array(emg_stream_node.pwm_output_reading)
+        np.savetxt("/home/sralexo/Downloads/exo/src/technaid_h3_ankle_ros_python/talker_listener/src/talker_listener/pwm_output.csv", pwm_output_numpy, delimiter=",")
+    emg_stream_node.streamer.close()
+    emg_stream_node.pwm_cleanup()

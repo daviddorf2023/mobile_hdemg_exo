@@ -4,12 +4,12 @@ import rospy
 from talker_listener.qc.qc_connect_config import FsampVal, create_connection_confString, \
     create_disconnect_confString
 
-CONVERSION_FACTOR = 0.000286  # conversion factor needed to get values in mV
-
+CONVERSION_FACTOR = 0.000286  # Conversion factor needed to get values in mV
+SAMPLING_FREQUENCY = rospy.get_param("/sampling_frequency", int)
 
 def read_raw_bytes(connection: socket.socket, number_of_all_channels, bytes_in_sample):
-    buffer_size = number_of_all_channels * bytes_in_sample * 512  # TODO: Make a argument for frequency and use it here
-    new_bytes = connection.recv(buffer_size)  # TODO: Program gets stuck here
+    buffer_size = number_of_all_channels * bytes_in_sample * SAMPLING_FREQUENCY
+    new_bytes = connection.recv(buffer_size)
     rospy.set_param("/connected_to_emg", True)
     return new_bytes
 
@@ -36,7 +36,6 @@ def bytes_to_integers(
 
         # Convert channel's byte value to integer
         value = convert_bytes_to_int(channel)  # , bytes_in_sample)
-
         # MAKE SURE TO CHANGE THIS BACK^^^
 
         # Convert bio measurement channels to milli volts if needed
@@ -48,7 +47,7 @@ def bytes_to_integers(
     return channel_values
 
 
-# ---------- Connection ----------
+# ---------- Connection ---------- #
 
 HOST = "169.254.1.10"
 TCP_PORT = 23456
@@ -60,17 +59,12 @@ def connect(refresh_rate, sampling_frequency, muscle_count) -> socket:
     FSampSel = FsampVal.index(sampling_frequency)
 
     confString = create_connection_confString(FSampSel, NumChanSel)
-    # ConfString[39] = 99 for MUSCLE_COUNT = 3
-    # ConfString[39] = 241 for MUSCLE_COUNT = 4
+    # confString[39] = 99 # for MUSCLE_COUNT = 3
+    # confString[39] = 241 # for MUSCLE_COUNT = 4
     # confString[39] = 99  # should be equal to the crc8 of ConfString
-
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
     s.connect((HOST, TCP_PORT))
-    # print(confString)
-
     s.sendall(bytes(confString))
-
 
     print(f"Connected to Quattrocento at {HOST}:{TCP_PORT}!")
     print(f"Using refresh_rate={refresh_rate}, "
