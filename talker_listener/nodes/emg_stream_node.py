@@ -48,7 +48,7 @@ class EMGStreamNode:
             self.start_time = time.time()
             GPIO.setmode(GPIO.BOARD)
             GPIO.setup(PWM_OUTPUT_PIN, GPIO.OUT, initial=GPIO.HIGH)
-            self.p = GPIO.PWM(PWM_OUTPUT_PIN, 20) # 50 Hz
+            self.p = GPIO.PWM(PWM_OUTPUT_PIN, 50) # 50 Hz
             self.p.start(50) # 50% duty cycle
             self.pwm_time = (time.time() - self.start_time)
             print("PWM started " + str(self.pwm_time) + " seconds after start")
@@ -131,7 +131,6 @@ if __name__ == '__main__':
         emg_stream_node.run_emg()
     raw_muscle_numpy = np.array(emg_stream_node.raw_muscle_reading)
     np.savetxt("/home/sralexo/Downloads/exo/src/technaid_h3_ankle_ros_python/talker_listener/src/talker_listener/raw_emg.csv", raw_muscle_numpy, delimiter=",")
-    print(raw_muscle_numpy.shape)
     if LATENCY_ANALYZER_MODE:
         pwm_output_numpy = np.array(emg_stream_node.pwm_output_reading)
         np.savetxt("/home/sralexo/Downloads/exo/src/technaid_h3_ankle_ros_python/talker_listener/src/talker_listener/pwm_output.csv", pwm_output_numpy, delimiter=",")
