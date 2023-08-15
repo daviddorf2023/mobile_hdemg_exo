@@ -19,6 +19,7 @@ LATENCY_ANALYZER_MODE = rospy.get_param("/latency_analyzer")
 MUSCLE_COUNT = rospy.get_param("/muscle_count", int)
 PWM_OUTPUT_PIN = rospy.get_param("/pwm_output_pin", int)
 SAMPLING_FREQUENCY = rospy.get_param("/sampling_frequency", int)
+TRIAL_DURATION_SECONDS = 30
 
 class EMGStreamNode:
     """
@@ -40,8 +41,7 @@ class EMGStreamNode:
         self.streamer = None  # Stream EMG data from the selected device
         self.raw_pub = rospy.Publisher('hdEMG_stream', hdemg, queue_size=1)
         self.processed_pub = rospy.Publisher('hdEMG_stream_processed', hdemg, queue_size=1)
-        self.raw_muscle_reading = []
-        self.pwm_output_reading = []
+        self.raw_muscle_reading = np.zeros((SAMPLING_FREQUENCY*TRIAL_DURATION_SECONDS, MUSCLE_COUNT*64), dtype=np.int16)  # Initialize the raw EMG reading array
 
         # Initialize the PWM output pin
         if LATENCY_ANALYZER_MODE:
@@ -74,7 +74,7 @@ class EMGStreamNode:
         elif EMG_PROCESS_METHOD == 'cst':
             self.processor = EMGProcessorCST()
 
-    def topic_publish_reading(self, publisher: rospy.topics.Publisher, reading: "list[int]"):
+    def topic_publish_reading(self, publisher: rospy.topics.Publisher, reading: "list[np.int16]"):
         """
         Publishes an EMG reading to a ROS topic.
 
@@ -111,9 +111,8 @@ class EMGStreamNode:
             offset = 32 * MUSCLE_COUNT
             hdemg_reading = emg_reading[offset:offset + MUSCLE_COUNT * 64]  # Each MULTIPLE IN has 64 channels
             for i in range(MUSCLE_COUNT):
-                self.raw_muscle_reading.append(hdemg_reading[i * 64:(i + 1) * 64])
-                if LATENCY_ANALYZER_MODE:
-                    self.pwm_output_reading.append(emg_reading[96 * MUSCLE_COUNT])
+                # Replace each row of the raw_muscle_reading array with the reading from each muscle
+                self.raw_muscle_reading[:, i * 64:(i + 1) * 64] = hdemg_reading[i * 64:(i + 1) * 64]
 
         elif EMG_DEVICE == 'muovi': 
             hdemg_reading = emg_reading[:64]  # Each Muovi+ probe has 70 channels. Keep only first 64 channels, last 6 are IMU data
@@ -132,7 +131,7 @@ if __name__ == '__main__':
     raw_muscle_numpy = np.array(emg_stream_node.raw_muscle_reading)
     np.savetxt("/home/sralexo/Downloads/exo/src/technaid_h3_ankle_ros_python/talker_listener/src/talker_listener/raw_emg.csv", raw_muscle_numpy, delimiter=",")
     if LATENCY_ANALYZER_MODE:
-        pwm_output_numpy = np.array(emg_stream_node.pwm_output_reading)
+        pwm_output_numpy = raw_muscle_numpy[:, 96*MUSCLE_COUNT]  # Save 96th channel of each muscle
         np.savetxt("/home/sralexo/Downloads/exo/src/technaid_h3_ankle_ros_python/talker_listener/src/talker_listener/pwm_output.csv", pwm_output_numpy, delimiter=",")
     emg_stream_node.streamer.close()
     emg_stream_node.pwm_cleanup()

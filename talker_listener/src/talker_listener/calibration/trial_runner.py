@@ -31,7 +31,7 @@ class TrialRunner:
 
     def __init__(self, trials: [Trial]):
         self.trials = trials
-        self._r = rospy.Rate(2048)
+        self._r = rospy.Rate(100)
         self._torque_smoother = TorqueSmoother()
         self._timescale = TimescaleAxis()
         self.side_id = rospy.get_param("/side_id")
@@ -51,7 +51,7 @@ class TrialRunner:
 
         # Initialize the text-to-speech engine
         self.engine = pyttsx3.init()
-        self.engine.setProperty('rate', 150)
+        self.engine.setProperty('rate', 100)
         self.engine.setProperty('volume', 1.0)
         self.voices = self.engine.getProperty('voices')
         self.engine.setProperty('voice', self.voices[2].id)
