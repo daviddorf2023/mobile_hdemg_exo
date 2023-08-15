@@ -45,7 +45,7 @@ class EMGStreamNode:
 
         # Initialize the PWM output pin
         if LATENCY_ANALYZER_MODE:
-            self.start_time = time.time()
+            self.start_time = time.time()  # TODO: Use rospy.get_rostime() instead?
             GPIO.setmode(GPIO.BOARD)
             GPIO.setup(PWM_OUTPUT_PIN, GPIO.OUT, initial=GPIO.HIGH)
             self.p = GPIO.PWM(PWM_OUTPUT_PIN, 50) # 50 Hz
@@ -126,8 +126,11 @@ class EMGStreamNode:
 
 if __name__ == '__main__':
     emg_stream_node = EMGStreamNode()
-    while not rospy.is_shutdown():
-        emg_stream_node.run_emg()
+    try:
+        while not rospy.is_shutdown() and time.time() - emg_stream_node.start_time < 30:
+            emg_stream_node.run_emg()
+    except rospy.ROSInterruptException:
+        pass
     raw_muscle_numpy = np.array(emg_stream_node.raw_muscle_reading)
     np.savetxt("/home/sralexo/Downloads/exo/src/technaid_h3_ankle_ros_python/talker_listener/src/talker_listener/raw_emg.csv", raw_muscle_numpy, delimiter=",")
     if LATENCY_ANALYZER_MODE:
