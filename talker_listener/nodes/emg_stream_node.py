@@ -19,7 +19,8 @@ LATENCY_ANALYZER_MODE = rospy.get_param("/latency_analyzer")
 MUSCLE_COUNT = rospy.get_param("/muscle_count", int)
 PWM_OUTPUT_PIN = rospy.get_param("/pwm_output_pin", int)
 SAMPLING_FREQUENCY = rospy.get_param("/sampling_frequency", int)
-TRIAL_DURATION_SECONDS = 30
+NUM_TRIALS = rospy.get_param("/num_trials", int)
+TRIAL_DURATION_SECONDS = 35 * NUM_TRIALS
 
 class EMGStreamNode:
     """
@@ -106,19 +107,21 @@ class EMGStreamNode:
         """
         emg_reading = self.streamer.stream_data()
         self.topic_publish_reading(self.raw_pub, emg_reading)
+        time_counter=0
 
         if EMG_DEVICE == 'qc':
             offset = 32 * MUSCLE_COUNT
             hdemg_reading = emg_reading[offset:offset + MUSCLE_COUNT * 64]  # Each MULTIPLE IN has 64 channels
             for i in range(MUSCLE_COUNT):
                 # Replace each row of the raw_muscle_reading array with the reading from each muscle
-                self.raw_muscle_reading[:, i * 64:(i + 1) * 64] = hdemg_reading[i * 64:(i + 1) * 64]
+                self.raw_muscle_reading[time_counter, i * 64:(i + 1) * 64] = hdemg_reading[i * 64:(i + 1) * 64]
 
         elif EMG_DEVICE == 'muovi': 
             hdemg_reading = emg_reading[:64]  # Each Muovi+ probe has 70 channels. Keep only first 64 channels, last 6 are IMU data
             for i in range(MUSCLE_COUNT):
-                self.raw_muscle_reading.append(emg_reading)
+                self.raw_muscle_reading[time_counter, i * 64:(i + 1) * 64] = hdemg_reading[i * 64:(i + 1) * 64]
 
+        time_counter+=1
         self.processor.process_reading(self.raw_muscle_reading)
         self.processor.publish_reading(self.processed_pub)
         self.r.sleep()
@@ -127,7 +130,7 @@ class EMGStreamNode:
 if __name__ == '__main__':
     emg_stream_node = EMGStreamNode()
     try:
-        while not rospy.is_shutdown() and time.time() - emg_stream_node.start_time < 30:
+        while not rospy.is_shutdown() and time.time() - emg_stream_node.start_time < TRIAL_DURATION_SECONDS:
             emg_stream_node.run_emg()
     except rospy.ROSInterruptException:
         pass
