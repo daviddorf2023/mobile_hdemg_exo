@@ -17,8 +17,7 @@
     <node name = 'calibrate_node' pkg = 'talker_listener' type = 'calibrate_node.py' output = 'screen' />
 
     <group if = '$(eval device == "sim")'>
-        <node name = 'torque_stream_node' pkg = 'talker_listener' type = 'torque_stream_node.py' output = 'screen' />
-        <param name = 'side_id' value = '1'/> <!-- 1 [overrides left/right] for simulation dataframe column index -->
+        <node name = 'torque_file_streamer' pkg = 'talker_listener' type = 'torque_file_streamer' output = 'screen' />
     </group>
 
     <include file = '$(find h3_launch)/launch/h3_launch_torque_control.launch' />
