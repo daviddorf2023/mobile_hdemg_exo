@@ -1,32 +1,27 @@
 <launch>
-    <arg name = 'device' default = 'qc' /> <!-- qc, sim, muovi -->
-    <arg name = 'method' default = 'rms' /> <!-- cst, rms -->
-    <arg name = 'latency_analyzer' default = 'false' /> <!-- true, false -->
-    <arg name = 'side' default = 'left'/> <!-- left, right -->
-    <arg name = 'muscle_count' default = '1' /> <!-- 1, 2, 3, 4, 5, 6 -->
-
     <param name = 'device' value = '$(arg device)' />
     <param name = 'method' value = '$(arg method)' />
     <param name = 'latency_analyzer' value = '$(arg latency_analyzer)' />
     <param name = 'side' value = '$(arg side)' />
     <param name = 'muscle_count' value = '$(arg muscle_count)' />
     <param name = 'sampling_frequency' value = '100' />
-
     <param name = 'pwm_output_pin' value = '33' />
     <param name = 'file_dir' value = '$(find talker_listener)' />
-    <param name = 'calibrated' value = 'false'/>
-    <param name = 'connected_to_emg' value = 'false'/>
-    
+
+    <param name = 'gui_completed' value = 'False'/>
+    <param name = 'connected_to_emg' value = 'False'/>
+    <param name = 'calibrated' value = 'False'/>
+
     <node name = 'emg_stream_node' pkg = 'talker_listener' type = 'emg_stream_node.py' output = 'screen' />
     <node name = 'calibrate_node' pkg = 'talker_listener' type = 'calibrate_node.py' output = 'screen' />
 
-    <group if = '$(eval arg("side") == "left")'>
+    <group if = '$(eval side == "left")'>
         <param name = 'side_id' value='5'/> <!-- 5 for left dataframe column index -->
     </group>
-    <group if = '$(eval arg("side") == "right")'>
+    <group if = '$(eval side == "right")'>
         <param name = 'side_id' value = '2'/> <!-- 2 for right dataframe column index -->
     </group>
-    <group if = '$(eval arg("device") == "sim")'>
+    <group if = '$(eval device == "sim")'>
         <node name = 'torque_stream_node' pkg = 'talker_listener' type = 'torque_stream_node.py' output = 'screen' />
         <param name = 'side_id' value = '1'/> <!-- 1 [overrides left/right] for simulation dataframe column index -->
     </group>

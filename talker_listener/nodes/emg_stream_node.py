@@ -12,6 +12,9 @@ from talker_listener.streamer.emg_muovi_streamer import EMGMUOVIStreamer
 import RPi.GPIO as GPIO
 import time
 
+while not rospy.get_param("gui_completed"):
+    rospy.sleep(0.1)
+
 # Launch file arguments
 EMG_DEVICE = rospy.get_param("/device")
 EMG_PROCESS_METHOD = rospy.get_param("/method")

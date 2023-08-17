@@ -71,6 +71,8 @@ def connect(refresh_rate, sampling_frequency, muscle_count) -> socket:
           f"sampling_frequency={sampling_frequency}, "
           f"muscle_count={muscle_count}!")
 
+    rospy.set_param("connected_to_emg", True)
+
     return s
 
 

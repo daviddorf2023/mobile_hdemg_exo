@@ -1,6 +1,7 @@
 import socket
 import struct
 import numpy as np
+import rospy
 
 NBYTES = 2
 REFRESH_RATE = 1 / 32
@@ -29,6 +30,7 @@ class EMGMUOVIStreamer:
         self.conn, self.addr = self.t.accept()
         print('Connected to the Muovi+ probe')
         self.conn.send(struct.pack('B', 9))  # Send the command to Muovi+ probe
+        rospy.set_param("connected_to_emg", True)
 
     def close(self):
         self.conn.close()
@@ -40,5 +42,4 @@ class EMGMUOVIStreamer:
         emg_reading += self.conn.recv(BLOCKDATA)
         emg_reading = np.frombuffer(emg_reading, dtype=np.int16)  # Read one second of data into signed integer
         emg_reading = emg_reading[:64]
-        print(emg_reading)
         return emg_reading
