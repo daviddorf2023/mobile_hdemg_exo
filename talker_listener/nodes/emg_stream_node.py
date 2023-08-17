@@ -112,14 +112,14 @@ class EMGStreamNode:
         self.topic_publish_reading(self.raw_pub, emg_reading)
         time_counter=0
 
-        if EMG_DEVICE == 'qc':
+        if EMG_DEVICE == 'Quattrocento':
             offset = 32 * MUSCLE_COUNT
             hdemg_reading = emg_reading[offset:offset + MUSCLE_COUNT * 64]  # Each MULTIPLE IN has 64 channels
             for i in range(MUSCLE_COUNT):
                 # Replace each row of the raw_muscle_reading array with the reading from each muscle
                 self.raw_muscle_reading[time_counter, i * 64:(i + 1) * 64] = hdemg_reading[i * 64:(i + 1) * 64]
 
-        elif EMG_DEVICE == 'muovi': 
+        elif EMG_DEVICE == 'MuoviPro': 
             hdemg_reading = emg_reading[:64]  # Each Muovi+ probe has 70 channels. Keep only first 64 channels, last 6 are IMU data
             for i in range(MUSCLE_COUNT):
                 self.raw_muscle_reading[time_counter, i * 64:(i + 1) * 64] = hdemg_reading[i * 64:(i + 1) * 64]

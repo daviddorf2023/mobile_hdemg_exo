@@ -34,7 +34,8 @@ class TrialRunner:
         self._r = rospy.Rate(100)
         self._torque_smoother = TorqueSmoother()
         self._timescale = TimescaleAxis()
-        self.side_id = rospy.get_param("/side_id")
+        self.side = rospy.get_param("/side")
+        self.device = rospy.get_param("/device")
 
         # Create a tkinter window
         self.window = tk.Tk()
@@ -66,14 +67,14 @@ class TrialRunner:
                                                lambda x: self._timescale.timestamp())
 
         # Publisher for position control
-        if (self.side_id == 2):
-            self._position_pub = rospy.Publisher('/h3/right_ankle_position_controller/command', Float64, queue_size=0)
-        elif (self.side_id == 5):
+        if (self.side == "Left"):
             self._position_pub = rospy.Publisher('/h3/left_ankle_position_controller/command', Float64, queue_size=0)
-        elif (self.side_id == 1):
+        elif (self.side == "Right"):
+            self._position_pub = rospy.Publisher('/h3/right_ankle_position_controller/command', Float64, queue_size=0)
+        elif (self.device == "Simulation"):
             self._position_pub = rospy.Publisher('/h3/right_ankle_position_controller/command', Float64, queue_size=0) # arbitrary, side_id 1 used for simulation
         else:
-            raise NameError("Side ID must be 1 [sim], 2 [right ankle], or 5 [left ankle]")
+            raise NameError("Side name must be Left, Right, or the system must be in Simulation device mode")
         return self
 
     def __exit__(self, *args):
