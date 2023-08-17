@@ -58,11 +58,11 @@ class EMGStreamNode:
             print("PWM started " + str(self.pwm_time) + " seconds after start")
         
         # Initialize the EMG streamer
-        if EMG_DEVICE == 'qc':
+        if EMG_DEVICE == 'Quattrocento':
             self.streamer = EMGQCStreamer(MUSCLE_COUNT)
-        elif EMG_DEVICE == 'muovi':
+        elif EMG_DEVICE == 'MuoviPro':
             self.streamer = EMGMUOVIStreamer(MUSCLE_COUNT)
-        elif EMG_DEVICE == 'file':
+        elif EMG_DEVICE == 'Simulation':
             self.path = rospy.get_param("/file_dir") + "/src/talker_listener/raw_emg_34.csv"
             self.streamer = EMGFileStreamer(MUSCLE_COUNT, SAMPLING_FREQUENCY, self.path)
         rospy.init_node('emg_stream_node')
@@ -73,9 +73,9 @@ class EMGStreamNode:
 
         # Initialize the EMG processor
         self.processor = None  # Process EMG data using the selected method
-        if EMG_PROCESS_METHOD == 'rms':
+        if EMG_PROCESS_METHOD == 'RMS':
             self.processor = EMGProcessorRMS()
-        elif EMG_PROCESS_METHOD == 'cst':
+        elif EMG_PROCESS_METHOD == 'CST':
             self.processor = EMGProcessorCST()
 
     def topic_publish_reading(self, publisher: rospy.topics.Publisher, reading: "list[np.int16]"):

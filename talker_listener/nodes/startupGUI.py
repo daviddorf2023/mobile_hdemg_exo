@@ -58,6 +58,14 @@ class GUIApp:
         self.muscles_dropdown = ttk.Combobox(self.root, values=muscles_choices, textvariable=self.muscles_var)
         self.muscles_dropdown.grid(row=4, column=1, padx=10, pady=5)
 
+        trials_label = ttk.Label(self.root, text="Number of Trials [1 to 10]:")
+        trials_label.grid(row=5, column=0, padx=10, pady=5, sticky="w")
+
+        self.trials_var = tk.StringVar()
+        self.trials_var.set("1")  # Default value
+        trials_entry = ttk.Entry(self.root, textvariable=self.trials_var)
+        trials_entry.grid(row=5, column=1, padx=10, pady=5)
+
         start_button = ttk.Button(self.root, text="Start", command=self.start_process)
         start_button.grid(row=5, columnspan=2, pady=10)
 
@@ -67,12 +75,15 @@ class GUIApp:
         selected_analyzer = self.analyzer_var.get()
         selected_side = self.side_var.get()
         selected_muscles = self.muscles_var.get()
+        selected_trials = self.trials_var.get()
+        selected_trials = max(1, min(int(selected_trials), 10))
 
         rospy.set_param("/device", selected_device)
         rospy.set_param("/method", selected_method)
         rospy.set_param("/latency_analyzer", selected_analyzer)
         rospy.set_param("/side", selected_side)
         rospy.set_param("/muscle_count", selected_muscles)
+        rospy.set_param("/num_trials", selected_trials)
 
         print("Selected Device:", selected_device)
         print("Selected Method:", selected_method)
