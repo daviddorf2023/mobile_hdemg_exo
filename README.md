@@ -9,7 +9,8 @@ This branch contains work done over Spring and Summer 2023 using the ROS package
 - Ubuntu 20.04
 - Python 3
 - TensorFlow 2.13.0
-- Numpy 1.24.3
+- SciPy 1.7.0
+- NumPy 1.22.4
 - Pyttsx3 [Text to speech]
 - Tkinter, PyQt [GUI]
 ### Recommended
