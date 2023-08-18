@@ -11,7 +11,7 @@ This branch contains work done over Spring and Summer 2023 using the ROS package
 - TensorFlow 2.13.0
 - SciPy 1.7.0
 - NumPy 1.22.4
-- Pyttsx3 [Text to speech]
+- Pyttsx3 and espeak [Text to speech]
 - Tkinter, PyQt [GUI]
 ### Recommended
 - Git
