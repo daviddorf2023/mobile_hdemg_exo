@@ -13,10 +13,11 @@
     <param name = 'connected_to_emg' value = 'False'/>
     <param name = 'calibrated' value = 'False'/>
 
+    <node name = 'startupGUI' pkg = 'talker_listener' type = 'startupGUI.py' output = 'screen' />
     <node name = 'emg_stream_node' pkg = 'talker_listener' type = 'emg_stream_node.py' output = 'screen' />
     <node name = 'calibrate_node' pkg = 'talker_listener' type = 'calibrate_node.py' output = 'screen' />
 
-    <group if = '$(eval device == "sim")'>
+    <group if = '$(eval "$(arg device)" == "Simulation")'>
         <node name = 'torque_file_streamer' pkg = 'talker_listener' type = 'torque_file_streamer' output = 'screen' />
     </group>
 

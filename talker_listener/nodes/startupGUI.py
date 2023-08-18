@@ -67,16 +67,16 @@ class GUIApp:
         trials_entry.grid(row=5, column=1, padx=10, pady=5)
 
         start_button = ttk.Button(self.root, text="Start", command=self.start_process)
-        start_button.grid(row=5, columnspan=2, pady=10)
+        start_button.grid(row=6, columnspan=2, pady=10)
 
     def start_process(self):
         selected_device = self.device_var.get()
         selected_method = self.method_var.get()
         selected_analyzer = self.analyzer_var.get()
         selected_side = self.side_var.get()
-        selected_muscles = self.muscles_var.get()
-        selected_trials = self.trials_var.get()
-        selected_trials = max(1, min(int(selected_trials), 10))
+        selected_muscles = int(self.muscles_var.get())
+        selected_trials = int(self.trials_var.get())
+        selected_trials = max(1, min(selected_trials, 10))
 
         rospy.set_param("/device", selected_device)
         rospy.set_param("/method", selected_method)
