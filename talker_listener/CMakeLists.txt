@@ -168,7 +168,8 @@ catkin_install_python(
         PROGRAMS
         nodes/calibrate_node.py
         nodes/emg_stream_node.py
-        nodes/torque_stream_node.py
+        nodes/startupGUI.py
+        nodes/torque_file_streamer.py
         DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
