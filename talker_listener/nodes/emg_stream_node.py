@@ -115,14 +115,12 @@ class EMGStreamNode:
         if EMG_DEVICE == 'Quattrocento':
             offset = 32 * MUSCLE_COUNT
             hdemg_reading = emg_reading[offset:offset + MUSCLE_COUNT * 64]  # Each MULTIPLE IN has 64 channels
-            for i in range(MUSCLE_COUNT):
-                # Replace each row of the raw_muscle_reading array with the reading from each muscle
-                self.raw_muscle_reading[time_counter, i * 64:(i + 1) * 64] = hdemg_reading[i * 64:(i + 1) * 64]
 
         elif EMG_DEVICE == 'MuoviPro': 
             hdemg_reading = emg_reading[:64]  # Each Muovi+ probe has 70 channels. Keep only first 64 channels, last 6 are IMU data
-            for i in range(MUSCLE_COUNT):
-                self.raw_muscle_reading[time_counter, i * 64:(i + 1) * 64] = hdemg_reading[i * 64:(i + 1) * 64]
+
+        for i in range(MUSCLE_COUNT):
+            self.raw_muscle_reading[time_counter, i * 64:(i + 1) * 64] = hdemg_reading[i * 64:(i + 1) * 64]
 
         time_counter+=1
         self.processor.process_reading(self.raw_muscle_reading)
@@ -132,15 +130,12 @@ class EMGStreamNode:
 
 if __name__ == '__main__':
     emg_stream_node = EMGStreamNode()
-    try:
-        while not rospy.is_shutdown() and time.time() - emg_stream_node.start_time < TRIAL_DURATION_SECONDS:
-            emg_stream_node.run_emg()
-    except rospy.ROSInterruptException:
-        pass
+    while not rospy.is_shutdown() and time.time() - emg_stream_node.start_time < TRIAL_DURATION_SECONDS:
+        emg_stream_node.run_emg()
     raw_muscle_numpy = np.array(emg_stream_node.raw_muscle_reading)
-    np.savetxt("/home/sralexo/Downloads/exo/src/technaid_h3_ankle_ros_python/talker_listener/src/talker_listener/raw_emg.csv", raw_muscle_numpy, delimiter=",")
+    np.savetxt("/home/sralexo/exo/src/technaid_h3_ankle_ros_python/talker_listener/src/talker_listener/raw_emg.csv", raw_muscle_numpy, delimiter=",")
     if LATENCY_ANALYZER_MODE:
         pwm_output_numpy = raw_muscle_numpy[:, 96*MUSCLE_COUNT]  # Save 96th channel of each muscle
-        np.savetxt("/home/sralexo/Downloads/exo/src/technaid_h3_ankle_ros_python/talker_listener/src/talker_listener/pwm_output.csv", pwm_output_numpy, delimiter=",")
+        np.savetxt("/home/sralexo/exo/src/technaid_h3_ankle_ros_python/talker_listener/src/talker_listener/pwm_output.csv", pwm_output_numpy, delimiter=",")
     emg_stream_node.streamer.close()
     emg_stream_node.pwm_cleanup()

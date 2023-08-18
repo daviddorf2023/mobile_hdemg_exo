@@ -58,6 +58,14 @@ class TrialRunner:
         self.engine.setProperty('voice', self.voices[2].id)
 
     def __enter__(self):
+        # Enumerate sides for indexing the torque sensor
+        if self.side == "Left":
+            self.side_id = 5
+        if self.side == "Right":
+            self.side_id = 2
+        if self.side == "Simulation":
+            self.side_id = 1
+
         # Subscribers for the torque and hd-EMG publishers
         self._torque_sub = rospy.Subscriber('/h3/robot_states', State,
                                             lambda x: self._torque_smoother.process_reading(x.joint_torque_sensor[self.side_id]))
@@ -72,7 +80,7 @@ class TrialRunner:
         elif (self.side == "Right"):
             self._position_pub = rospy.Publisher('/h3/right_ankle_position_controller/command', Float64, queue_size=0)
         elif (self.device == "Simulation"):
-            self._position_pub = rospy.Publisher('/h3/right_ankle_position_controller/command', Float64, queue_size=0) # arbitrary, side_id 1 used for simulation
+            self._position_pub = rospy.Publisher('/h3/right_ankle_position_controller/command', Float64, queue_size=0)
         else:
             raise NameError("Side name must be Left, Right, or the system must be in Simulation device mode")
         return self

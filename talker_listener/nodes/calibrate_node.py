@@ -34,4 +34,4 @@ if __name__ == '__main__':
     print("Calibration complete. EMG coefficients:")
     print(rospy.get_param("emg_coef"))
 
-    rospy.spin()
+    # rospy.spin()
