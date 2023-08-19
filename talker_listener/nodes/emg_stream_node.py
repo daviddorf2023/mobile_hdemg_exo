@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import rospy
-from std_msgs.msg import Float64MultiArray
+from std_msgs.msg import Float64
 from talker_listener.msg import hdemg
 from talker_listener.processors.emg_process_rms import EMGProcessorRMS
 from talker_listener.processors.emg_process_cst import EMGProcessorCST
@@ -71,7 +71,7 @@ class EMGStreamNode:
         elif EMG_PROCESS_METHOD == 'CST':
             self.processor = EMGProcessorCST()
 
-    def publish_reading(self, publisher: rospy.topics.Publisher, reading: "list"):
+    def publish_reading(self, publisher: rospy.topics.Publisher, reading: float):
         """
         Publishes the EMG reading to a ROS topic.
 
@@ -81,7 +81,7 @@ class EMGStreamNode:
         """
         message = hdemg()
         message.header.stamp = rospy.Time.now()
-        message.data = reading
+        message.data = Float64(data=reading)
         publisher.publish(message)
 
     def pwm_cleanup(self):

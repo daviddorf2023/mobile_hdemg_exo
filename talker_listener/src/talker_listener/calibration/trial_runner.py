@@ -4,18 +4,17 @@ from h3_msgs.msg import State
 from matplotlib import pyplot as plt
 from std_msgs.msg import Float64
 from talker_listener.msg import hdemg
-
 from talker_listener.calibration.trajectory_generator import TrajectoryGenerator
 from talker_listener.calibration.trial import Trial, TrialDirection
 from talker_listener.utils.rospy_countdown import RospyCountdown
 from talker_listener.utils.timescale_axis import TimescaleAxis
-from talker_listener.utils.torque_smoother import TorqueSmoother
-
 import tkinter as tk
 import pyttsx3
 import rospy
 
-
+# TODO: Reimplement torque smoothing
+# TODO: Generalize for 3 muscles
+# TODO: Implement a battery voltage check by subscribing to /h3/robot_states
 class TrialRunner:
     _r: rospy.Rate
 
@@ -23,19 +22,44 @@ class TrialRunner:
     _torque_sub: rospy.Subscriber
     _timescale_sub: rospy.Subscriber
     _position_pub: rospy.Publisher
-
-    _emg_array = []
-    _torque_smoother: TorqueSmoother
     _timescale: TimescaleAxis
     trials: [Trial] = []
 
     def __init__(self, trials: [Trial]):
         self.trials = trials
         self._r = rospy.Rate(100)
-        self._torque_smoother = TorqueSmoother()
         self._timescale = TimescaleAxis()
+        self._emg_array = []
+        self._torque_array = []
+        self._time_array = []
         self.side = rospy.get_param("/side")
         self.device = rospy.get_param("/device")
+
+        # Enumerate sides for indexing the torque sensor
+        if self.side == "Left":
+            self.side_id = 5
+        if self.side == "Right":
+            self.side_id = 2
+        if self.side == "Simulation":
+            self.side_id = 1
+
+        # Subscribers for the torque and hd-EMG publishers
+        self._torque_sub = rospy.Subscriber('/h3/robot_states', State,
+                                            lambda x: self._torque_array.append(x.joint_torque_sensor[self.side_id]))
+        self._emg_sub = rospy.Subscriber('/hdEMG_stream_processed', hdemg,
+                                            lambda x: self._emg_array.append(x.data.data))
+        self._timescale_sub = rospy.Subscriber('/h3/robot_states', State,
+                                            lambda x: self._time_array.append(x.header.seq))
+
+        # Publisher for position control
+        if (self.side == "Left"):
+            self._position_pub = rospy.Publisher('/h3/left_ankle_position_controller/command', Float64, queue_size=0)
+        elif (self.side == "Right"):
+            self._position_pub = rospy.Publisher('/h3/right_ankle_position_controller/command', Float64, queue_size=0)
+        elif (self.device == "Simulation"):
+            self._position_pub = rospy.Publisher('/h3/right_ankle_position_controller/command', Float64, queue_size=0)
+        else:
+            raise NameError("Side name must be Left, Right, or the system must be in Simulation device mode")
 
         # Create a tkinter window
         self.window = tk.Tk()
@@ -56,48 +80,6 @@ class TrialRunner:
         self.engine.setProperty('volume', 1.0)
         self.voices = self.engine.getProperty('voices')
         self.engine.setProperty('voice', self.voices[2].id)
-
-    def __enter__(self):
-        # Enumerate sides for indexing the torque sensor
-        if self.side == "Left":
-            self.side_id = 5
-        if self.side == "Right":
-            self.side_id = 2
-        if self.side == "Simulation":
-            self.side_id = 1
-
-        # Subscribers for the torque and hd-EMG publishers
-        self._torque_sub = rospy.Subscriber('/h3/robot_states', State,
-                                            lambda x: self._torque_smoother.process_reading(x.joint_torque_sensor[self.side_id]))
-        self._emg_sub = rospy.Subscriber('hdEMG_stream_processed', hdemg,
-                                         lambda x: self._emg_array.append(x.data.data))
-        self._timescale_sub = rospy.Subscriber('/h3/robot_states', State,
-                                               lambda x: self._timescale.timestamp())
-
-        # Publisher for position control
-        if (self.side == "Left"):
-            self._position_pub = rospy.Publisher('/h3/left_ankle_position_controller/command', Float64, queue_size=0)
-        elif (self.side == "Right"):
-            self._position_pub = rospy.Publisher('/h3/right_ankle_position_controller/command', Float64, queue_size=0)
-        elif (self.device == "Simulation"):
-            self._position_pub = rospy.Publisher('/h3/right_ankle_position_controller/command', Float64, queue_size=0)
-        else:
-            raise NameError("Side name must be Left, Right, or the system must be in Simulation device mode")
-        return self
-
-    def __exit__(self, *args):
-        self._torque_sub.unregister()
-        self._emg_sub.unregister()
-        self._position_pub.unregister()
-
-    @property
-    def _torque_array(self):
-        return self._torque_smoother.torque_array
-
-    @property
-    def _offset_torque_array(self):
-        return self._torque_smoother.offset_torque_array
-    
 
     def collect_trial_data(self):
         if self._torque_sub is None or self._emg_sub is None or self._position_pub is None:
@@ -120,19 +102,25 @@ class TrialRunner:
             y_lim = 1.5 * trial.effort * trial.MVC_torque
             axs.set_ylim(-1 * y_lim, y_lim)
             axs.plot(reference_trajectory, color='blue')
-            plt.pause(0.01)
+            axs.plot(self._time_array, self._torque_array, color='red')
+            # Show the plot for 1 second, then close it
+            plt.show(block=False)
+            plt.pause(1)
+            plt.close()
 
-            self._reset_measures()
-            self._torque_smoother.offset = baseline_torque
-            countdown = RospyCountdown(rospy.Duration.from_sec(trial.duration))
-            while countdown.is_time_left():
-                axs.plot(self._timescale.axis, self._offset_torque_array, color='red')
-                plt.pause(.01)
-                self._r.sleep()
-
+            # Save the trial data
             trial.emg_array = self._emg_array.copy()
             trial.torque_array = self._torque_array.copy()
-            plt.close()
+        
+            # Average the EMG data and torque data, and calculate the coefficient
+            emg_array = np.array(trial.emg_array)
+            torque_array = np.array(trial.torque_array)
+            emg_avg = np.mean(emg_array, axis=0)
+            torque_avg = np.mean(torque_array, axis=0)
+            emg_coef = torque_avg / emg_avg
+            rospy.set_param('emg_coef', float(emg_coef))
+            rospy.set_param("calibrated", True)
+            self._reset_measures()
     
     def update_gui(self, message):
         self.engine.say(message)
@@ -207,6 +195,6 @@ class TrialRunner:
         rospy.sleep(5)
 
     def _reset_measures(self):
+        self._torque_array.clear()
         self._emg_array.clear()
-        self._torque_smoother.reset()
-        self._timescale.reset()
+        self._time_array.clear()
