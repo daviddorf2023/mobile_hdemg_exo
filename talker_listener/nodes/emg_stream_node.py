@@ -100,7 +100,7 @@ class EMGStreamNode:
             offset = 32 * MUSCLE_COUNT
             hdemg_reading = raw_reading[offset:offset + MUSCLE_COUNT * 64]  # Each MULTIPLE IN has 64 channels
         elif EMG_DEVICE == 'MuoviPro': 
-            hdemg_reading = raw_reading[:64]  # Each Muovi+ probe has 70 channels. Keep only first 64 channels, last 6 are IMU data
+            hdemg_reading = raw_reading[:MUSCLE_COUNT * 64]  # Each Muovi+ probe has 70 channels. Keep only first 64 channels, last 6 are IMU data
         processed_reading = self.processor.process_reading(hdemg_reading)
         self.publish_reading(self.processed_pub, processed_reading)
         self.r.sleep()

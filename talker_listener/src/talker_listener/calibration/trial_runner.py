@@ -114,6 +114,7 @@ class TrialRunner:
         
             # Average the EMG data and torque data, and calculate the coefficient
             emg_array = np.array(trial.emg_array)
+            emg_array = emg_array[~np.isnan(emg_array)]
             torque_array = np.array(trial.torque_array)
             emg_avg = np.mean(emg_array, axis=0)
             torque_avg = np.mean(torque_array, axis=0)

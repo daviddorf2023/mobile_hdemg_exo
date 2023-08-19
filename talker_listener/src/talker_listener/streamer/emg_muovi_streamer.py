@@ -41,5 +41,4 @@ class EMGMUOVIStreamer:
         emg_reading = b''
         emg_reading += self.conn.recv(BLOCKDATA)
         emg_reading = np.frombuffer(emg_reading, dtype=np.int16)  # Read one second of data into signed integer
-        emg_reading = emg_reading[:64]
         return emg_reading
