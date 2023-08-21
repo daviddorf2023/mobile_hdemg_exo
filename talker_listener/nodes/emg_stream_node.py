@@ -43,15 +43,14 @@ class EMGStreamNode:
         rospy.init_node('emg_stream_node')
         self.streamer = None
         self.processed_pub = rospy.Publisher('hdEMG_stream_processed', hdemg, queue_size=1)
-        self.time_counter=0
 
         # Initialize the PWM output pin
         if LATENCY_ANALYZER_MODE:
             self.start_time = rospy.get_time()
             GPIO.setmode(GPIO.BOARD)
             GPIO.setup(PWM_OUTPUT_PIN, GPIO.OUT, initial=GPIO.HIGH)
-            self.p = GPIO.PWM(PWM_OUTPUT_PIN, 50) # 50 Hz
-            self.p.start(50) # 50% duty cycle
+            self.p = GPIO.PWM(PWM_OUTPUT_PIN, 50)
+            self.p.start(50)
         
         # Initialize the EMG streamer
         if EMG_DEVICE == 'Quattrocento':
@@ -65,7 +64,7 @@ class EMGStreamNode:
         self.streamer.initialize()
 
         # Initialize the EMG processor
-        self.processor = None  # Process EMG data using the selected method
+        self.processor = None
         if EMG_PROCESS_METHOD == 'RMS':
             self.processor = EMGProcessorRMS()
         elif EMG_PROCESS_METHOD == 'CST':
@@ -101,14 +100,19 @@ class EMGStreamNode:
             hdemg_reading = raw_reading[offset:offset + MUSCLE_COUNT * 64]  # Each MULTIPLE IN has 64 channels
         elif EMG_DEVICE == 'MuoviPro': 
             hdemg_reading = raw_reading[:MUSCLE_COUNT * 64]  # Each Muovi+ probe has 70 channels. Keep only first 64 channels, last 6 are IMU data
-        processed_reading = self.processor.process_reading(hdemg_reading)
+        # TODO: Reestablish file streaming [depends on the device used to collect data]
+        if LATENCY_ANALYZER_MODE:
+            hdemg_reading = raw_reading[96]
+            processed_reading = hdemg_reading # No processing needed in latency analyzer mode (tests EMG device latency), rostopic delay measures processing time
+        else:
+            processed_reading = self.processor.process_reading(hdemg_reading)
         self.publish_reading(self.processed_pub, processed_reading)
         self.r.sleep()
 
 
 if __name__ == '__main__':
     emg_stream_node = EMGStreamNode()
-    while not rospy.is_shutdown() and (rospy.get_time() - emg_stream_node.start_time) < TRIAL_DURATION_SECONDS:
+    while not rospy.is_shutdown() and rospy.get_time() - emg_stream_node.start_time < TRIAL_DURATION_SECONDS:
         emg_stream_node.run_emg()
     emg_stream_node.pwm_cleanup()
     emg_stream_node.streamer.close()
