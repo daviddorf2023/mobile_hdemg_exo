@@ -101,9 +101,12 @@ class EMGStreamNode:
         elif EMG_DEVICE == 'MuoviPro': 
             hdemg_reading = raw_reading[:MUSCLE_COUNT * 64]  # Each Muovi+ probe has 70 channels. Keep only first 64 channels, last 6 are IMU data
         # TODO: Reestablish file streaming [depends on the device used to collect data]
-        if LATENCY_ANALYZER_MODE:
-            hdemg_reading = raw_reading[96]
-            processed_reading = hdemg_reading # No processing needed in latency analyzer mode (tests EMG device latency), rostopic delay measures processing time
+
+        # No processing needed in latency analyzer mode (tests EMG device latency), rostopic delay measures processing time
+        if LATENCY_ANALYZER_MODE and EMG_DEVICE == 'Quattrocento':
+            processed_reading = raw_reading[96]
+        elif LATENCY_ANALYZER_MODE and EMG_DEVICE == 'MuoviPro':
+            processed_reading = hdemg_reading[-1]
         else:
             processed_reading = self.processor.process_reading(hdemg_reading)
         self.publish_reading(self.processed_pub, processed_reading)
