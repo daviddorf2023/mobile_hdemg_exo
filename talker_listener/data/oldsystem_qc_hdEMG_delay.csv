@@ -1,0 +1,29 @@
+subscribed to [/hdEMG_stream]
+average delay: 0.021
+	min: 0.000s max: 0.048s std dev: 0.01313s window: 512
+average delay: 0.022
+	min: 0.000s max: 0.048s std dev: 0.01311s window: 1020
+average delay: 0.022
+	min: 0.000s max: 0.049s std dev: 0.01313s window: 1532
+average delay: 0.022
+	min: 0.000s max: 0.049s std dev: 0.01310s window: 2036
+average delay: 0.022
+	min: 0.000s max: 0.049s std dev: 0.01308s window: 2542
+average delay: 0.022
+	min: 0.000s max: 0.049s std dev: 0.01311s window: 3056
+average delay: 0.022
+	min: 0.000s max: 0.049s std dev: 0.01309s window: 3582
+average delay: 0.022
+	min: 0.000s max: 0.049s std dev: 0.01309s window: 4092
+average delay: 0.022
+	min: 0.000s max: 0.049s std dev: 0.01307s window: 4592
+average delay: 0.022
+	min: 0.000s max: 0.049s std dev: 0.01305s window: 5118
+average delay: 0.022
+	min: 0.000s max: 0.049s std dev: 0.01305s window: 5624
+average delay: 0.022
+	min: 0.000s max: 0.049s std dev: 0.01303s window: 6146
+average delay: 0.022
+	min: 0.000s max: 0.049s std dev: 0.01305s window: 6659
+average delay: 0.022
+	min: 0.000s max: 0.049s std dev: 0.01305s window: 6704

@@ -5,9 +5,9 @@ x = []
 y = []
 first_time = None
 
-path = 'pwm_output_50hz_muovi.csv'
+path = 'new_emg_muovi_data1.csv'
 
-## QUATTROCENTO
+# # QUATTROCENTO
 # with open(path, 'r') as file:
 #     reader = csv.reader(file)
 #     next(reader)  # skip the first row, contains column names
@@ -20,7 +20,7 @@ path = 'pwm_output_50hz_muovi.csv'
 #             x.append(time)
 #             y.append(corrected_voltage)
 
-## MUOVI+PRO
+# MUOVI+PRO
 with open(path, 'r') as file:
     reader = csv.reader(file)
     next(reader)  # skip the first row, contains column names
@@ -32,7 +32,7 @@ with open(path, 'r') as file:
         y.append(float(row[4]))
 
 plt.plot(x, y)
-plt.title('EMG signal with 50Hz PWM input')
+plt.title('EMG signal')
 plt.xlabel('Time [s]')
 # plt.ylabel('EMG [V]')
 plt.ylabel('EMG [Units]') # Unknown conversion factor for Muovi+Pro currently

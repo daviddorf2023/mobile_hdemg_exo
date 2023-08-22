@@ -9,6 +9,8 @@ from talker_listener.streamer.emg_file_streamer import EMGFileStreamer
 from talker_listener.streamer.emg_qc_streamer import EMGQCStreamer
 from talker_listener.streamer.emg_muovi_streamer import EMGMUOVIStreamer
 import RPi.GPIO as GPIO
+import numpy as np
+import time
 
 while not rospy.get_param("gui_completed"):
     rospy.sleep(0.1)
@@ -41,12 +43,12 @@ class EMGStreamNode:
         Sets up the ROS publishers and initializes the EMG streamer and processor.
         """
         rospy.init_node('emg_stream_node')
+        self.start_time = rospy.get_time()
         self.streamer = None
         self.processed_pub = rospy.Publisher('hdEMG_stream_processed', hdemg, queue_size=1)
 
         # Initialize the PWM output pin
         if LATENCY_ANALYZER_MODE:
-            self.start_time = rospy.get_time()
             GPIO.setmode(GPIO.BOARD)
             GPIO.setup(PWM_OUTPUT_PIN, GPIO.OUT, initial=GPIO.HIGH)
             self.p = GPIO.PWM(PWM_OUTPUT_PIN, 50)
@@ -109,13 +111,16 @@ class EMGStreamNode:
             processed_reading = hdemg_reading[-1]
         else:
             processed_reading = self.processor.process_reading(hdemg_reading)
+            # processed_reading = np.sum(hdemg_reading)
+            print(processed_reading)
         self.publish_reading(self.processed_pub, processed_reading)
         self.r.sleep()
 
 
 if __name__ == '__main__':
     emg_stream_node = EMGStreamNode()
-    while not rospy.is_shutdown() and rospy.get_time() - emg_stream_node.start_time < TRIAL_DURATION_SECONDS:
+    while not rospy.is_shutdown():
         emg_stream_node.run_emg()
-    emg_stream_node.pwm_cleanup()
+    if LATENCY_ANALYZER_MODE:
+        emg_stream_node.pwm_cleanup()
     emg_stream_node.streamer.close()
