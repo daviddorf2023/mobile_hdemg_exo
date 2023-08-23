@@ -5,7 +5,7 @@ x = []
 y = []
 first_time = None
 
-path = 'new_emg_muovi_data1.csv'
+path = 'new_emg_muovi_data4.csv'
 
 # # QUATTROCENTO
 # with open(path, 'r') as file:

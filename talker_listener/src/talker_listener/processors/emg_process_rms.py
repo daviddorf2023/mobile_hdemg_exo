@@ -2,16 +2,10 @@ import numpy as np
 from talker_listener.utils.moving_window import MovingWindow
 
 class EMGProcessorRMS:
-    window: MovingWindow
-
-    def __init__(self):
-        self.window = MovingWindow(10)
-
-    @staticmethod
-    def process_reading(window: MovingWindow) -> np.ndarray:
+    def process_reading(hdemg_reading):
         """
-        Calculates RMS emg across time for each channel and average 100 channels together for each muscle.
+        Calculates RMS emg.
         """
-        smoothed_rms_muscle_reading = np.sqrt(np.mean(np.square(window)))
-        avg_muscle_reading = np.mean(smoothed_rms_muscle_reading)
-        return avg_muscle_reading
+        sum_squares = sum(x**2 for x in hdemg_reading)
+        rms_muscle_reading = (sum_squares / len(hdemg_reading)) ** 0.5
+        return rms_muscle_reading
