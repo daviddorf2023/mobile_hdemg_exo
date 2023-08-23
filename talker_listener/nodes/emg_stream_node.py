@@ -3,7 +3,6 @@
 import rospy
 from std_msgs.msg import Float64
 from talker_listener.msg import hdemg
-from talker_listener.processors.emg_process_rms import EMGProcessorRMS
 from talker_listener.processors.emg_process_cst import EMGProcessorCST
 from talker_listener.streamer.emg_file_streamer import EMGFileStreamer
 from talker_listener.streamer.emg_qc_streamer import EMGQCStreamer
@@ -59,17 +58,29 @@ class EMGStreamNode:
         elif EMG_DEVICE == 'MuoviPro':
             self.streamer = EMGMUOVIStreamer(MUSCLE_COUNT)
         elif EMG_DEVICE == 'Simulation':
-            self.path = rospy.get_param("/file_dir") + "/src/talker_listener/raw_emg_34.csv"
+            self.path = rospy.get_param("/file_dir") + "/src/talker_listener/new_emg_muovi_data1.csv"
             self.streamer = EMGFileStreamer(MUSCLE_COUNT, SAMPLING_FREQUENCY, self.path)
         self.r = rospy.Rate(self.streamer.sample_frequency)  # Match the streamer's publishing rate
         self.streamer.initialize()
 
         # Initialize the EMG processor
         self.processor = None
-        if EMG_PROCESS_METHOD == 'RMS':
-            self.processor = EMGProcessorRMS()
-        elif EMG_PROCESS_METHOD == 'CST':
+        if EMG_PROCESS_METHOD == 'CST':
             self.processor = EMGProcessorCST()
+
+    def smoothed_rms(self, hdemg_reading):
+        """
+        Calculates RMS emg.
+
+        Args:
+            hdemg_reading: A list of integers representing an EMG reading.
+
+        Returns:
+            A float representing the RMS EMG reading.
+        """
+        sum_squares = sum(x**2 for x in hdemg_reading)
+        rms_muscle_reading = (sum_squares / len(hdemg_reading)) ** 0.5
+        return rms_muscle_reading
 
     def publish_reading(self, publisher: rospy.topics.Publisher, reading: float):
         """
@@ -101,19 +112,20 @@ class EMGStreamNode:
             hdemg_reading = raw_reading[offset:offset + MUSCLE_COUNT * 64]  # Each MULTIPLE IN has 64 channels
         elif EMG_DEVICE == 'MuoviPro': 
             hdemg_reading = raw_reading[:MUSCLE_COUNT * 64]  # Each Muovi+ probe has 70 channels. Keep only first 64 channels, last 6 are IMU data
-        # TODO: Reestablish file streaming [depends on the device used to collect data]
+        else:
+            hdemg_reading = raw_reading  # Simulation data is already in hdemg format
 
-        # No processing needed in latency analyzer mode (tests EMG device latency), rostopic delay measures processing time
         if LATENCY_ANALYZER_MODE and EMG_DEVICE == 'Quattrocento':
             processed_reading = raw_reading[96]
         elif LATENCY_ANALYZER_MODE and EMG_DEVICE == 'MuoviPro':
             processed_reading = hdemg_reading[-1]
-        else:
-            sum_squares = sum(x**2 for x in hdemg_reading)
-            rms_muscle_reading = (sum_squares / len(hdemg_reading)) ** 0.5
-            noise_corrected_reading = (rms_muscle_reading - 5.5) ** 2
-            processed_reading = noise_corrected_reading * 0.5 + self.old_reading * 0.5
+        elif EMG_PROCESS_METHOD == 'RMS':
+            rms_reading = self.smoothed_rms(hdemg_reading)
+            noise_corrected_reading = (rms_reading - 5.5) ** 2
+            processed_reading = (noise_corrected_reading + self.old_reading) / 2  # Low-pass filter
             self.old_reading = processed_reading
+        else:
+            processed_reading = self.processor.process_reading(hdemg_reading)
         self.publish_reading(self.processed_pub, processed_reading)
         self.r.sleep()
 
