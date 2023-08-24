@@ -96,31 +96,34 @@ class TrialRunner:
             else:
                 trial.MVC_torque = 2.0
 
-            reference_trajectory = TrajectoryGenerator.from_trial(trial).generate()
-            fig, axs = plt.subplots()
-            axs.set_xlim(0, trial.duration)
-            y_lim = 1.5 * trial.effort * trial.MVC_torque
-            axs.set_ylim(-1 * y_lim, y_lim)
-            axs.plot(reference_trajectory, color='blue')
-            axs.plot(self._time_array, self._torque_array, color='red')
-            # Show the plot for 1 second, then close it
-            plt.show(block=False)
-            plt.pause(1)
-            plt.close()
+            plt.plot(self._time_array, self._torque_array, color='red')
+            plt.plot(self._time_array, self._emg_array, color='blue')
+            plt.xlabel("Time (s)")
+            plt.ylabel("Torque (Nm) / EMG (mV)")
+            plt.show()
 
             # Save the trial data
             trial.emg_array = self._emg_array.copy()
             trial.torque_array = self._torque_array.copy()
         
-            # Average the EMG data and torque data, and calculate the coefficient
+            # Calculate the EMG coefficients from the EMG data and torque data
             emg_array = np.array(trial.emg_array)
             emg_array = emg_array[~np.isnan(emg_array)]
             torque_array = np.array(trial.torque_array)
-            emg_avg = np.mean(emg_array, axis=0)
-            torque_avg = np.mean(torque_array, axis=0)
-            emg_coef = torque_avg / emg_avg
-            rospy.set_param('emg_coef', float(emg_coef))
+
+            emg_min = np.min(emg_array)
+            emg_max = np.max(emg_array)
+
+            torque_max = np.max(torque_array)
+            torque_min = np.min(torque_array)
+
+            emg_coef_up = torque_min / emg_min
+            emg_coef_down = torque_max / emg_max
+
+            rospy.set_param('emg_coef_up', float(emg_coef_up))
+            rospy.set_param('emg_coef_down', float(emg_coef_down))
             rospy.set_param("calibrated", True)
+
             self._reset_measures()
     
     def update_gui(self, message):

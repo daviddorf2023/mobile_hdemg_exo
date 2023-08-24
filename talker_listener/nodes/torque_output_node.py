@@ -1,5 +1,6 @@
 import rospy
 from std_msgs.msg import Float64
+from h3_msgs.msg import State
 from talker_listener.msg import hdemg
 from talker_listener.streamer.emg_qc_streamer import EMGQCStreamer
 from talker_listener.streamer.emg_muovi_streamer import EMGMUOVIStreamer
@@ -14,13 +15,24 @@ SAMPLING_FREQUENCY = rospy.get_param("/sampling_frequency", int)
 class TorqueOutputNode:
 
     def __init__(self):
+        if (rospy.get_param("/side") == "Left"):
+            self.torque_pub = rospy.Publisher('/h3/left_ankle_effort_controller/command', Float64, queue_size=10)
+        elif (rospy.get_param("/side") == "Right"):
+            self.torque_pub = rospy.Publisher('/h3/right_ankle_effort_controller/command', Float64, queue_size=10)
         if EMG_DEVICE == 'Quattrocento':
             self.streamer = EMGQCStreamer(MUSCLE_COUNT)
         elif EMG_DEVICE == 'MuoviPro':
             self.streamer = EMGMUOVIStreamer(MUSCLE_COUNT)
         self.emg_sub = rospy.Subscriber('/hdEMG_stream_processed', hdemg, self.emg_callback)
+        self.sensor_sub = rospy.Subscriber('/h3/robot_states', State, self.sensor_callback)
         self.emg_data = 0
-        self.emg_coef = rospy.get_param("emg_coef")
+        self.emg_coef_up = rospy.get_param("emg_coef_up")
+        self.emg_coef_down = rospy.get_param("emg_coef_down")
+
+    def sensor_callback(self,sensor_reading):
+        ''' Callback for /h3/robot_states. Reads sensor messages from the h3 and saves them in class variables.
+        '''
+        self.sensor_torque = sensor_reading.joint_torque_sensor[2]
 
     def emg_callback(self, hdEMG):
         """
@@ -35,16 +47,15 @@ class TorqueOutputNode:
         rospy.init_node('torque_stream')
         r = rospy.Rate(100)
 
-        if (rospy.get_param("/side") == "Left"):
-            torque_pub = rospy.Publisher('/h3/left_ankle_effort_controller/command', Float64, queue_size=10)
-        elif (rospy.get_param("/side") == "Right"):
-            torque_pub = rospy.Publisher('/h3/right_ankle_effort_controller/command', Float64, queue_size=10)
-
-        while not rospy.is_shutdown():
-            torque_command = self.emg_coef * self.emg_data
-            print("Publishing torque: " + str(torque_command))
-            torque_pub.publish(torque_command)
-            r.sleep()
+        if self.sensor_torque < -1:
+            torque_command = self.emg_coef_down * self.emg_data
+        elif self.sensor_torque > 1:
+            torque_command = self.emg_coef_up * self.emg_data
+        else:
+            torque_command = 0
+        print("Publishing torque: " + str(torque_command))
+        self.torque_pub.publish(torque_command)
+        r.sleep()
         
         
 
