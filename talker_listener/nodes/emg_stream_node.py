@@ -132,8 +132,9 @@ class EMGStreamNode:
 
 if __name__ == '__main__':
     emg_stream_node = EMGStreamNode()
-    while not rospy.is_shutdown() and rospy.get_time() - emg_stream_node.start_time < TRIAL_DURATION_SECONDS:
+    while not rospy.is_shutdown():
         emg_stream_node.run_emg()
     if LATENCY_ANALYZER_MODE:
         emg_stream_node.pwm_cleanup()
     emg_stream_node.streamer.close()
+
