@@ -2,9 +2,9 @@ import numpy as np
 import rospy
 from scipy import signal
 from std_msgs.msg import Float64MultiArray, MultiArrayDimension
-from mobile_hdEMG_exo.msg import hdemg
+from mobile_hdemg_exo.msg import hdemg
 
-from mobile_hdEMG_exo.qc_predict import MUdecomposer
+from mobile_hdemg_exo.qc_predict import MUdecomposer
 
 CST_prediction_step_size = 40  # samples
 
@@ -23,7 +23,7 @@ class EMGProcessorCST:
     def __init__(self):
         # Neural Net Set-Up
         path = rospy.get_param("/file_dir")
-        model_file = path + "/src/mobile_hdEMG_exo/" + "best_model_cnn-allrun5_c8b_mix4-SG0-ST20-WS40-MU[0, 1, 2, 3]_1644222946_f.h5"
+        model_file = path + "/src/mobile_hdemg_exo/" + "best_model_cnn-allrun5_c8b_mix4-SG0-ST20-WS40-MU[0, 1, 2, 3]_1644222946_f.h5"
         self.model = MUdecomposer(model_file)
 
     def process_reading(self, reading):

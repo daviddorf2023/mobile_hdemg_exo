@@ -3,8 +3,8 @@ import pandas as pd
 import rospy
 from scipy import signal
 
-from mobile_hdEMG_exo.calibration.trial import Trial
-from mobile_hdEMG_exo.model.torque_model_v1 import TorqueModelV1
+from mobile_hdemg_exo.calibration.trial import Trial
+from mobile_hdemg_exo.model.torque_model_v1 import TorqueModelV1
 
 
 class Calibrator:
@@ -26,7 +26,7 @@ class Calibrator:
         emg_df.iloc[:, 4] = filtered[:, 4]
 
         path = rospy.get_param("/file_dir")
-        emg_df.to_csv(path + "/src/mobile_hdEMG_exo/test_data_EMG.csv")
+        emg_df.to_csv(path + "/src/mobile_hdemg_exo/test_data_EMG.csv")
 
         model = TorqueModelV1()
         emg_coef = model.optimize(emg_df)

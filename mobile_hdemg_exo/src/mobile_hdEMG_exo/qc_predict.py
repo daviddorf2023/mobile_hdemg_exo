@@ -9,8 +9,8 @@ import numpy as np
 import pandas as pd
 import tensorflow as tf
 
-import mobile_hdEMG_exo.qc.qc_communication as comm
-from mobile_hdEMG_exo.hdEMG_DCNN import load_model_custom
+import mobile_hdemg_exo.qc.qc_communication as comm
+from mobile_hdemg_exo.hdEMG_DCNN import load_model_custom
 
 
 # import matplotlib.pyplot as plt
@@ -183,7 +183,7 @@ buffsize = 5
 
 # set save path
 # path = "C:\\Users\\MSHORT\\PycharmProjects\\emgStreaming\\data\\pilot_20210524"  # "C:/Users/jlevine/Desktop"
-# path = "C:\\opt\\ros\\noetic\\catkin2_ws\\src\\mobile_hdEMG_exo"
+# path = "C:\\opt\\ros\\noetic\\catkin2_ws\\src\\mobile_hdemg_exo"
 # path = ""
 
 # initialize trial parameters

@@ -3,11 +3,11 @@ import rospy
 from h3_msgs.msg import State
 from matplotlib import pyplot as plt
 from std_msgs.msg import Float64
-from mobile_hdEMG_exo.msg import hdemg
-from mobile_hdEMG_exo.calibration.trajectory_generator import TrajectoryGenerator
-from mobile_hdEMG_exo.calibration.trial import Trial, TrialDirection
-from mobile_hdEMG_exo.utils.rospy_countdown import RospyCountdown
-from mobile_hdEMG_exo.utils.timescale_axis import TimescaleAxis
+from mobile_hdemg_exo.msg import hdemg
+from mobile_hdemg_exo.calibration.trajectory_generator import TrajectoryGenerator
+from mobile_hdemg_exo.calibration.trial import Trial, TrialDirection
+from mobile_hdemg_exo.utils.rospy_countdown import RospyCountdown
+from mobile_hdemg_exo.utils.timescale_axis import TimescaleAxis
 import tkinter as tk
 import pyttsx3
 import rospy

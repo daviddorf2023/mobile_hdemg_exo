@@ -2,11 +2,11 @@
 
 import rospy
 from std_msgs.msg import Float64
-from mobile_hdEMG_exo.msg import hdemg
-from mobile_hdEMG_exo.processors.emg_process_cst import EMGProcessorCST
-from mobile_hdEMG_exo.streamer.emg_file_streamer import EMGFileStreamer
-from mobile_hdEMG_exo.streamer.emg_qc_streamer import EMGQCStreamer
-from mobile_hdEMG_exo.streamer.emg_muovi_streamer import EMGMUOVIStreamer
+from mobile_hdemg_exo.msg import hdemg
+from mobile_hdemg_exo.processors.emg_process_cst import EMGProcessorCST
+from mobile_hdemg_exo.streamer.emg_file_streamer import EMGFileStreamer
+from mobile_hdemg_exo.streamer.emg_qc_streamer import EMGQCStreamer
+from mobile_hdemg_exo.streamer.emg_muovi_streamer import EMGMUOVIStreamer
 import RPi.GPIO as GPIO
 
 while not rospy.get_param("gui_completed"):
@@ -58,7 +58,7 @@ class EMGStreamNode:
         elif EMG_DEVICE == 'MuoviPro':
             self.streamer = EMGMUOVIStreamer(MUSCLE_COUNT)
         elif EMG_DEVICE == 'Simulation':
-            self.path = rospy.get_param("/file_dir") + "/src/mobile_hdEMG_exo/new_emg_muovi_data1.csv"
+            self.path = rospy.get_param("/file_dir") + "/src/mobile_hdemg_exo/new_emg_muovi_data1.csv"
             self.streamer = EMGFileStreamer(MUSCLE_COUNT, SAMPLING_FREQUENCY, self.path)
         self.r = rospy.Rate(self.streamer.sample_frequency)  # Match the streamer's publishing rate
         self.streamer.initialize()

@@ -1,7 +1,7 @@
 from socket import socket
 
-import mobile_hdEMG_exo.qc.qc_communication as comm
-from mobile_hdEMG_exo.qc.qc_connect_config import NumChanVal
+import mobile_hdemg_exo.qc.qc_communication as comm
+from mobile_hdemg_exo.qc.qc_connect_config import NumChanVal
 
 # number of bytes in sample (2 bytes for the quattrocento device)
 NBYTES = 2

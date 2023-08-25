@@ -2,8 +2,8 @@
 
 import rospy
 
-from mobile_hdEMG_exo.calibration.trial import Trial, TrialDirection, TrajectoryShape
-from mobile_hdEMG_exo.calibration.trial_runner import TrialRunner
+from mobile_hdemg_exo.calibration.trial import Trial, TrialDirection, TrajectoryShape
+from mobile_hdemg_exo.calibration.trial_runner import TrialRunner
 
 # TODO: Generalize for 3 muscles and multiple trials. Reimplement calibrator.py 
 
