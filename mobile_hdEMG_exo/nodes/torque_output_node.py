@@ -51,11 +51,11 @@ class TorqueOutputNode:
 
         # For having foot in the exo
         if self.sensor_torque < -1:
-            torque_command = self.emg_coef_down * self.emg_data
+            self.torque_command = self.emg_coef_down * self.emg_data
         elif self.sensor_torque > 1:
-            torque_command = self.emg_coef_up * self.emg_data
+            self.torque_command = self.emg_coef_up * self.emg_data
         else:
-            torque_command = 0
+            self.torque_command = 0
 
         # # Remote operation (for testing wirelessly telling exo to move with pure EMG [uni-muscle])
         # if (self.emg_avg + self.emg_data)/2 < self.emg_data:
@@ -66,9 +66,6 @@ class TorqueOutputNode:
         smooth_torque_command = 0.5 * self.old_torque + 0.5 * self.torque_command
         self.old_torque = smooth_torque_command
 
-        # print(self.emg_coef_up)
-        # print(self.emg_coef_down)
-        print("Publishing torque: " + str(smooth_torque_command))
         self.torque_pub.publish(smooth_torque_command)
         r.sleep()
         
