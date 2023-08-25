@@ -1,9 +1,9 @@
 import rospy
 from std_msgs.msg import Float64
 from h3_msgs.msg import State
-from talker_listener.msg import hdemg
-from talker_listener.streamer.emg_qc_streamer import EMGQCStreamer
-from talker_listener.streamer.emg_muovi_streamer import EMGMUOVIStreamer
+from mobile_hdEMG_exo.msg import hdemg
+from mobile_hdEMG_exo.streamer.emg_qc_streamer import EMGQCStreamer
+from mobile_hdEMG_exo.streamer.emg_muovi_streamer import EMGMUOVIStreamer
 
 while not rospy.get_param("calibrated"):
     rospy.sleep(0.1)

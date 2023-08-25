@@ -4,7 +4,7 @@ Created on Thu Feb  2 13:45:47 2023
 @author: jlevine
 """
 
-from talker_listener.utils.crc8 import crc8
+from mobile_hdEMG_exo.utils.crc8 import crc8
 
 # TestDuration = 10      # Total duration of the test in seconds
 # MapsARVEpoch = 0.25    # Time epoch for the ARV estimation in seconds (must be multiple of RefreshRate)

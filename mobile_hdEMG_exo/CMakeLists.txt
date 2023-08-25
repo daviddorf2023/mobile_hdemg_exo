@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(talker_listener)
+project(mobile_hdEMG_exo)
 
 # set(PYTHON_EXECUTABLE /usr/bin/env python3)
 
@@ -107,7 +107,7 @@ generate_messages(
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
         #  INCLUDE_DIRS include
-        #  LIBRARIES talker_listener
+        #  LIBRARIES mobile_hdEMG_exo
         CATKIN_DEPENDS rospy std_msgs message_runtime
         #  DEPENDS system_lib
 )
@@ -125,7 +125,7 @@ include_directories(
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/talker_listener.cpp
+#   src/${PROJECT_NAME}/mobile_hdEMG_exo.cpp
 # )
 
 ## Add cmake target dependencies of the library
@@ -136,7 +136,7 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/talker_listener_node.cpp)
+# add_executable(${PROJECT_NAME}_node src/mobile_hdEMG_exo_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -206,7 +206,7 @@ catkin_install_python(
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_talker_listener.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_mobile_hdEMG_exo.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()

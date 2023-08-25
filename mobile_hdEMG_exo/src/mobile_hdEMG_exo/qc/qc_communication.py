@@ -1,7 +1,7 @@
 import socket
 import rospy
 
-from talker_listener.qc.qc_connect_config import FsampVal, create_connection_confString, \
+from mobile_hdEMG_exo.qc.qc_connect_config import FsampVal, create_connection_confString, \
     create_disconnect_confString
 
 CONVERSION_FACTOR = 0.000286  # Conversion factor needed to get values in mV

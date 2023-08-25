@@ -3,11 +3,11 @@ import rospy
 from h3_msgs.msg import State
 from matplotlib import pyplot as plt
 from std_msgs.msg import Float64
-from talker_listener.msg import hdemg
-from talker_listener.calibration.trajectory_generator import TrajectoryGenerator
-from talker_listener.calibration.trial import Trial, TrialDirection
-from talker_listener.utils.rospy_countdown import RospyCountdown
-from talker_listener.utils.timescale_axis import TimescaleAxis
+from mobile_hdEMG_exo.msg import hdemg
+from mobile_hdEMG_exo.calibration.trajectory_generator import TrajectoryGenerator
+from mobile_hdEMG_exo.calibration.trial import Trial, TrialDirection
+from mobile_hdEMG_exo.utils.rospy_countdown import RospyCountdown
+from mobile_hdEMG_exo.utils.timescale_axis import TimescaleAxis
 import tkinter as tk
 import pyttsx3
 import rospy

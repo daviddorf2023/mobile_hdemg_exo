@@ -1,6 +1,6 @@
 import numpy as np
 
-from talker_listener.utils.moving_window import MovingWindow
+from mobile_hdEMG_exo.utils.moving_window import MovingWindow
 
 
 class TorqueSmoother:

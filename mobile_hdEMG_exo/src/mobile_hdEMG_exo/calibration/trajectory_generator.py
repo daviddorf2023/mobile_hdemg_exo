@@ -1,6 +1,6 @@
 import numpy as np
 
-from talker_listener.calibration.trial import TrajectoryShape, TrialDirection, Trial
+from mobile_hdEMG_exo.calibration.trial import TrajectoryShape, TrialDirection, Trial
 
 
 class TrajectoryGenerator:
