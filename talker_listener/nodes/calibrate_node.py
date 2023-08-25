@@ -24,5 +24,5 @@ if __name__ == '__main__':
     trials = [PF10]
     print("Running Trials...")
     TrialRunner(trials).collect_trial_data()
-    print("Calibration complete. EMG coefficients: " + str(rospy.get_param("emg_coef")))
+    print("Calibration complete")
     rospy.set_param("calibrated", True)

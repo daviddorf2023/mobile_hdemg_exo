@@ -121,8 +121,7 @@ class EMGStreamNode:
             processed_reading = hdemg_reading[-1]
         elif EMG_PROCESS_METHOD == 'RMS':
             rms_reading = self.smoothed_rms(hdemg_reading)
-            noise_corrected_reading = (rms_reading - 5.5) ** 2
-            processed_reading = (noise_corrected_reading + self.old_reading) / 2  # Low-pass filter
+            processed_reading = (rms_reading + self.old_reading) / 2  # Low-pass filter
             self.old_reading = processed_reading
         else:
             processed_reading = self.processor.process_reading(hdemg_reading)

@@ -97,9 +97,11 @@ class TrialRunner:
                 trial.MVC_torque = 2.0
 
             plt.plot(self._time_array, self._torque_array, color='red')
-            plt.plot(self._time_array, self._emg_array, color='blue')
             plt.xlabel("Time (s)")
-            plt.ylabel("Torque (Nm) / EMG (mV)")
+            plt.ylabel("Torque (Nm)")
+            plt.show()
+
+            plt.plot(self._emg_array, color='blue')
             plt.show()
 
             # Save the trial data
@@ -112,6 +114,7 @@ class TrialRunner:
             torque_array = np.array(trial.torque_array)
 
             emg_min = np.min(emg_array)
+            emg_avg = np.average(emg_array)
             emg_max = np.max(emg_array)
 
             torque_max = np.max(torque_array)
@@ -121,6 +124,7 @@ class TrialRunner:
             emg_coef_down = torque_max / emg_max
 
             rospy.set_param('emg_coef_up', float(emg_coef_up))
+            rospy.set_param('emg_avg', float(emg_avg))
             rospy.set_param('emg_coef_down', float(emg_coef_down))
             rospy.set_param("calibrated", True)
 

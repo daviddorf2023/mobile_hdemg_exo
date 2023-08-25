@@ -27,7 +27,9 @@ class TorqueOutputNode:
         self.sensor_sub = rospy.Subscriber('/h3/robot_states', State, self.sensor_callback)
         self.emg_data = 0
         self.emg_coef_up = rospy.get_param("emg_coef_up")
+        self.emg_avg = rospy.get_param("emg_avg")
         self.emg_coef_down = rospy.get_param("emg_coef_down")
+        self.old_torque = 0
 
     def sensor_callback(self,sensor_reading):
         ''' Callback for /h3/robot_states. Reads sensor messages from the h3 and saves them in class variables.
@@ -47,14 +49,27 @@ class TorqueOutputNode:
         rospy.init_node('torque_stream')
         r = rospy.Rate(100)
 
+        # For having foot in the exo
         if self.sensor_torque < -1:
             torque_command = self.emg_coef_down * self.emg_data
         elif self.sensor_torque > 1:
             torque_command = self.emg_coef_up * self.emg_data
         else:
             torque_command = 0
-        print("Publishing torque: " + str(torque_command))
-        self.torque_pub.publish(torque_command)
+
+        # # Remote operation (for testing wirelessly telling exo to move with pure EMG [uni-muscle])
+        # if (self.emg_avg + self.emg_data)/2 < self.emg_data:
+        #     self.torque_command = self.emg_coef_up * self.emg_data
+        # else:
+        #     self.torque_command = self.emg_coef_down * self.emg_data
+
+        smooth_torque_command = 0.5 * self.old_torque + 0.5 * self.torque_command
+        self.old_torque = smooth_torque_command
+
+        # print(self.emg_coef_up)
+        # print(self.emg_coef_down)
+        print("Publishing torque: " + str(smooth_torque_command))
+        self.torque_pub.publish(smooth_torque_command)
         r.sleep()
         
         
