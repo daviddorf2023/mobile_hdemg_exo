@@ -1,7 +1,0 @@
-<library path="lib/libjoint_stiffness_controller">
-  <class name="joint_stiffness_controller/JointStiffnessController" type="joint_stiffness_controller::JointStiffnessController" base_class_type="controller_interface::ControllerBase">
-  <description>
-    This is a controller plugin to command stiffness joint interface.
-  </description>
-  </class>
-</library>
