@@ -1,6 +1,0 @@
-<launch>
-    <arg name="node_name" default="h3_indicators" />
-    <arg name="robot_ns" default="h3"/>
-    <node name="$(arg node_name)" pkg="h3_indicator" ns="$(arg robot_ns)"  type="h3_indicator_node.py" output="screen"  respawn="true">
-    </node>
-</launch>

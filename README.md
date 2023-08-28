@@ -2,7 +2,7 @@
 
 ## Overview
 
-This software is intended to allow for high density EMG control of the **Technaid H3 exoskeleton** for rehabilitation at Shirley Ryan AbilityLab. The package is designed to run on the **Jetson Orin Nano Developer Kit**, but can also work on any Ubuntu 20.04 system. However, the latency analyzer system only runs on systems with GPIO pins with PWM capability. The Jetson Orin Nano launches the EMG and ankle exoskeleton ROS nodes. The EMG package, ```talker_listener``` connects to and reads data from an **OTB Quattrocento** or **OTB Muovi+Pro** EMG device, as well as the ability to process prerecorded datasets for simulation purposes. The package processes the raw EMG data with either a root-mean-squared method or a cumulative spike train neural network approach. It then calibrates the EMG data to the torque sensor data on the exoskeleton, and the EMG coefficients are used to convert the patient's EMG to accurate predicted torque commands to the exoskeleton. The H3 nodes control and read/write torque data from the exoskeleton.
+This software is intended to allow for high density EMG control of the **Technaid H3 exoskeleton** for rehabilitation at Shirley Ryan AbilityLab. The package is designed to run on the **Jetson Orin Nano Developer Kit**, but can also work on any Ubuntu 20.04 system. However, the latency analyzer system only runs on systems with GPIO pins with PWM capability. The Jetson Orin Nano launches the EMG and ankle exoskeleton ROS nodes. The EMG package, ```mobile_hdemg_exo``` connects to and reads data from an **OTB Quattrocento** or **OTB Muovi+Pro** EMG device, as well as the ability to process prerecorded datasets for simulation purposes. The package processes the raw EMG data with either a root-mean-squared method or a cumulative spike train neural network approach. It then calibrates the EMG data to the torque sensor data on the exoskeleton, and the EMG coefficients are used to convert the patient's EMG to accurate predicted torque commands to the exoskeleton. The H3 nodes control and read/write torque data from the exoskeleton.
 
 More information about the H3 exoskeleton is in a documentation PDF within this repository. This package provides an interface that speaks and displays instructions to the patient for them to move, in order to calibrate the EMG to their intended torque. 
 
@@ -84,4 +84,4 @@ In order to use PWM and other additional GPIO modifications, the steps below mus
 
 ### Launch
 - Source a ROS workspace with ```source devel/setup.bash```
-- Launch the system with ```roslaunch talker_listener h3_launch.launch```. The system can be further configured by the user in the startup screen.
+- Launch the system with ```roslaunch mobile_hdemg_exo h3_launch.launch```. The system can be further configured by the user in the startup screen.

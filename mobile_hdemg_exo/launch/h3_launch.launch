@@ -1,0 +1,23 @@
+<launch>
+    <param name = 'device' value = 'Quattrocento' />
+    <param name = 'method' value = 'RMS' />
+    <param name = 'latency_analyzer' value = 'False' />
+    <param name = 'side' value = 'Left' />
+    <param name = 'muscle_count' value = '1' />
+    <param name = 'sampling_frequency' value = '512' />
+    <param name = 'num_trials' value = '1' />
+    <param name = 'pwm_output_pin' value = '33' />
+    <param name = 'file_dir' value = '$(mobile_hdemg_exo)' />
+
+    <param name = 'gui_completed' value = 'False'/>
+    <param name = 'connected_to_emg' value = 'False'/>
+    <param name = 'calibrated' value = 'False'/>
+
+    <node name = 'startupGUI' pkg = 'mobile_hdemg_exo' type = 'startupGUI.py' output = 'screen' />
+    <node name = 'emg_stream_node' pkg = 'mobile_hdemg_exo' type = 'emg_stream_node.py' output = 'screen' />
+    <node name = 'calibrate_node' pkg = 'mobile_hdemg_exo' type = 'calibrate_node.py' output = 'screen' />
+    <node name = 'torque_output_node' pkg = 'mobile_hdemg_exo' type = 'torque_output_node.py' output = 'screen' />
+
+    <include file = '$(find h3_launch)/launch/h3_launch_torque_control.launch' />
+
+</launch>
