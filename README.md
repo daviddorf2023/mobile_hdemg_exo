@@ -9,7 +9,7 @@ More information about the H3 exoskeleton is in a documentation PDF within this 
 This package also includes a latency analyzer to measure system processing time across each individual physical component, as well as each system process running on the exoskeleton and Orin Nano. The Orin Nano generates a 3.3V PWM output on GPIO pin 33 into an input on the EMG device. The processed signal is sent back over ethernet to the Orin Nano. The inverse of the difference in frequency between the PWM input and EMG output is the EMG device's latency. The delay of the EMG processing, calibration, and exoskeleton torque command is determined by using rostopic delay on their respective topics.
 
 ## Software Architecture
-![software](https://github.com/Technaid-S-L/technaid_h3_ankle_ros_python/assets/113081373/8357899c-c057-4be8-b9c3-eb1ea67b234f)
+![latencychart](https://github.com/Technaid-S-L/technaid_h3_ankle_ros_python/assets/113081373/b294f94c-8046-41e6-9f5a-710b0d6b98c1)
 
 ## Latency Analyzer Architecture
 ![latency_analyzer](https://github.com/Technaid-S-L/technaid_h3_ankle_ros_python/assets/113081373/ffa85a23-80ef-410d-be35-f5984ff19d2c)
