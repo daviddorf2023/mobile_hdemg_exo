@@ -7,7 +7,7 @@
     <param name = 'sampling_frequency' value = '512' />
     <param name = 'num_trials' value = '1' />
     <param name = 'pwm_output_pin' value = '33' />
-    <param name = 'file_dir' value = '$(mobile_hdemg_exo)' />
+    <param name = 'file_dir' value = '$(find mobile_hdemg_exo)' />
 
     <param name = 'gui_completed' value = 'False'/>
     <param name = 'connected_to_emg' value = 'False'/>
@@ -18,6 +18,6 @@
     <node name = 'calibrate_node' pkg = 'mobile_hdemg_exo' type = 'calibrate_node.py' output = 'screen' />
     <node name = 'torque_output_node' pkg = 'mobile_hdemg_exo' type = 'torque_output_node.py' output = 'screen' />
 
-    <include file = '$(find h3_launch)/launch/h3_launch_torque_control.launch' />
+    <!-- <include file = '$(find h3_launch)/launch/h3_launch_torque_control.launch' /> -->
 
 </launch>

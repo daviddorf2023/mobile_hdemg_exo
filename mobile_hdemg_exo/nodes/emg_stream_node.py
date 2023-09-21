@@ -7,7 +7,6 @@ from mobile_hdemg_exo.processors.emg_process_cst import EMGProcessorCST
 from mobile_hdemg_exo.streamer.emg_file_streamer import EMGFileStreamer
 from mobile_hdemg_exo.streamer.emg_qc_streamer import EMGQCStreamer
 from mobile_hdemg_exo.streamer.emg_muovi_streamer import EMGMUOVIStreamer
-import RPi.GPIO as GPIO
 
 while not rospy.get_param("gui_completed"):
     rospy.sleep(0.1)
@@ -22,6 +21,7 @@ SAMPLING_FREQUENCY = rospy.get_param("/sampling_frequency", int)
 NUM_TRIALS = rospy.get_param("/num_trials", int)
 TRIAL_DURATION_SECONDS = 35 * NUM_TRIALS
 
+
 class EMGStreamNode:
     """
     A class for streaming and processing EMG data.
@@ -33,6 +33,7 @@ class EMGStreamNode:
         processed_pub: A ROS publisher for publishing processed EMG data.
         r: A ROS rate object for controlling the publishing rate.
     """
+
     def __init__(self):
         """
         Initializes the EMGStreamNode object.
@@ -42,25 +43,30 @@ class EMGStreamNode:
         rospy.init_node('emg_stream_node')
         self.start_time = rospy.get_time()
         self.streamer = None
-        self.processed_pub = rospy.Publisher('hdEMG_stream_processed', hdemg, queue_size=1)
+        self.processed_pub = rospy.Publisher(
+            'hdEMG_stream_processed', hdemg, queue_size=1)
         self.old_reading = 0.
 
         # Initialize the PWM output pin
         if LATENCY_ANALYZER_MODE:
+            import RPi.GPIO as GPIO
             GPIO.setmode(GPIO.BOARD)
             GPIO.setup(PWM_OUTPUT_PIN, GPIO.OUT, initial=GPIO.HIGH)
             self.p = GPIO.PWM(PWM_OUTPUT_PIN, 50)
             self.p.start(50)
-        
+
         # Initialize the EMG streamer
         if EMG_DEVICE == 'Quattrocento':
             self.streamer = EMGQCStreamer(MUSCLE_COUNT)
         elif EMG_DEVICE == 'MuoviPro':
             self.streamer = EMGMUOVIStreamer(MUSCLE_COUNT)
         elif EMG_DEVICE == 'Simulation':
-            self.path = rospy.get_param("/file_dir") + "/src/mobile_hdemg_exo/new_emg_muovi_data1.csv"
-            self.streamer = EMGFileStreamer(MUSCLE_COUNT, SAMPLING_FREQUENCY, self.path)
-        self.r = rospy.Rate(self.streamer.sample_frequency)  # Match the streamer's publishing rate
+            self.path = rospy.get_param(
+                "/file_dir") + "/src/mobile_hdemg_exo/new_emg_muovi_data1.csv"
+            self.streamer = EMGFileStreamer(
+                MUSCLE_COUNT, SAMPLING_FREQUENCY, self.path)
+        # Match the streamer's publishing rate
+        self.r = rospy.Rate(self.streamer.sample_frequency)
         self.streamer.initialize()
 
         # Initialize the EMG processor
@@ -109,9 +115,11 @@ class EMGStreamNode:
         raw_reading = self.streamer.stream_data()
         if EMG_DEVICE == 'Quattrocento':
             offset = 32 * MUSCLE_COUNT
-            hdemg_reading = raw_reading[offset:offset + MUSCLE_COUNT * 64]  # Each MULTIPLE IN has 64 channels
-        elif EMG_DEVICE == 'MuoviPro': 
-            hdemg_reading = raw_reading[:MUSCLE_COUNT * 64]  # Each Muovi+ probe has 70 channels. Keep only first 64 channels, last 6 are IMU data
+            # Each MULTIPLE IN has 64 channels
+            hdemg_reading = raw_reading[offset:offset + MUSCLE_COUNT * 64]
+        elif EMG_DEVICE == 'MuoviPro':
+            # Each Muovi+ probe has 70 channels. Keep only first 64 channels, last 6 are IMU data
+            hdemg_reading = raw_reading[:MUSCLE_COUNT * 64]
         else:
             hdemg_reading = raw_reading  # Simulation data is already in hdemg format
 
@@ -121,7 +129,8 @@ class EMGStreamNode:
             processed_reading = hdemg_reading[-1]
         elif EMG_PROCESS_METHOD == 'RMS':
             rms_reading = self.smoothed_rms(hdemg_reading)
-            processed_reading = (rms_reading + self.old_reading) / 2  # Low-pass filter
+            processed_reading = (
+                rms_reading + self.old_reading) / 2  # Low-pass filter
             self.old_reading = processed_reading
         else:
             processed_reading = self.processor.process_reading(hdemg_reading)
@@ -136,4 +145,3 @@ if __name__ == '__main__':
     if LATENCY_ANALYZER_MODE:
         emg_stream_node.pwm_cleanup()
     emg_stream_node.streamer.close()
-
