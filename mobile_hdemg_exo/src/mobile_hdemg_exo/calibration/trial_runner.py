@@ -117,7 +117,10 @@ class TrialRunner:
 
             # Plot the torque and hd-EMG data with the same time axis
             plt.plot(self._time_array, self._torque_array, label='Torque')
-            plt.plot(self._time_array, self._emg_array, label='EMG')
+            plt.plot(self._time_array, self._emg_array[:len(
+                self._torque_array)], label='EMG')  # Sometimes has an extra element
+            plt.xlabel('Time (s)')
+            plt.ylabel('Torque (Nm) / EMG (mV)')
             plt.legend()
             plt.show()
 
