@@ -11,7 +11,6 @@ from mobile_hdemg_exo.utils.timescale_axis import TimescaleAxis
 import tkinter as tk
 import pyttsx3
 import rospy
-from scipy.interpolate import interp1d
 
 # TODO: Generalize for 3 muscles
 
@@ -115,12 +114,14 @@ class TrialRunner:
             else:
                 trial.MVC_torque = 2.0
 
-            # Plot the torque and hd-EMG data with the same time axis
-            plt.plot(self._time_array, self._torque_array, label='Torque')
-            plt.plot(self._time_array, self._emg_array[:len(
+            # Plot the torque and hd-EMG data with the same time axis, divided by 100Hz to convert to seconds
+            plt.plot(self._time_array / 100,
+                     self._torque_array, label='Torque')
+            plt.plot(self._time_array / 100, self._emg_array[:len(
                 self._torque_array)], label='EMG')  # Sometimes has an extra element
             plt.xlabel('Time (s)')
             plt.ylabel('Torque (Nm) / EMG (mV)')
+            plt.title('Torque Sensor and EMG Data')
             plt.legend()
             plt.show()
 
