@@ -1,0 +1,20 @@
+h3:
+   # Publish all joint states -----------------------------------
+   joint_state_controller:
+    type: joint_state_controller/JointStateController
+    publish_rate: 100 #100  
+   state_controller:
+    type: h3_robot_state_controller/H3RobotStateController
+    robot_name: exo_h3
+    publish_rate: 100
+   task_controller:
+    type: h3_task_controller/H3TaskController
+    robot_name: exo_h3
+    command_timeout: 3.0  # 3 seconds
+   config_controller:
+    type: h3_config_controller/H3ConfigController 
+    robot_name: exo_h3
+    control_type: [7, 7, 7, 7, 7, 7]
+    min_angle: [-1.7453, 0, -0.4363, -1.7453, 0, -0.4363]
+    max_angle: [0.4363, 1.7453, 0.4363, 0.4363, 1.7453, 0.4363]
+    assistance: [100, 100, 100, 100, 100, 100]

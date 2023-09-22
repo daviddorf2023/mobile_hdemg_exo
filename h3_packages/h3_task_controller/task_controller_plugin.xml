@@ -1,0 +1,7 @@
+<library path="lib/libh3_task_controller">
+  <class name="h3_task_controller/H3TaskController" type="h3_task_controller::H3TaskController" base_class_type="controller_interface::ControllerBase">
+  <description>
+    This is a controller plugin to execute tasks in the Exo-H3.
+  </description>
+  </class>
+</library>

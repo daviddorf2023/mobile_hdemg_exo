@@ -1,0 +1,10 @@
+<launch>
+    <rosparam file="$(find h3_hardware_interface)/config/h3_hardware.yaml" command="load"/>
+    <arg name="node_name" default="h3_hardware_interface" />
+    <arg name="robot_ns" default="h3"/>
+    <node name="$(arg node_name)" pkg="h3_hardware_interface" ns="$(arg robot_ns)"  type="h3_hardware_interface_node" output="screen"  respawn="true">
+    </node>
+    # Uncomment if you are using RPI
+    <node name="$(arg node_name)_indicator" pkg="h3_indicator" ns="$(arg robot_ns)"  type="h3_indicator_node.py">
+    </node>
+</launch>

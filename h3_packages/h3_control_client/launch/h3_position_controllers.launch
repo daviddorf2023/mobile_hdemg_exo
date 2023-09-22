@@ -1,0 +1,15 @@
+<launch>
+    <rosparam file="$(find h3_control_client)/config/h3_position_controllers.yaml" command="load"/>
+    <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
+    output="screen" ns="/h3" args=" /h3/state_controller
+    /h3/right_hip_position_controller
+    /h3/right_knee_position_controller
+    /h3/right_ankle_position_controller 
+    /h3/left_hip_position_controller 
+    /h3/left_knee_position_controller
+    /h3/left_ankle_position_controller
+    /h3/robot_config_controller
+    /h3/robot_state_controller">
+    </node>
+
+</launch>

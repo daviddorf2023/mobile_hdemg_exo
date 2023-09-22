@@ -1,0 +1,7 @@
+<library path="lib/libh3_config_controller">
+  <class name="h3_config_controller/H3ConfigController" type="h3_controller_interface::H3ConfigController" base_class_type="controller_interface::ControllerBase">
+  <description>
+    This is a controller plugin to configuere the Exo-H3.
+  </description>
+  </class>
+</library>

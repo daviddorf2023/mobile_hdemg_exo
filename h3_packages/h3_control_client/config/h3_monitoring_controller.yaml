@@ -1,0 +1,10 @@
+h3:
+   # Publish all joint states -----------------------------------
+   joint_state_controller:
+    type: joint_state_controller/JointStateController
+    publish_rate: 100 #100  
+   # Publish robot state-----------------------------------
+   state_controller:
+    type: h3_robot_state_controller/H3RobotStateController
+    robot_name: exo_h3
+    publish_rate: 100
