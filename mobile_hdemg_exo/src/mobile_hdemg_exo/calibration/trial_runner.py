@@ -14,7 +14,6 @@ import rospy
 from scipy.interpolate import interp1d
 
 # TODO: Generalize for 3 muscles
-# TODO: Implement a battery voltage check by subscribing to /h3/robot_states
 
 
 class TrialRunner:
@@ -25,6 +24,7 @@ class TrialRunner:
     _timescale_sub: rospy.Subscriber
     _position_pub: rospy.Publisher
     _timescale: TimescaleAxis
+    _battery_sub: rospy.Subscriber
     trials: [Trial] = []
 
     def __init__(self, trials: [Trial]):
@@ -34,6 +34,7 @@ class TrialRunner:
         self._emg_array = []
         self._torque_array = []
         self._time_array = []
+        self._battery_voltage = []
         self.side = rospy.get_param("/side")
         self.device = rospy.get_param("/device")
 
@@ -52,6 +53,8 @@ class TrialRunner:
                                          lambda x: self._emg_array.append(x.data.data))
         self._timescale_sub = rospy.Subscriber('/h3/robot_states', State,
                                                lambda x: self._time_array.append(x.header.seq))
+        self._battery_sub = rospy.Subscriber('/h3/robot_states', State,
+                                             lambda x: self._battery_voltage.append(x.battery_voltage))
 
         # Publisher for position control
         if (self.side == "Left"):
@@ -88,6 +91,13 @@ class TrialRunner:
         self.engine.setProperty('volume', 1.0)
         self.voices = self.engine.getProperty('voices')
         self.engine.setProperty('voice', self.voices[2].id)
+
+    def battery_check(self):
+        if self._battery_voltage[-1] < 18.0:
+            message = "Please charge the battery"
+            self.update_gui(message)
+            rospy.sleep(5)
+            self.battery_check()
 
     def collect_trial_data(self):
         if self._torque_sub is None or self._emg_sub is None or self._position_pub is None:
