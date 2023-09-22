@@ -115,19 +115,11 @@ class TrialRunner:
             else:
                 trial.MVC_torque = 2.0
 
-            # Interpolate the torque data to a common time base
-            torque_interp = interp1d(
-                self._time_array, self._torque_array, kind='linear')
-
-            # Create a new time array with a common time base
-            time_interp = np.linspace(
-                self._time_array[0], self._time_array[-1], num=len(self._emg_array))
-
             # Plot the torque and hd-EMG data with the same time axis
-            plt.plot(time_interp, torque_interp(time_interp), label='Torque')
-            plt.plot(self._time_array, self._emg_array, label='hd-EMG')
+            plt.plot(self._time_array, self._torque_array, label='Torque')
+            plt.plot(self._time_array, self._emg_array, label='EMG')
             plt.legend()
-            plt.savefig("torque_emg_plot.png")
+            plt.show()
 
             # Save the trial data
             trial.emg_array = self._emg_array.copy()

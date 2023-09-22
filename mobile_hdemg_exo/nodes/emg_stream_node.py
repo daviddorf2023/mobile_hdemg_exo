@@ -65,8 +65,10 @@ class EMGStreamNode:
                 "/file_dir") + "/src/mobile_hdemg_exo/new_emg_muovi_data1.csv"
             self.streamer = EMGFileStreamer(
                 MUSCLE_COUNT, SAMPLING_FREQUENCY, self.path)
-        # Match the streamer's publishing rate
-        self.r = rospy.Rate(self.streamer.sample_frequency)
+        # # Match the streamer's publishing rate
+        # self.r = rospy.Rate(self.streamer.sample_frequency)
+        # Match the robot state publishing rate for plotting both on same time axis
+        self.r = rospy.Rate(100)
         self.streamer.initialize()
 
         # Initialize the EMG processor

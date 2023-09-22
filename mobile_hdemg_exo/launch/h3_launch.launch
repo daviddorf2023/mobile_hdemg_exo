@@ -18,6 +18,6 @@
     <node name = 'calibrate_node' pkg = 'mobile_hdemg_exo' type = 'calibrate_node.py' output = 'screen' />
     <node name = 'torque_output_node' pkg = 'mobile_hdemg_exo' type = 'torque_output_node.py' output = 'screen' />
 
-    <!-- <include file = '$(find h3_launch)/launch/h3_launch_torque_control.launch' /> -->
+    <include file = '$(find h3_launch)/launch/h3_launch_torque_control.launch' />
 
 </launch>
