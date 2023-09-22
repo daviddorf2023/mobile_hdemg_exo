@@ -13,6 +13,7 @@ import pyttsx3
 import rospy
 
 # TODO: Generalize for 3 muscles
+# TODO: Reimplement MVC calculation and trajectory generation
 
 
 class TrialRunner:
@@ -114,11 +115,14 @@ class TrialRunner:
             else:
                 trial.MVC_torque = 2.0
 
-            # Plot the torque and hd-EMG data with the same time axis, divided by 100Hz to convert to seconds
-            plt.plot(self._time_array / 100,
-                     self._torque_array, label='Torque')
-            plt.plot(self._time_array / 100, self._emg_array[:len(
-                self._torque_array)], label='EMG')  # Sometimes has an extra element
+            # Convert time array to a NumPy array and divide by 100Hz to convert to seconds
+            time_array_copy = self._time_array.copy()
+            time_axis = np.array(time_array_copy) / 100.0
+
+            # Plot the torque and hd-EMG data with the same time axis
+            plt.plot(time_axis, self._torque_array[:len(
+                time_axis)], label='Torque')
+            plt.plot(time_axis, self._emg_array[:len(time_axis)], label='EMG')
             plt.xlabel('Time (s)')
             plt.ylabel('Torque (Nm) / EMG (mV)')
             plt.title('Torque Sensor and EMG Data')
