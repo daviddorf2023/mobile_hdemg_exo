@@ -11,10 +11,12 @@ from mobile_hdemg_exo.utils.timescale_axis import TimescaleAxis
 import tkinter as tk
 import pyttsx3
 import rospy
+from scipy.interpolate import interp1d
 
-# TODO: Reimplement torque smoothing
 # TODO: Generalize for 3 muscles
 # TODO: Implement a battery voltage check by subscribing to /h3/robot_states
+
+
 class TrialRunner:
     _r: rospy.Rate
 
@@ -47,31 +49,37 @@ class TrialRunner:
         self._torque_sub = rospy.Subscriber('/h3/robot_states', State,
                                             lambda x: self._torque_array.append(x.joint_torque_sensor[self.side_id]))
         self._emg_sub = rospy.Subscriber('/hdEMG_stream_processed', hdemg,
-                                            lambda x: self._emg_array.append(x.data.data))
+                                         lambda x: self._emg_array.append(x.data.data))
         self._timescale_sub = rospy.Subscriber('/h3/robot_states', State,
-                                            lambda x: self._time_array.append(x.header.seq))
+                                               lambda x: self._time_array.append(x.header.seq))
 
         # Publisher for position control
         if (self.side == "Left"):
-            self._position_pub = rospy.Publisher('/h3/left_ankle_position_controller/command', Float64, queue_size=0)
+            self._position_pub = rospy.Publisher(
+                '/h3/left_ankle_position_controller/command', Float64, queue_size=0)
         elif (self.side == "Right"):
-            self._position_pub = rospy.Publisher('/h3/right_ankle_position_controller/command', Float64, queue_size=0)
+            self._position_pub = rospy.Publisher(
+                '/h3/right_ankle_position_controller/command', Float64, queue_size=0)
         elif (self.device == "Simulation"):
-            self._position_pub = rospy.Publisher('/h3/right_ankle_position_controller/command', Float64, queue_size=0)
+            self._position_pub = rospy.Publisher(
+                '/h3/right_ankle_position_controller/command', Float64, queue_size=0)
         else:
-            raise NameError("Side name must be Left, Right, or the system must be in Simulation device mode")
+            raise NameError(
+                "Side name must be Left, Right, or the system must be in Simulation device mode")
 
         # Create a tkinter window
         self.window = tk.Tk()
 
         # Set the window title
-        self.window.title("Shirley Ryan AbilityLab - Patient Instruction for Ankle Exoskeleton")
+        self.window.title(
+            "Shirley Ryan AbilityLab - Patient Instruction for Ankle Exoskeleton")
 
         # Set the window to fullscreen
         self.window.attributes('-fullscreen', True)
 
         # Create a label to display the messages
-        self.message_label = tk.Label(self.window, font=("Calibri", 80), pady=20)
+        self.message_label = tk.Label(
+            self.window, font=("Calibri", 80), pady=20)
         self.message_label.pack(expand=True)
 
         # Initialize the text-to-speech engine
@@ -83,7 +91,8 @@ class TrialRunner:
 
     def collect_trial_data(self):
         if self._torque_sub is None or self._emg_sub is None or self._position_pub is None:
-            raise NameError("One of self.torque_sub, self.emg_sub, self.pos_pub is None. Cannot run calibrate()")
+            raise NameError(
+                "One of self.torque_sub, self.emg_sub, self.pos_pub is None. Cannot run calibrate()")
 
         for trial in self.trials:
             self._set_exo_angle(trial.joint_angle)
@@ -96,18 +105,24 @@ class TrialRunner:
             else:
                 trial.MVC_torque = 2.0
 
-            plt.plot(self._time_array, self._torque_array, color='red')
-            plt.xlabel("Time (s)")
-            plt.ylabel("Torque (Nm)")
-            plt.show()
+            # Interpolate the torque data to a common time base
+            torque_interp = interp1d(
+                self._time_array, self._torque_array, kind='linear')
 
-            plt.plot(self._emg_array, color='blue')
-            plt.show()
+            # Create a new time array with a common time base
+            time_interp = np.linspace(
+                self._time_array[0], self._time_array[-1], num=len(self._emg_array))
+
+            # Plot the torque and hd-EMG data with the same time axis
+            plt.plot(time_interp, torque_interp(time_interp), label='Torque')
+            plt.plot(self._time_array, self._emg_array, label='hd-EMG')
+            plt.legend()
+            plt.savefig("torque_emg_plot.png")
 
             # Save the trial data
             trial.emg_array = self._emg_array.copy()
             trial.torque_array = self._torque_array.copy()
-        
+
             # Calculate the EMG coefficients from the EMG data and torque data
             emg_array = np.array(trial.emg_array)
             emg_array = emg_array[~np.isnan(emg_array)]
@@ -126,10 +141,11 @@ class TrialRunner:
             rospy.set_param('emg_coef_up', float(emg_coef_up))
             rospy.set_param('emg_avg', float(emg_avg))
             rospy.set_param('emg_coef_down', float(emg_coef_down))
+
             rospy.set_param("calibrated", True)
 
             self._reset_measures()
-    
+
     def update_gui(self, message):
         self.engine.say(message)
         self.engine.runAndWait()
@@ -145,11 +161,12 @@ class TrialRunner:
         self.update_gui(message)
 
         print("REST")
-        
+
         rospy.sleep(5)
         baseline_torque = np.median(self._torque_array)
         min_torque = np.min(np.abs(self._torque_array))
-        print(f"Collected baseline_torque={baseline_torque} and min_torque={min_torque}")
+        print(
+            f"Collected baseline_torque={baseline_torque} and min_torque={min_torque}")
 
         return baseline_torque, min_torque
 
