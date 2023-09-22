@@ -10,7 +10,7 @@ import pandas as pd
 import tensorflow as tf
 
 import mobile_hdemg_exo.qc.qc_communication as comm
-from mobile_hdemg_exo.hdEMG_DCNN import load_model_custom
+from mobile_hdemg_exo.model.hdEMG_DCNN import load_model_custom
 
 
 # import matplotlib.pyplot as plt

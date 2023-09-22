@@ -4,7 +4,7 @@ from scipy import signal
 from std_msgs.msg import Float64MultiArray, MultiArrayDimension
 from mobile_hdemg_exo.msg import hdemg
 
-from mobile_hdemg_exo.qc_predict import MUdecomposer
+from mobile_hdemg_exo.model.qc_predict import MUdecomposer
 
 CST_prediction_step_size = 40  # samples
 
