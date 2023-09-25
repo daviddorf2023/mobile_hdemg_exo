@@ -43,8 +43,9 @@ class EMGStreamNode:
         rospy.init_node('emg_stream_node')
         self.start_time = rospy.get_time()
         self.streamer = None
-        self.processed_pub = rospy.Publisher(
+        self.emg_pub = rospy.Publisher(
             'hdEMG_stream_processed', hdemg, queue_size=1)
+        self.imu_pub = rospy.Publisher('imu_stream', hdemg, queue_size=1)
         self.old_reading = 0.
 
         # Initialize the PWM output pin
@@ -65,10 +66,8 @@ class EMGStreamNode:
                 "/file_dir") + "/src/mobile_hdemg_exo/new_emg_muovi_data1.csv"
             self.streamer = EMGFileStreamer(
                 MUSCLE_COUNT, SAMPLING_FREQUENCY, self.path)
-        # # Match the streamer's publishing rate
-        # self.r = rospy.Rate(self.streamer.sample_frequency)
-        # Match the robot state publishing rate for plotting both on same time axis
-        self.r = rospy.Rate(100)
+        # Match the streamer's publishing rate
+        self.r = rospy.Rate(self.streamer.sample_frequency)
         self.streamer.initialize()
 
         # Initialize the EMG processor
@@ -120,23 +119,27 @@ class EMGStreamNode:
             # Each MULTIPLE IN has 64 channels
             hdemg_reading = raw_reading[offset:offset + MUSCLE_COUNT * 64]
         elif EMG_DEVICE == 'MuoviPro':
-            # Each Muovi+ probe has 70 channels. Keep only first 64 channels, last 6 are IMU data
+            # Each Muovi+ EMG probe has 70 channels. Last 6 channels are IMU data
             hdemg_reading = raw_reading[:MUSCLE_COUNT * 64]
+            imu_reading = raw_reading[:70]
         else:
             hdemg_reading = raw_reading  # Simulation data is already in hdemg format
 
         if LATENCY_ANALYZER_MODE and EMG_DEVICE == 'Quattrocento':
-            processed_reading = raw_reading[96]
+            processed_emg = raw_reading[96]
         elif LATENCY_ANALYZER_MODE and EMG_DEVICE == 'MuoviPro':
-            processed_reading = hdemg_reading[-1]
+            processed_emg = hdemg_reading[-1]
         elif EMG_PROCESS_METHOD == 'RMS':
             rms_reading = self.smoothed_rms(hdemg_reading)
-            processed_reading = (
+            processed_emg = (
                 rms_reading + self.old_reading) / 2  # Low-pass filter
-            self.old_reading = processed_reading
+            self.old_reading = processed_emg
         else:
-            processed_reading = self.processor.process_reading(hdemg_reading)
-        self.publish_reading(self.processed_pub, processed_reading)
+            processed_emg = self.processor.process_reading(hdemg_reading)
+
+        processed_imu = self.smoothed_rms(imu_reading)
+        self.publish_reading(self.imu_pub, processed_imu)
+        self.publish_reading(self.emg_pub, processed_emg)
         self.r.sleep()
 
 

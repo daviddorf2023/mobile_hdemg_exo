@@ -13,4 +13,4 @@ class CollectionSnapshot:
         self._position = len(self._collection)
 
     def read(self) -> Collection:
-        return self._collection[self._position]
+        return self._collection[self._position:]

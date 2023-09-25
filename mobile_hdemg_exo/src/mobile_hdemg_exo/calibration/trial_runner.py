@@ -32,9 +32,12 @@ class TrialRunner:
         self._r = rospy.Rate(100)
         self._timescale = TimescaleAxis()
         self._emg_array = []
+        self._emg_time_array = []
         self._torque_array = []
-        self._time_array = []
+        self._torque_time_array = []
         self._battery_voltage = []
+        self._imu_array = []
+        self._imu_time_array = []
         self.side = rospy.get_param("/side")
         self.device = rospy.get_param("/device")
 
@@ -47,14 +50,14 @@ class TrialRunner:
             self.side_id = 1
 
         # Subscribers for the torque and hd-EMG publishers
-        self._torque_sub = rospy.Subscriber('/h3/robot_states', State,
-                                            lambda x: self._torque_array.append(x.joint_torque_sensor[self.side_id]))
-        self._emg_sub = rospy.Subscriber('/hdEMG_stream_processed', hdemg,
-                                         lambda x: self._emg_array.append(x.data.data))
-        self._timescale_sub = rospy.Subscriber('/h3/robot_states', State,
-                                               lambda x: self._time_array.append(x.header.seq))
-        self._battery_sub = rospy.Subscriber('/h3/robot_states', State,
-                                             lambda x: self._battery_voltage.append(x.battery_voltage))
+        self._torque_sub = rospy.Subscriber(
+            '/h3/robot_states', State, self.torque_callback)
+        self._emg_sub = rospy.Subscriber(
+            '/hdEMG_stream_processed', hdemg, self.emg_callback)
+        self._imu_sub = rospy.Subscriber(
+            '/imu_stream', hdemg, self.imu_callback)
+        self._battery_sub = rospy.Subscriber(
+            '/h3/robot_states', State, self.battery_callback)
 
         # Publisher for position control
         if (self.side == "Left"):
@@ -92,12 +95,22 @@ class TrialRunner:
         self.voices = self.engine.getProperty('voices')
         self.engine.setProperty('voice', self.voices[2].id)
 
-    def battery_check(self):
-        if self._battery_voltage[-1] < 18.0:
-            message = "Please charge the battery"
-            self.update_gui(message)
-            rospy.sleep(5)
-            self.battery_check()
+    def emg_callback(self, data):
+        self._emg_array.append(data.data.data)
+        self._emg_time_array.append(data.header.stamp.to_sec())
+
+    def torque_callback(self, data):
+        self._torque_array.append(data.joint_torque_sensor[self.side_id])
+        self._torque_time_array.append(data.header.stamp.to_sec())
+
+    def battery_callback(self, data):
+        if data.battery_voltage < 18.0 and data.battery_voltage > 1:
+            print(data.battery_voltage)
+            print("Please charge the battery")
+
+    def imu_callback(self, data):
+        self._imu_array.append(data.data.data)
+        self._imu_time_array.append(data.header.stamp.to_sec())
 
     def collect_trial_data(self):
         if self._torque_sub is None or self._emg_sub is None or self._position_pub is None:
@@ -115,14 +128,10 @@ class TrialRunner:
             else:
                 trial.MVC_torque = 2.0
 
-            # Convert time array to a NumPy array and divide by 100Hz to convert to seconds
-            time_array_copy = self._time_array.copy()
-            time_axis = np.array(time_array_copy) / 100.0
-
             # Plot the torque and hd-EMG data with the same time axis
-            plt.plot(time_axis, self._torque_array[:len(
-                time_axis)], label='Torque')
-            plt.plot(time_axis, self._emg_array[:len(time_axis)], label='EMG')
+            plt.plot(self._torque_time_array,
+                     self._torque_array, label='Torque')
+            plt.plot(self._emg_time_array, self._emg_array, label='EMG')
             plt.xlabel('Time (s)')
             plt.ylabel('Torque (Nm) / EMG (mV)')
             plt.title('Torque Sensor and EMG Data')
@@ -230,6 +239,9 @@ class TrialRunner:
         rospy.sleep(5)
 
     def _reset_measures(self):
-        self._torque_array.clear()
-        self._emg_array.clear()
-        self._time_array.clear()
+        # TODO: Reimplement with separate arrays for each part of the trial, as well as whole trial
+        # self._torque_array.clear()
+        # self._emg_array.clear()
+        # self._torque_time_array.clear()
+        # self._emg_time_array.clear()
+        return 0

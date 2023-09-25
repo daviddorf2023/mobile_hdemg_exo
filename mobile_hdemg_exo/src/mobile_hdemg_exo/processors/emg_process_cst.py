@@ -23,7 +23,8 @@ class EMGProcessorCST:
     def __init__(self):
         # Neural Net Set-Up
         path = rospy.get_param("/file_dir")
-        model_file = path + "/src/mobile_hdemg_exo/" + "best_model_cnn-allrun5_c8b_mix4-SG0-ST20-WS40-MU[0, 1, 2, 3]_1644222946_f.h5"
+        model_file = path + "/src/mobile_hdemg_exo/" + \
+            "best_model_cnn-allrun5_c8b_mix4-SG0-ST20-WS40-MU[0, 1, 2, 3]_1644222946_f.h5"
         self.model = MUdecomposer(model_file)
 
     def process_reading(self, reading):
@@ -66,7 +67,8 @@ class EMGProcessorCST:
         """
         Convolve each muscle's over a 40ms hanning window to estimate the cumulative spike train
         """
-        window_hanning = np.hanning(np.round(0.2 * 512))  # 512 = NODE_SAMPLING_FREQUENCY
+        window_hanning = np.hanning(
+            np.round(0.2 * 512))  # 512 = NODE_SAMPLING_FREQUENCY
 
         muscle_count = np.shape(self.cst_readings)[1]
         # Convolve each muscle's activation over the hanning window
