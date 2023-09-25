@@ -4,16 +4,12 @@ import os
 import socket
 import time
 from multiprocessing import Process, Queue
-
 import numpy as np
 import pandas as pd
 import tensorflow as tf
-
 import mobile_hdemg_exo.qc.qc_communication as comm
 from mobile_hdemg_exo.model.hdEMG_DCNN import load_model_custom
-
-
-# import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 
 
 class MUdecomposer(object):
@@ -21,12 +17,19 @@ class MUdecomposer(object):
         if model_file == None:
             raise ValueError("No model file specified")
         self.model_file = model_file
-        # load model from h5 file
-        self.model = load_model_custom(model_file)
+        self.model = tf.lite.Interpreter(model_content=model_file)
+        self.model.allocate_tensors()
+        self.input_details = self.model.get_input_details()
+        self.output_details = self.model.get_output_details()
 
     def predict_MUs(self, hdEMG):
-        # predict and generate output
-        self.preds = self.model.predict(hdEMG)
+        self.model.set_tensor(self.input_details[0]["index"], hdEMG)
+        self.model.invoke()
+        result_1 = self.model.get_tensor(self.output_details[0]["index"])
+        result_2 = self.model.get_tensor(self.output_details[1]["index"])
+        result_3 = self.model.get_tensor(self.output_details[2]["index"])
+        result_4 = self.model.get_tensor(self.output_details[3]["index"])
+        self.preds = [result_2, result_4, result_3, result_1]
         self.preds_binary = tf.where(np.array(self.preds) >= 0.5, 1., 0.)
         return self.preds_binary
 
@@ -49,7 +52,8 @@ def plot_spikes(spike, munum):
     fig.suptitle('Spiking Activity', fontsize=14)
     for mun in range(munum):
         # Draw a spike raster plot for each motor unit
-        plt.eventplot(np.argwhere(spikeset[mun, :]).T, color=colorcodes[mun], linelengths=0.5, lineoffsets=mun + 1)
+        plt.eventplot(np.argwhere(
+            spikeset[mun, :]).T, color=colorcodes[mun], linelengths=0.5, lineoffsets=mun + 1)
 
     # Give y axis label for the spike raster plot
     plt.ylabel('MU number')
@@ -61,7 +65,8 @@ def save_predict(spike, tHist, munum, path, predfile):
     # Convert prediction data and timestamps to array and save
     spikeset = np.array(spike)
     hist = np.array(tHist)
-    spike_df = pd.DataFrame(np.column_stack((hist, spikeset.reshape(-1, munum))))
+    spike_df = pd.DataFrame(np.column_stack(
+        (hist, spikeset.reshape(-1, munum))))
     spike_df.columns = [['tHist'] + [f'MU{j}' for j in range(1, munum + 1)]]
     spike_df.to_csv(os.path.join(path, predfile), index=False)
 
@@ -74,7 +79,8 @@ def save_emg(data, timestamp, setnum, path, datafile):
     raw_df = pd.DataFrame(np.column_stack((timestamps, dataset)))
 
     channum = [str(n) for n in list(range(1, int(setnum / 2 + 1)))]
-    chanset = (['Raw GM'] + [''] * int(setnum / 2 - 1)) + (['Raw TA'] + [''] * int(setnum / 2 - 1))
+    chanset = (['Raw GM'] + [''] * int(setnum / 2 - 1)) + \
+        (['Raw TA'] + [''] * int(setnum / 2 - 1))
 
     chansets = [''] + chanset
     numsets = ['time'] + channum + channum
@@ -155,7 +161,8 @@ def emg_stream(queue, fsamp, nsec, q_socket, nchan, nbytes, chanset, setnum, ste
         force.append(sample_from_channels[384])
 
         if i % stepsize == 0 and i >= windowsize:
-            queue.put(np.multiply(np.array(data[(i - windowsize + 1):]).reshape(1, windowsize, setnum), matnorm))
+            queue.put(np.multiply(
+                np.array(data[(i - windowsize + 1):]).reshape(1, windowsize, setnum), matnorm))
 
     queue.put('DONE')
     print("emg_stream: " + str(time.time() - time1) + " seconds")
@@ -183,7 +190,7 @@ buffsize = 5
 
 # set save path
 # path = "C:\\Users\\MSHORT\\PycharmProjects\\emgStreaming\\data\\pilot_20210524"  # "C:/Users/jlevine/Desktop"
-# path = "C:\\opt\\ros\\noetic\\catkin2_ws\\src\\mobile_hdemg_exo"
+# path = "C:\\opt\\ros\\noetic\\catkin2_ws\\src\\talker_listener"
 # path = ""
 
 # initialize trial parameters
@@ -230,7 +237,8 @@ if __name__ == '__main__':
     port = 31000
 
     q_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    q_socket.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, nchan * fsamp * buffsize)
+    q_socket.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF,
+                        nchan * fsamp * buffsize)
     q_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     q_socket.setsockopt(socket.SOL_TCP, socket.TCP_NODELAY, 1)
 
@@ -247,7 +255,7 @@ if __name__ == '__main__':
     # Initialize EMG queue
     emg_queue = Queue()  # emg_stream() writes to emg_queue from _this_ process
 
-    ### emg_predict() reads from qc_queue as a separate process
+    # emg_predict() reads from qc_queue as a separate process
     predict_emg = Process(target=emg_predict, args=(emg_queue,))
     predict_emg.daemon = False
     predict_emg.start()  # Launch predict_emg() as a separate python process
