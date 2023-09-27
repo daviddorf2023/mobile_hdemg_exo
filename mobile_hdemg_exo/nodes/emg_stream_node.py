@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 
 import rospy
-from std_msgs.msg import Float64
+import numpy as np
+from std_msgs.msg import Float64, Float64MultiArray
 from mobile_hdemg_exo.msg import hdemg
 from mobile_hdemg_exo.processors.emg_process_cst import EMGProcessorCST
 from mobile_hdemg_exo.streamer.emg_file_streamer import EMGFileStreamer
 from mobile_hdemg_exo.streamer.emg_qc_streamer import EMGQCStreamer
 from mobile_hdemg_exo.streamer.emg_muovi_streamer import EMGMUOVIStreamer
+import RPi.GPIO as GPIO  # Latency analyzer dependency
+
 
 while not rospy.get_param("gui_completed"):
     rospy.sleep(0.1)
@@ -44,13 +47,12 @@ class EMGStreamNode:
         self.start_time = rospy.get_time()
         self.streamer = None
         self.emg_pub = rospy.Publisher(
-            'hdEMG_stream_processed', hdemg, queue_size=1)
-        self.imu_pub = rospy.Publisher('imu_stream', hdemg, queue_size=1)
+            'hdEMG_stream_processed', hdemg, queue_size=10)
+        self.imu_pub = rospy.Publisher('imu_stream', Float64MultiArray, queue_size=10)
         self.old_reading = 0.
 
         # Initialize the PWM output pin
         if LATENCY_ANALYZER_MODE:
-            import RPi.GPIO as GPIO
             GPIO.setmode(GPIO.BOARD)
             GPIO.setup(PWM_OUTPUT_PIN, GPIO.OUT, initial=GPIO.HIGH)
             self.p = GPIO.PWM(PWM_OUTPUT_PIN, 50)
@@ -75,20 +77,6 @@ class EMGStreamNode:
         if EMG_PROCESS_METHOD == 'CST':
             self.processor = EMGProcessorCST()
 
-    def smoothed_rms(self, hdemg_reading):
-        """
-        Calculates RMS emg.
-
-        Args:
-            hdemg_reading: A list of integers representing an EMG reading.
-
-        Returns:
-            A float representing the RMS EMG reading.
-        """
-        sum_squares = sum(x**2 for x in hdemg_reading)
-        rms_muscle_reading = (sum_squares / len(hdemg_reading)) ** 0.5
-        return rms_muscle_reading
-
     def publish_reading(self, publisher: rospy.topics.Publisher, reading: float):
         """
         Publishes the EMG reading to a ROS topic.
@@ -98,7 +86,7 @@ class EMGStreamNode:
             reading: A list of integers representing an EMG reading.
         """
         message = hdemg()
-        message.header.stamp = rospy.Time.now()
+        message.header.stamp = rospy.get_rostime()
         message.data = Float64(data=reading)
         publisher.publish(message)
 
@@ -114,6 +102,8 @@ class EMGStreamNode:
         to ROS topics.
         """
         raw_reading = self.streamer.stream_data()
+        
+        # Device-specific processing
         if EMG_DEVICE == 'Quattrocento':
             offset = 32 * MUSCLE_COUNT
             # Each MULTIPLE IN has 64 channels
@@ -121,25 +111,34 @@ class EMGStreamNode:
         elif EMG_DEVICE == 'MuoviPro':
             # Each Muovi+ EMG probe has 70 channels. Last 6 channels are IMU data
             hdemg_reading = raw_reading[:MUSCLE_COUNT * 64]
-            imu_reading = raw_reading[:70]
-        else:
+            imu_reading = raw_reading[64:]
+        elif EMG_DEVICE == 'Simulation':
             hdemg_reading = raw_reading  # Simulation data is already in hdemg format
-
-        if LATENCY_ANALYZER_MODE and EMG_DEVICE == 'Quattrocento':
-            processed_emg = raw_reading[96]
-        elif LATENCY_ANALYZER_MODE and EMG_DEVICE == 'MuoviPro':
-            processed_emg = hdemg_reading[-1]
-        elif EMG_PROCESS_METHOD == 'RMS':
-            rms_reading = self.smoothed_rms(hdemg_reading)
-            processed_emg = (
-                rms_reading + self.old_reading) / 2  # Low-pass filter
-            self.old_reading = processed_emg
         else:
-            processed_emg = self.processor.process_reading(hdemg_reading)
+            raise ValueError('Invalid EMG_DEVICE')
 
-        processed_imu = self.smoothed_rms(imu_reading)
-        self.publish_reading(self.imu_pub, processed_imu)
-        self.publish_reading(self.emg_pub, processed_emg)
+        # Method-specific processing
+        if LATENCY_ANALYZER_MODE and EMG_DEVICE == 'Quattrocento':
+            processed_emg = raw_reading[96]  # Auxiliary channel 1
+        elif LATENCY_ANALYZER_MODE and EMG_DEVICE == 'MuoviPro':
+            processed_emg = hdemg_reading[-1]  # Last channel is auxiliary
+        elif EMG_PROCESS_METHOD == 'RMS':
+            processed_emg = (np.mean(hdemg_reading ** 2))**0.5
+            self.publish_reading(self.emg_pub, processed_emg)
+        elif EMG_PROCESS_METHOD == 'CST':
+            processed_emg = self.processor.process_reading(hdemg_reading)
+            self.processor.publish_reading(self.emg_pub)
+        elif EMG_PROCESS_METHOD == 'Raw':
+            processed_emg = np.mean(hdemg_reading)
+            self.publish_reading(self.emg_pub, processed_emg)
+        else:
+            raise ValueError('Invalid EMG_PROCESS_METHOD')
+
+        # Publish IMU data
+        imu_msg = Float64MultiArray()
+        imu_msg.data = imu_reading
+        self.imu_pub.publish(imu_msg)
+
         self.r.sleep()
 
 

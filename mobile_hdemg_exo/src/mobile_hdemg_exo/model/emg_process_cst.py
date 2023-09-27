@@ -1,7 +1,7 @@
 import numpy as np
 import rospy
 from scipy import signal
-from std_msgs.msg import Float64MultiArray, MultiArrayDimension
+from std_msgs.msg import Float64
 from mobile_hdemg_exo.msg import hdemg
 from mobile_hdemg_exo.model.qc_predict import MUdecomposer
 
@@ -87,12 +87,6 @@ class EMGProcessorCST:
         stamped_sample = hdemg()
         stamped_sample.header.stamp = rospy.get_rostime()
 
-        sample = Float64MultiArray()
+        sample = Float64()
         sample.data = reading
-        sample.layout.dim = [
-            MultiArrayDimension("rows", 1, reading.shape[0]),
-            MultiArrayDimension("columns", 1, reading.shape[1]),
-        ]
-
-        stamped_sample.data = sample
         publisher.publish(stamped_sample)
