@@ -53,6 +53,7 @@ add_message_files(
         FILES
         State.msg
         hdemg.msg
+        imu.msg
 )
 
 ## Generate services in the 'srv' folder

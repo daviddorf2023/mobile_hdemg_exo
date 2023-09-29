@@ -3,7 +3,7 @@
 import rospy
 import numpy as np
 from std_msgs.msg import Float64, Float64MultiArray
-from mobile_hdemg_exo.msg import hdemg
+from mobile_hdemg_exo.msg import hdemg, imu
 from mobile_hdemg_exo.processors.emg_process_cst import EMGProcessorCST
 from mobile_hdemg_exo.streamer.emg_file_streamer import EMGFileStreamer
 from mobile_hdemg_exo.streamer.emg_qc_streamer import EMGQCStreamer
@@ -48,7 +48,7 @@ class EMGStreamNode:
         self.streamer = None
         self.emg_pub = rospy.Publisher(
             'hdEMG_stream_processed', hdemg, queue_size=10)
-        self.imu_pub = rospy.Publisher('imu_stream', Float64MultiArray, queue_size=10)
+        self.imu_pub = rospy.Publisher('imu_stream', imu, queue_size=10)
         self.old_reading = 0.
 
         # Initialize the PWM output pin
@@ -102,7 +102,7 @@ class EMGStreamNode:
         to ROS topics.
         """
         raw_reading = self.streamer.stream_data()
-        
+
         # Device-specific processing
         if EMG_DEVICE == 'Quattrocento':
             offset = 32 * MUSCLE_COUNT
@@ -111,7 +111,12 @@ class EMGStreamNode:
         elif EMG_DEVICE == 'MuoviPro':
             # Each Muovi+ EMG probe has 70 channels. Last 6 channels are IMU data
             hdemg_reading = raw_reading[:MUSCLE_COUNT * 64]
-            imu_reading = raw_reading[64:]
+            # Publish IMU data
+            imu_reading = raw_reading[64:70]
+            imu_msg = imu()
+            imu_msg.header.stamp = rospy.get_rostime()
+            imu_msg.data = Float64MultiArray(data=imu_reading)
+            self.imu_pub.publish(imu_msg)
         elif EMG_DEVICE == 'Simulation':
             hdemg_reading = raw_reading  # Simulation data is already in hdemg format
         else:
@@ -134,11 +139,7 @@ class EMGStreamNode:
         else:
             raise ValueError('Invalid EMG_PROCESS_METHOD')
 
-        # Publish IMU data
-        imu_msg = Float64MultiArray()
-        imu_msg.data = imu_reading
-        self.imu_pub.publish(imu_msg)
-
+        # Publish processed data at the same rate as the streamer
         self.r.sleep()
 
 

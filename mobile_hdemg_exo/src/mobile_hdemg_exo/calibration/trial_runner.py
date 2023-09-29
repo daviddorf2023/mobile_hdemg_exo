@@ -2,8 +2,8 @@ import numpy as np
 import rospy
 from h3_msgs.msg import State
 from matplotlib import pyplot as plt
-from std_msgs.msg import Float64
-from mobile_hdemg_exo.msg import hdemg
+from std_msgs.msg import Float64, Float64MultiArray
+from mobile_hdemg_exo.msg import hdemg, imu
 from mobile_hdemg_exo.calibration.trajectory_generator import TrajectoryGenerator
 from mobile_hdemg_exo.calibration.trial import Trial, TrialDirection
 from mobile_hdemg_exo.utils.rospy_countdown import RospyCountdown
@@ -55,7 +55,7 @@ class TrialRunner:
         self._emg_sub = rospy.Subscriber(
             '/hdEMG_stream_processed', hdemg, self.emg_callback)
         self._imu_sub = rospy.Subscriber(
-            '/imu_stream', hdemg, self.imu_callback)
+            '/imu_stream', imu, self.imu_callback)
         self._battery_sub = rospy.Subscriber(
             '/h3/robot_states', State, self.battery_callback)
 
@@ -103,14 +103,14 @@ class TrialRunner:
         self._torque_array.append(data.joint_torque_sensor[self.side_id])
         self._torque_time_array.append(data.header.stamp.to_sec())
 
+    def imu_callback(self, data):
+        self._imu_array.append(data.data)
+        self._imu_time_array.append(data.header.stamp.to_sec())
+
     def battery_callback(self, data):
         if data.battery_voltage < 18.0 and data.battery_voltage > 1:
             print(data.battery_voltage)
             print("Please charge the battery")
-
-    def imu_callback(self, data):
-        self._imu_array.append(data.data.data)
-        self._imu_time_array.append(data.header.stamp.to_sec())
 
     def collect_trial_data(self):
         if self._torque_sub is None or self._emg_sub is None or self._position_pub is None:
