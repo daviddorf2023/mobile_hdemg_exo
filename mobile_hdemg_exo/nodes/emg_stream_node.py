@@ -8,6 +8,7 @@ from mobile_hdemg_exo.processors.emg_process_cst import EMGProcessorCST
 from mobile_hdemg_exo.streamer.emg_file_streamer import EMGFileStreamer
 from mobile_hdemg_exo.streamer.emg_qc_streamer import EMGQCStreamer
 from mobile_hdemg_exo.streamer.emg_muovi_streamer import EMGMUOVIStreamer
+from mobile_hdemg_exo.utils.moving_average import MovingAverage
 import RPi.GPIO as GPIO  # Latency analyzer dependency
 
 
@@ -129,10 +130,12 @@ class EMGStreamNode:
             processed_emg = hdemg_reading[-1]  # Last channel is auxiliary
         elif EMG_PROCESS_METHOD == 'RMS':
             processed_emg = (np.mean(hdemg_reading ** 2))**0.5
-            self.publish_reading(self.emg_pub, processed_emg)
+            smooth_emg = MovingAverage(100).get_smoothed_value(processed_emg)
+            self.publish_reading(self.emg_pub, smooth_emg)
         elif EMG_PROCESS_METHOD == 'CST':
             processed_emg = self.processor.process_reading(hdemg_reading)
-            self.processor.publish_reading(self.emg_pub)
+            smooth_emg = MovingAverage(100).get_smoothed_value(processed_emg)
+            self.processor.publish_reading(self.emg_pub, smooth_emg)
         elif EMG_PROCESS_METHOD == 'Raw':
             processed_emg = np.mean(hdemg_reading)
             self.publish_reading(self.emg_pub, processed_emg)
