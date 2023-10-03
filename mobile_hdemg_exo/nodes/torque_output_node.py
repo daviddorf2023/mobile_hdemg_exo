@@ -4,6 +4,7 @@ from h3_msgs.msg import State
 from mobile_hdemg_exo.msg import hdemg
 from mobile_hdemg_exo.streamer.emg_qc_streamer import EMGQCStreamer
 from mobile_hdemg_exo.streamer.emg_muovi_streamer import EMGMUOVIStreamer
+from mobile_hdemg_exo.utils.moving_average import MovingAverage
 
 while not rospy.get_param("calibrated"):
     rospy.sleep(0.1)
@@ -28,13 +29,11 @@ class TorqueOutputNode:
             self.streamer = EMGMUOVIStreamer(MUSCLE_COUNT)
         self.emg_sub = rospy.Subscriber(
             '/hdEMG_stream_processed', hdemg, self.emg_callback)
-        self.sensor_sub = rospy.Subscriber(
+        self.torque_sensor_sub = rospy.Subscriber(
             '/h3/robot_states', State, self.sensor_callback)
         self.emg_data = 0
-        self.emg_coef_up = rospy.get_param("emg_coef_up")
-        self.emg_avg = rospy.get_param("emg_avg")
-        self.emg_coef_down = rospy.get_param("emg_coef_down")
         self.old_torque = 0
+        self.emg_coef = rospy.get_param("/emg_coef")
 
     def sensor_callback(self, sensor_reading):
         ''' Callback for /h3/robot_states. Reads sensor messages from the h3 and saves them in class variables.
@@ -61,10 +60,8 @@ class TorqueOutputNode:
             self.torque_command = self.emg_coef_up * self.emg_data
         else:
             self.torque_command = 0
-
-        smooth_torque_command = 0.5 * self.old_torque + 0.5 * self.torque_command
-        self.old_torque = smooth_torque_command
-
+        smooth_torque_command = MovingAverage(100).get_smoothed_value(
+            self.torque_command)
         self.torque_pub.publish(smooth_torque_command)
         r.sleep()
 

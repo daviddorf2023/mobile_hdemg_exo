@@ -1,36 +1,26 @@
 import numpy as np
 import rospy
 from h3_msgs.msg import State
-from matplotlib import pyplot as plt
-from std_msgs.msg import Float64, Float64MultiArray
+from std_msgs.msg import Float64
 from mobile_hdemg_exo.msg import hdemg, imu
-from mobile_hdemg_exo.calibration.trajectory_generator import TrajectoryGenerator
+from matplotlib import pyplot as plt
 from mobile_hdemg_exo.calibration.trial import Trial, TrialDirection
-from mobile_hdemg_exo.utils.rospy_countdown import RospyCountdown
-from mobile_hdemg_exo.utils.timescale_axis import TimescaleAxis
 import tkinter as tk
 import pyttsx3
 import rospy
 
-# TODO: Generalize for 3 muscles
-# TODO: Reimplement MVC calculation and trajectory generation
-
 
 class TrialRunner:
     _r: rospy.Rate
-
     _emg_sub: rospy.Subscriber
     _torque_sub: rospy.Subscriber
-    _timescale_sub: rospy.Subscriber
-    _position_pub: rospy.Publisher
-    _timescale: TimescaleAxis
     _battery_sub: rospy.Subscriber
+    _position_pub: rospy.Publisher
     trials: [Trial] = []
 
     def __init__(self, trials: [Trial]):
         self.trials = trials
         self._r = rospy.Rate(100)
-        self._timescale = TimescaleAxis()
         self._emg_array = []
         self._emg_time_array = []
         self._torque_array = []
@@ -38,6 +28,7 @@ class TrialRunner:
         self._battery_voltage = []
         self._imu_array = []
         self._imu_time_array = []
+        self._MVC_torque_array = []
         self.side = rospy.get_param("/side")
         self.device = rospy.get_param("/device")
 
@@ -102,6 +93,7 @@ class TrialRunner:
     def torque_callback(self, data):
         self._torque_array.append(data.joint_torque_sensor[self.side_id])
         self._torque_time_array.append(data.header.stamp.to_sec())
+        self._MVC_torque_array.append(data.joint_torque_sensor[self.side_id])
 
     def imu_callback(self, data):
         self._imu_array.append(data.data)
@@ -109,8 +101,8 @@ class TrialRunner:
 
     def battery_callback(self, data):
         if data.battery_voltage < 18.0 and data.battery_voltage > 1:
-            print(data.battery_voltage)
-            print("Please charge the battery")
+            print("Please charge the battery" +
+                  f"Battery voltage: {data.battery_voltage}")
 
     def collect_trial_data(self):
         if self._torque_sub is None or self._emg_sub is None or self._position_pub is None:
@@ -144,26 +136,13 @@ class TrialRunner:
 
             # Calculate the EMG coefficients from the EMG data and torque data
             emg_array = np.array(trial.emg_array)
-            emg_array = emg_array[~np.isnan(emg_array)]
             torque_array = np.array(trial.torque_array)
 
-            emg_min = np.min(emg_array)
-            emg_avg = np.average(emg_array)
-            emg_max = np.max(emg_array)
+            emg_avg = np.average(torque_array) / np.average(emg_array)
+            torque_avg = np.average(emg_array) / np.average(torque_array)
 
-            torque_max = np.max(torque_array)
-            torque_min = np.min(torque_array)
-
-            emg_coef_up = torque_min / emg_min
-            emg_coef_down = torque_max / emg_max
-
-            rospy.set_param('emg_coef_up', float(emg_coef_up))
-            rospy.set_param('emg_avg', float(emg_avg))
-            rospy.set_param('emg_coef_down', float(emg_coef_down))
-
+            rospy.set_param('emg_coef', torque_avg/emg_avg)
             rospy.set_param("calibrated", True)
-
-            self._reset_measures()
 
     def update_gui(self, message):
         self.engine.say(message)
@@ -174,61 +153,44 @@ class TrialRunner:
 
     def _collect_baseline_torque(self):
         print("Collecting baseline torque...")
-
-        self._reset_measures()
+        self._MVC_torque_array = []
         message = "Please relax your foot"
         self.update_gui(message)
-
-        print("REST")
-
         rospy.sleep(5)
         baseline_torque = np.median(self._torque_array)
         min_torque = np.min(np.abs(self._torque_array))
         print(
             f"Collected baseline_torque={baseline_torque} and min_torque={min_torque}")
-
         return baseline_torque, min_torque
 
     def _collect_max_torque(self):
         print("Collecting max torque...")
+        self._MVC_torque_array = []
 
-        self._reset_measures()
-
-        countdown = RospyCountdown(rospy.Duration.from_sec(5))
         message = "Please press your foot down"
         self.update_gui(message)
-        print("GO!")
-
-        while countdown.is_time_left():
-            self._r.sleep()
+        rospy.sleep(5)
         mvc1 = np.max(np.abs(self._torque_array))
         print(f"MVC1: {mvc1}")
 
         message = "Please relax your foot"
         self.update_gui(message)
-        print("REST")
         rospy.sleep(5)
-
-        self._reset_measures()
-        countdown.reset()
+        self._MVC_torque_array = []
 
         message = "Please lift your foot up"
         self.update_gui(message)
-        print("GO!")
-        while countdown.is_time_left():
-            self._r.sleep()
+        rospy.sleep(5)
         mvc2 = np.max(np.abs(self._torque_array))
         print(f"MVC2: {mvc1}")
 
         message = "Please relax your foot"
         self.update_gui(message)
-        print("REST")
         rospy.sleep(5)
+        self._MVC_torque_array = []
 
         # Close the window when finished
         self.window.destroy()
-
-        # Start the tkinter event loop
         self.window.mainloop()
 
         return np.average([mvc1, mvc2])
@@ -237,11 +199,3 @@ class TrialRunner:
         print("Moving to {} degrees".format(str(np.rad2deg(angle))))
         self._position_pub.publish(float(angle))
         rospy.sleep(5)
-
-    def _reset_measures(self):
-        # TODO: Reimplement with separate arrays for each part of the trial, as well as whole trial
-        # self._torque_array.clear()
-        # self._emg_array.clear()
-        # self._torque_time_array.clear()
-        # self._emg_time_array.clear()
-        return 0
