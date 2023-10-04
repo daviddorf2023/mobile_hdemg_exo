@@ -130,17 +130,27 @@ class TrialRunner:
             plt.legend()
             plt.show()
 
-            # Save the trial data
-            trial.emg_array = self._emg_array.copy()
-            trial.torque_array = self._torque_array.copy()
+            # Plot the IMU data
+            plt.plot(self._imu_time_array, self._imu_array)
+            plt.xlabel('Time (s)')
+            plt.ylabel('IMU Data')
+            plt.title('IMU Data')
+            plt.show()
 
-            # Calculate the EMG coefficients from the EMG data and torque data
-            emg_array = np.array(trial.emg_array)
-            torque_array = np.array(trial.torque_array)
+            # Save the data to a file
+            np.savetxt("torque_data.csv", self._torque_array, delimiter=",")
+            np.savetxt("emg_data.csv", self._emg_array, delimiter=",")
+            np.savetxt("imu_data.csv", self._imu_array, delimiter=",")
+            np.savetxt("torque_time.csv",
+                       self._torque_time_array, delimiter=",")
+            np.savetxt("emg_time.csv", self._emg_time_array, delimiter=",")
+            np.savetxt("imu_time.csv", self._imu_time_array, delimiter=",")
 
-            emg_avg = np.average(torque_array) / np.average(emg_array)
-            torque_avg = np.average(emg_array) / np.average(torque_array)
-
+            # Calculate the calibration coefficient
+            emg_avg = np.average(self._torque_array) / \
+                np.average(self._emg_array)
+            torque_avg = np.average(self._emg_array) / \
+                np.average(self._torque_array)
             rospy.set_param('emg_coef', torque_avg/emg_avg)
             rospy.set_param("calibrated", True)
 
