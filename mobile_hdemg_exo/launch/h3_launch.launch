@@ -15,6 +15,7 @@
 
     <node name = 'startupGUI' pkg = 'mobile_hdemg_exo' type = 'startupGUI.py' output = 'screen' />
     <node name = 'emg_stream_node' pkg = 'mobile_hdemg_exo' type = 'emg_stream_node.py' output = 'screen' />
+    <node name = 'realtime_plotter' pkg = 'mobile_hdemg_exo' type = 'realtime_plotter.py' output = 'screen' />
     <node name = 'calibrate_node' pkg = 'mobile_hdemg_exo' type = 'calibrate_node.py' output = 'screen' />
     <node name = 'torque_output_node' pkg = 'mobile_hdemg_exo' type = 'torque_output_node.py' output = 'screen' />
 

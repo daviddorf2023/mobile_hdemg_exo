@@ -170,6 +170,7 @@ catkin_install_python(
         nodes/emg_stream_node.py
         nodes/startupGUI.py
         nodes/torque_output_node.py
+        nodes/realtime_plotter.py
         DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
