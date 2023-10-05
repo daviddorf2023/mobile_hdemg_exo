@@ -133,6 +133,9 @@ class EMGStreamNode:
             processed_emg = hdemg_reading[-1]  # Last channel is auxiliary
         elif EMG_PROCESS_METHOD == 'RMS':
             processed_emg = (np.mean(hdemg_reading ** 2))**0.5
+            if np.sum(processed_emg) != 0:
+                # Unless the EMG is all zeros, publish the reading without dead channels
+                processed_emg = processed_emg[np.nonzero(processed_emg)]
             self.moving_avg.add_data_point(processed_emg)
             smooth_emg = self.moving_avg.get_smoothed_value()
             self.publish_reading(self.emg_pub, smooth_emg)
