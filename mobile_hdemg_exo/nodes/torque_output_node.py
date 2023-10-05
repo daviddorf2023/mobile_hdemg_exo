@@ -31,9 +31,8 @@ class TorqueOutputNode:
             '/hdEMG_stream_processed', hdemg, self.emg_callback)
         self.torque_sensor_sub = rospy.Subscriber(
             '/h3/robot_states', State, self.sensor_callback)
-        self.emg_data = 0
-        self.old_torque = 0
         self.emg_coef = rospy.get_param("/emg_coef")
+        self.moving_avg = MovingAverage(window_size=100)
 
     def sensor_callback(self, sensor_reading):
         ''' Callback for /h3/robot_states. Reads sensor messages from the h3 and saves them in class variables.
@@ -53,15 +52,17 @@ class TorqueOutputNode:
         rospy.init_node('torque_stream')
         r = rospy.Rate(100)
 
-        # For having foot in the exo
+        # Use torque sensor to determine direction of torque if only one EMG probe is used
         if self.sensor_torque < -1:
             self.torque_command = self.emg_coef_down * self.emg_data
         elif self.sensor_torque > 1:
             self.torque_command = self.emg_coef_up * self.emg_data
         else:
             self.torque_command = 0
-        smooth_torque_command = MovingAverage(100).get_smoothed_value(
-            self.torque_command)
+
+        # Torque command smoothing
+        self.moving_avg.add_data_point(self.torque_command)
+        smooth_torque_command = self.moving_avg.get_smoothed_value()
         self.torque_pub.publish(smooth_torque_command)
         r.sleep()
 
