@@ -130,28 +130,19 @@ class TrialRunner:
             plt.legend()
             plt.show()
 
-            # Plot the IMU data
-            plt.plot(self._imu_time_array, self._imu_array)
-            plt.xlabel('Time (s)')
-            plt.ylabel('IMU Data')
-            plt.title('IMU Data')
-            plt.show()
-
             # Save the data to a file
             np.savetxt("torque_data.csv", self._torque_array, delimiter=",")
             np.savetxt("emg_data.csv", self._emg_array, delimiter=",")
-            np.savetxt("imu_data.csv", self._imu_array, delimiter=",")
             np.savetxt("torque_time.csv",
                        self._torque_time_array, delimiter=",")
             np.savetxt("emg_time.csv", self._emg_time_array, delimiter=",")
-            np.savetxt("imu_time.csv", self._imu_time_array, delimiter=",")
 
             # Calculate the calibration coefficient
             emg_avg = np.average(self._torque_array) / \
                 np.average(self._emg_array)
             torque_avg = np.average(self._emg_array) / \
                 np.average(self._torque_array)
-            rospy.set_param('emg_coef', torque_avg/emg_avg)
+            rospy.set_param('emg_coef', (float)(torque_avg/emg_avg))
             rospy.set_param("calibrated", True)
 
     def update_gui(self, message):

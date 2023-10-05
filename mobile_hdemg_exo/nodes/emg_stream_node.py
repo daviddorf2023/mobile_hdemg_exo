@@ -53,6 +53,7 @@ class EMGStreamNode:
             'hdEMG_stream_raw', Float64MultiArray, queue_size=10)
         self.imu_pub = rospy.Publisher('imu_stream', imu, queue_size=10)
         self.old_reading = 0.
+        self.moving_avg = MovingAverage(window_size=100)
 
         # Initialize the PWM output pin
         if LATENCY_ANALYZER_MODE:
@@ -132,11 +133,14 @@ class EMGStreamNode:
             processed_emg = hdemg_reading[-1]  # Last channel is auxiliary
         elif EMG_PROCESS_METHOD == 'RMS':
             processed_emg = (np.mean(hdemg_reading ** 2))**0.5
-            smooth_emg = MovingAverage(100).get_smoothed_value(processed_emg)
+            self.moving_avg.add_data_point(processed_emg)
+            smooth_emg = self.moving_avg.get_smoothed_value()
             self.publish_reading(self.emg_pub, smooth_emg)
         elif EMG_PROCESS_METHOD == 'CST':
             processed_emg = self.processor.process_reading(hdemg_reading)
-            smooth_emg = MovingAverage(100).get_smoothed_value(processed_emg)
+            self.moving_avg = MovingAverage(window_size=100)
+            self.moving_avg.add_data_point(processed_emg)
+            smooth_emg = self.moving_avg.get_smoothed_value()
             self.processor.publish_reading(self.emg_pub, smooth_emg)
         elif EMG_PROCESS_METHOD == 'Raw':
             self.array_emg_pub.publish(data=raw_reading[0:64])
