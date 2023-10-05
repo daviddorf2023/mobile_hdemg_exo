@@ -49,6 +49,8 @@ class EMGStreamNode:
         self.streamer = None
         self.emg_pub = rospy.Publisher(
             'hdEMG_stream_processed', hdemg, queue_size=10)
+        self.array_emg_pub = rospy.Publisher(
+            'hdEMG_stream_raw', Float64MultiArray, queue_size=10)
         self.imu_pub = rospy.Publisher('imu_stream', imu, queue_size=10)
         self.old_reading = 0.
 
@@ -137,8 +139,7 @@ class EMGStreamNode:
             smooth_emg = MovingAverage(100).get_smoothed_value(processed_emg)
             self.processor.publish_reading(self.emg_pub, smooth_emg)
         elif EMG_PROCESS_METHOD == 'Raw':
-            processed_emg = np.mean(hdemg_reading)
-            self.publish_reading(self.emg_pub, processed_emg)
+            self.array_emg_pub.publish(data=raw_reading[0:64])
         else:
             raise ValueError('Invalid EMG_PROCESS_METHOD')
 
