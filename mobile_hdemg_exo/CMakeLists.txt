@@ -52,8 +52,8 @@ catkin_python_setup()
 add_message_files(
         FILES
         State.msg
-        hdemg.msg
-        imu.msg
+        StampedFloat64.msg
+        StampedFloat64MultiArray.msg
 )
 
 ## Generate services in the 'srv' folder
@@ -170,7 +170,6 @@ catkin_install_python(
         nodes/emg_stream_node.py
         nodes/startupGUI.py
         nodes/torque_output_node.py
-        nodes/realtime_plotter.py
         DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

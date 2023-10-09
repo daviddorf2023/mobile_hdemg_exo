@@ -3,7 +3,7 @@
 import rospy
 import numpy as np
 from std_msgs.msg import Float64, Float64MultiArray
-from mobile_hdemg_exo.msg import hdemg, imu
+from mobile_hdemg_exo.msg import StampedFloat64, StampedFloat64MultiArray
 from mobile_hdemg_exo.processors.emg_process_cst import EMGProcessorCST
 from mobile_hdemg_exo.streamer.emg_file_streamer import EMGFileStreamer
 from mobile_hdemg_exo.streamer.emg_qc_streamer import EMGQCStreamer
@@ -48,10 +48,11 @@ class EMGStreamNode:
         self.start_time = rospy.get_time()
         self.streamer = None
         self.emg_pub = rospy.Publisher(
-            'hdEMG_stream_processed', hdemg, queue_size=10)
+            'hdEMG_stream_processed', StampedFloat64, queue_size=10)
         self.array_emg_pub = rospy.Publisher(
             'hdEMG_stream_raw', Float64MultiArray, queue_size=10)
-        self.imu_pub = rospy.Publisher('imu_stream', imu, queue_size=10)
+        self.imu_pub = rospy.Publisher(
+            'imu_stream', StampedFloat64MultiArray, queue_size=10)
         self.old_reading = 0.
         self.moving_avg = MovingAverage(window_size=100)
 
@@ -89,7 +90,7 @@ class EMGStreamNode:
             publisher: A ROS publisher object.
             reading: A list of integers representing an EMG reading.
         """
-        message = hdemg()
+        message = StampedFloat64()
         message.header.stamp = rospy.get_rostime()
         message.data = Float64(data=reading)
         publisher.publish(message)
@@ -116,7 +117,7 @@ class EMGStreamNode:
             hdemg_reading = raw_reading[:MUSCLE_COUNT * 64]
             # Publish IMU data
             imu_reading = raw_reading[64:70]
-            imu_msg = imu()
+            imu_msg = StampedFloat64MultiArray()
             imu_msg.header.stamp = rospy.get_rostime()
             imu_msg.data = Float64MultiArray(data=imu_reading)
             self.imu_pub.publish(imu_msg)
