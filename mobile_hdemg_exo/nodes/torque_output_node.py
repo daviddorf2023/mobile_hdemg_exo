@@ -1,12 +1,12 @@
 import rospy
 from std_msgs.msg import Float64
 from h3_msgs.msg import State
-from mobile_hdemg_exo.msg import hdemg
+from mobile_hdemg_exo.msg import StampedFloat64
 from mobile_hdemg_exo.streamer.emg_qc_streamer import EMGQCStreamer
 from mobile_hdemg_exo.streamer.emg_muovi_streamer import EMGMUOVIStreamer
 from mobile_hdemg_exo.utils.moving_average import MovingAverage
 
-while not rospy.get_param("calibrated"):
+while not rospy.get_param("calibrated") or rospy.get_param("method") == "Raw":
     rospy.sleep(0.1)
 
 EMG_DEVICE = rospy.get_param("/device")
@@ -28,7 +28,7 @@ class TorqueOutputNode:
         elif EMG_DEVICE == 'MuoviPro':
             self.streamer = EMGMUOVIStreamer(MUSCLE_COUNT)
         self.emg_sub = rospy.Subscriber(
-            '/hdEMG_stream_processed', hdemg, self.emg_callback)
+            '/hdEMG_stream_processed', StampedFloat64, self.emg_callback)
         self.torque_sensor_sub = rospy.Subscriber(
             '/h3/robot_states', State, self.sensor_callback)
         self.emg_coef = rospy.get_param("/emg_coef")
@@ -54,9 +54,9 @@ class TorqueOutputNode:
 
         # Use torque sensor to determine direction of torque if only one EMG probe is used
         if self.sensor_torque < -1:
-            self.torque_command = self.emg_coef_down * self.emg_data
+            self.torque_command = self.emg_coef * self.emg_data
         elif self.sensor_torque > 1:
-            self.torque_command = self.emg_coef_up * self.emg_data
+            self.torque_command = self.emg_coef * self.emg_data
         else:
             self.torque_command = 0
 
