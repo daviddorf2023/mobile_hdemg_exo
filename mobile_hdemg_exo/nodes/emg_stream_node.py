@@ -110,6 +110,12 @@ class EMGStreamNode:
             A list of three floats representing roll, pitch, and yaw angles.
         """
         w, x, y, z = quaternion
+        # Normalize the quaternion
+        mag = np.sqrt(w**2 + x**2 + y**2 + z**2)
+        w /= mag
+        x /= mag
+        y /= mag
+        z /= mag
         roll = np.arctan2(2 * (w * x + y * z), 1 - 2 * (x**2 + y**2))
         pitch = np.arcsin(2 * (w * y - z * x))
         yaw = np.arctan2(2 * (w * z + x * y), 1 - 2 * (y**2 + z**2))

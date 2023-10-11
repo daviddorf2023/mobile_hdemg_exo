@@ -24,12 +24,20 @@ class TrialRunner:
         self._emg_array = []
         self._emg_time_array = []
         self._torque_array = []
+        self._MVC_torque_array = []
         self._torque_time_array = []
         self._battery_voltage = []
-
         self._imu_roll = []
         self._imu_pitch = []
         self._imu_yaw = []
+
+        # For when quaternion data is stored in the imu message instead of roll, pitch, yaw
+        # self._imu_w = []
+        # self._imu_x = []
+        # self._imu_y = []
+        # self._imu_z = []
+
+        self._imu_time_array = []
         self.side = rospy.get_param("/side")
         self.device = rospy.get_param("/device")
 
@@ -100,6 +108,11 @@ class TrialRunner:
         self._imu_roll.append(data.data.data[0])
         self._imu_pitch.append(data.data.data[1])
         self._imu_yaw.append(data.data.data[2])
+        # self._imu_w.append(data.data.data[0])
+        # self._imu_x.append(data.data.data[1])
+        # self._imu_y.append(data.data.data[2])
+        # self._imu_z.append(data.data.data[3])
+        self._imu_time_array.append(data.header.stamp.to_sec())
 
     def battery_callback(self, data):
         if data.battery_voltage < 18.0 and data.battery_voltage > 1:
@@ -133,12 +146,16 @@ class TrialRunner:
             plt.show()
 
             # Plot the IMU data
-            plt.plot(self._torque_time_array, self._imu_roll, label='Roll')
-            plt.plot(self._torque_time_array, self._imu_pitch, label='Pitch')
-            plt.plot(self._torque_time_array, self._imu_yaw, label='Yaw')
+            plt.plot(self._imu_time_array, self._imu_roll, label='Roll')
+            plt.plot(self._imu_time_array, self._imu_pitch, label='Pitch')
+            plt.plot(self._imu_time_array, self._imu_yaw, label='Yaw')
             plt.xlabel('Time (s)')
             plt.ylabel('Angle (rad)')
             plt.title('IMU Data')
+            # plt.plot(self._imu_time_array, self._imu_w, label='w')
+            # plt.plot(self._imu_time_array, self._imu_x, label='x')
+            # plt.plot(self._imu_time_array, self._imu_y, label='y')
+            # plt.plot(self._imu_time_array, self._imu_z, label='z')
             plt.legend()
             plt.show()
 
