@@ -99,6 +99,22 @@ class EMGStreamNode:
         self.p.stop()
         GPIO.cleanup()
 
+    def quaternion_to_roll_pitch_yaw(self, quaternion):
+        """
+        Converts a quaternion to roll, pitch, and yaw angles.
+
+        Args:
+            quaternion: A list of four floats representing a quaternion.
+
+        Returns:
+            A list of three floats representing roll, pitch, and yaw angles.
+        """
+        w, x, y, z = quaternion
+        roll = np.arctan2(2 * (w * x + y * z), 1 - 2 * (x**2 + y**2))
+        pitch = np.arcsin(2 * (w * y - z * x))
+        yaw = np.arctan2(2 * (w * z + x * y), 1 - 2 * (y**2 + z**2))
+        return roll, pitch, yaw
+
     def run_emg(self):
         """
         Runs the EMG streamer and processor.
@@ -113,13 +129,14 @@ class EMGStreamNode:
             # Each MULTIPLE IN has 64 channels
             hdemg_reading = raw_reading[offset:offset + MUSCLE_COUNT * 64]
         elif EMG_DEVICE == 'MuoviPro':
-            # Each Muovi+ EMG probe has 70 channels. Last 6 channels are IMU data
+            # Each Muovi+ EMG probe has 70 channels. After 64, 4 are quaternion then 2 are debug
             hdemg_reading = raw_reading[:MUSCLE_COUNT * 64]
             # Publish IMU data
-            imu_reading = raw_reading[64:70]
+            imu_reading = raw_reading[64:68]
+            roll, pitch, yaw = self.quaternion_to_roll_pitch_yaw(imu_reading)
             imu_msg = StampedFloat64MultiArray()
             imu_msg.header.stamp = rospy.get_rostime()
-            imu_msg.data = Float64MultiArray(data=imu_reading)
+            imu_msg.data = Float64MultiArray(data=[roll, pitch, yaw])
             self.imu_pub.publish(imu_msg)
         elif EMG_DEVICE == 'Simulation':
             hdemg_reading = raw_reading  # Simulation data is already in hdemg format

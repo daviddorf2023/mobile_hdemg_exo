@@ -27,14 +27,9 @@ class TrialRunner:
         self._torque_time_array = []
         self._battery_voltage = []
 
-        self._imu_x_accel = []
-        self._imu_y_accel = []
-        self._imu_z_accel = []
-        self._imu_gyro_roll = []
-        self._imu_gyro_pitch = []
-        self._imu_gyro_yaw = []
-        self._imu_time_array = []
-        self._MVC_torque_array = []
+        self._imu_roll = []
+        self._imu_pitch = []
+        self._imu_yaw = []
         self.side = rospy.get_param("/side")
         self.device = rospy.get_param("/device")
 
@@ -102,13 +97,9 @@ class TrialRunner:
         self._MVC_torque_array.append(data.joint_torque_sensor[self.side_id])
 
     def imu_callback(self, data):
-        self._imu_x_accel.append(data.data.data[0])
-        self._imu_y_accel.append(data.data.data[1])
-        self._imu_z_accel.append(data.data.data[2])
-        self._imu_gyro_roll.append(data.data.data[3])
-        self._imu_gyro_pitch.append(data.data.data[4])
-        self._imu_gyro_yaw.append(data.data.data[5])
-        self._imu_time_array.append(data.header.stamp.to_sec())
+        self._imu_roll.append(data.data.data[0])
+        self._imu_pitch.append(data.data.data[1])
+        self._imu_yaw.append(data.data.data[2])
 
     def battery_callback(self, data):
         if data.battery_voltage < 18.0 and data.battery_voltage > 1:
@@ -141,23 +132,13 @@ class TrialRunner:
             plt.legend()
             plt.show()
 
-            # Sublot the IMU data
-            plt.subplot(2, 1, 1)
-            plt.plot(self._imu_time_array, self._imu_x_accel, label='X')
-            plt.plot(self._imu_time_array, self._imu_y_accel, label='Y')
-            plt.plot(self._imu_time_array, self._imu_z_accel, label='Z')
+            # Plot the IMU data
+            plt.plot(self._torque_time_array, self._imu_roll, label='Roll')
+            plt.plot(self._torque_time_array, self._imu_pitch, label='Pitch')
+            plt.plot(self._torque_time_array, self._imu_yaw, label='Yaw')
             plt.xlabel('Time (s)')
-            plt.ylabel('Acceleration (m/s^2)')
-            plt.title('IMU Acceleration Data')
-            plt.legend()
-
-            plt.subplot(2, 1, 2)
-            plt.plot(self._imu_time_array, self._imu_gyro_roll, label='Roll')
-            plt.plot(self._imu_time_array, self._imu_gyro_pitch, label='Pitch')
-            plt.plot(self._imu_time_array, self._imu_gyro_yaw, label='Yaw')
-            plt.xlabel('Time (s)')
-            plt.ylabel('Angular Velocity (rad/s)')
-            plt.title('IMU Gyroscope Data')
+            plt.ylabel('Angle (rad)')
+            plt.title('IMU Data')
             plt.legend()
             plt.show()
 
