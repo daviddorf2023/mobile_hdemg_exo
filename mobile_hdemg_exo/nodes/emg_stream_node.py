@@ -8,7 +8,8 @@ from mobile_hdemg_exo.msg import StampedFloat64, StampedFloat64MultiArray
 from mobile_hdemg_exo.processors.emg_process_cst import EMGProcessorCST
 from mobile_hdemg_exo.streamer.emg_file_streamer import EMGFileStreamer
 from mobile_hdemg_exo.streamer.emg_qc_streamer import EMGQCStreamer
-from mobile_hdemg_exo.streamer.emg_muovi_streamer import EMGMUOVIStreamer
+# from mobile_hdemg_exo.streamer.emg_muovi_streamer import EMGMUOVIStreamer
+from mobile_hdemg_exo.streamer.multi_muovi_streamer import EMGMUOVIStreamer
 from mobile_hdemg_exo.utils.moving_average import MovingAverage
 import RPi.GPIO as GPIO  # Latency analyzer dependency
 
@@ -154,7 +155,7 @@ class EMGStreamNode:
             # Apply notch filter
             hdemg_reading = self.notch_filter(hdemg_reading)
             # Publish IMU data
-            imu_reading = raw_reading[64:68]
+            imu_reading = raw_reading[MUSCLE_COUNT * 64:MUSCLE_COUNT * 64 + 4]
             roll, pitch, yaw = self.quaternion_to_roll_pitch_yaw(imu_reading)
             imu_msg = StampedFloat64MultiArray()
             imu_msg.header.stamp = rospy.get_rostime()
