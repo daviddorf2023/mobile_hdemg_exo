@@ -2,6 +2,7 @@
 
 import rospy
 import numpy as np
+from scipy import signal
 from std_msgs.msg import Float64, Float64MultiArray
 from mobile_hdemg_exo.msg import StampedFloat64, StampedFloat64MultiArray
 from mobile_hdemg_exo.processors.emg_process_cst import EMGProcessorCST
@@ -82,6 +83,19 @@ class EMGStreamNode:
         if EMG_PROCESS_METHOD == 'CST':
             self.processor = EMGProcessorCST()
 
+    def notch_filter(self, data):
+        """ 
+        Applies a notch filter to the EMG data.
+
+        Args:
+            data: A list of integers representing an EMG reading.
+
+        Returns:
+            A list of integers representing an EMG reading with a notch filter applied.
+        """
+        b, a = signal.iirnotch(60, 30, self.streamer.sample_frequency)
+        return signal.filtfilt(b, a, data)
+
     def publish_reading(self, publisher: rospy.topics.Publisher, reading: float):
         """
         Publishes the EMG reading to a ROS topic.
@@ -137,6 +151,8 @@ class EMGStreamNode:
         elif EMG_DEVICE == 'MuoviPro':
             # Each Muovi+ EMG probe has 70 channels. After 64, 4 are quaternion then 2 are debug
             hdemg_reading = raw_reading[:MUSCLE_COUNT * 64]
+            # Apply notch filter
+            hdemg_reading = self.notch_filter(hdemg_reading)
             # Publish IMU data
             imu_reading = raw_reading[64:68]
             roll, pitch, yaw = self.quaternion_to_roll_pitch_yaw(imu_reading)
@@ -156,12 +172,12 @@ class EMGStreamNode:
             processed_emg = hdemg_reading[-1]  # Last channel is auxiliary
         elif EMG_PROCESS_METHOD == 'RMS':
             processed_emg = (np.mean(hdemg_reading ** 2))**0.5
+            # Apply moving average filter
             self.moving_avg.add_data_point(processed_emg)
             smooth_emg = self.moving_avg.get_smoothed_value()
             self.publish_reading(self.emg_pub, smooth_emg)
         elif EMG_PROCESS_METHOD == 'CST':
             processed_emg = self.processor.process_reading(hdemg_reading)
-            self.moving_avg = MovingAverage(window_size=100)
             self.moving_avg.add_data_point(processed_emg)
             smooth_emg = self.moving_avg.get_smoothed_value()
             self.processor.publish_reading(self.emg_pub, smooth_emg)
