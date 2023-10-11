@@ -183,7 +183,8 @@ class EMGStreamNode:
             self.processor.publish_reading(self.emg_pub, smooth_emg)
         elif EMG_PROCESS_METHOD == 'Raw':
             # Add 1 through 64 to the raw EMG data to make it easier to visualize
-            hdemg_reading = hdemg_reading + np.arange(1, 65)
+            spacing = 10
+            hdemg_reading = hdemg_reading + spacing * np.arange(1, 65)
             raw_message = StampedFloat64MultiArray()
             raw_message.header.stamp = rospy.get_rostime()
             raw_message.data = Float64MultiArray(data=hdemg_reading)
