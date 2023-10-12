@@ -11,7 +11,6 @@ from mobile_hdemg_exo.streamer.emg_qc_streamer import EMGQCStreamer
 from mobile_hdemg_exo.streamer.emg_muovi_streamer import EMGMUOVIStreamer
 # from mobile_hdemg_exo.streamer.multi_muovi_streamer import EMGMUOVIStreamer
 from mobile_hdemg_exo.utils.moving_average import MovingAverage
-import RPi.GPIO as GPIO  # Latency analyzer dependency
 
 
 while not rospy.get_param("gui_completed"):
@@ -61,6 +60,7 @@ class EMGStreamNode:
 
         # Initialize the PWM output pin
         if LATENCY_ANALYZER_MODE:
+            import RPi.GPIO as GPIO
             GPIO.setmode(GPIO.BOARD)
             GPIO.setup(PWM_OUTPUT_PIN, GPIO.OUT, initial=GPIO.HIGH)
             self.p = GPIO.PWM(PWM_OUTPUT_PIN, 50)
@@ -99,7 +99,6 @@ class EMGStreamNode:
         Args:
             data: A list of floats representing EMG data.
         """
-        print(data.data)
         self.simulation_reading = data.data
 
     def notch_filter(self, data):
@@ -190,7 +189,7 @@ class EMGStreamNode:
             offset = 32 * MUSCLE_COUNT
             # Each MULTIPLE IN has 64 channels
             hdemg_reading = raw_reading[offset:offset + MUSCLE_COUNT * 64]
-        elif EMG_DEVICE == 'Muovi+Pro' or EMG_DEVICE == 'SimMuovi+Pro':
+        elif EMG_DEVICE == 'Muovi+Pro':
             # Each Muovi+ EMG probe has 70 channels. After 64, 4 are quaternion then 2 are debug
             hdemg_reading = raw_reading[:MUSCLE_COUNT * 64]
             # Publish IMU data
@@ -200,6 +199,8 @@ class EMGStreamNode:
             imu_msg.header.stamp = rospy.get_rostime()
             imu_msg.data = Float64MultiArray(data=[roll, pitch, yaw])
             self.imu_pub.publish(imu_msg)
+        elif EMG_DEVICE == 'SimMuovi+Pro':
+            hdemg_reading = raw_reading[:MUSCLE_COUNT * 64]
         elif EMG_DEVICE == 'File':
             hdemg_reading = raw_reading
         else:
@@ -249,4 +250,5 @@ if __name__ == '__main__':
         emg_stream_node.run_emg()
     if LATENCY_ANALYZER_MODE:
         emg_stream_node.pwm_cleanup()
-    emg_stream_node.streamer.close()
+    if EMG_DEVICE != 'SimMuovi+Pro':
+        emg_stream_node.streamer.close()

@@ -102,7 +102,7 @@ class GUIApp:
 
         # Set flag to completed
         if selected_device == "SimMuovi+Pro":
-            rospy.set_param("/simulated_device", True)
+            rospy.set_param("/use_simulated_device", True)
         rospy.set_param("/gui_completed", True)
 
 

@@ -22,8 +22,8 @@ def publish_emg_data():
     # Initialize the dimensions of the Float64MultiArray
     dim = MultiArrayDimension()
     dim.label = "channels"
-    dim.size = 70
-    dim.stride = 70
+    dim.size = 64
+    dim.stride = 64
 
     # Initialize the layout of the Float64MultiArray
     layout = MultiArrayLayout()
@@ -42,8 +42,11 @@ def publish_emg_data():
 
     # Loop until the node is shut down
     while not rospy.is_shutdown():
+        # Wait for the /use_simulated_device parameter to be set to True
+        while not rospy.get_param("/use_simulated_device"):
+            rospy.sleep(0.1)
         data = []
-        for i in range(70):
+        for i in range(64):
             phase_offset = phase_offsets[i % len(phase_offsets)]
             value = amplitude * \
                 math.sin(2 * math.pi * frequency *
@@ -61,8 +64,6 @@ def publish_emg_data():
 
 
 if __name__ == '__main__':
-    while not rospy.get_param("/use_simulated_device"):
-        rospy.sleep(0.1)
     try:
         publish_emg_data()
     except rospy.ROSInterruptException:
