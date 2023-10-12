@@ -25,7 +25,7 @@ class TorqueOutputNode:
                 '/h3/right_ankle_effort_controller/command', Float64, queue_size=10)
         if EMG_DEVICE == 'Quattrocento':
             self.streamer = EMGQCStreamer(MUSCLE_COUNT)
-        elif EMG_DEVICE == 'MuoviPro':
+        elif EMG_DEVICE == 'Muovi+Pro':
             self.streamer = EMGMUOVIStreamer(MUSCLE_COUNT)
         self.emg_sub = rospy.Subscriber(
             '/hdEMG_stream_processed', StampedFloat64, self.emg_callback)

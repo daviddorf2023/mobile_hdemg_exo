@@ -46,7 +46,7 @@ class TrialRunner:
             self.side_id = 5
         if self.side == "Right":
             self.side_id = 2
-        if self.side == "Simulation":
+        if self.side == "File":
             self.side_id = 1
 
         # Subscribers for the torque and hd-EMG publishers
@@ -66,12 +66,12 @@ class TrialRunner:
         elif (self.side == "Right"):
             self._position_pub = rospy.Publisher(
                 '/h3/right_ankle_position_controller/command', Float64, queue_size=0)
-        elif (self.device == "Simulation"):
+        elif (self.device == "File"):
             self._position_pub = rospy.Publisher(
                 '/h3/right_ankle_position_controller/command', Float64, queue_size=0)
         else:
             raise NameError(
-                "Side name must be Left, Right, or the system must be in Simulation device mode")
+                "Side name must be Left, Right, or the system must be in File device mode")
 
         # Create a tkinter window
         self.window = tk.Tk()

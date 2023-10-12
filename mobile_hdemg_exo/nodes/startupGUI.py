@@ -26,7 +26,7 @@ class GUIApp:
     def create_widgets(self):
         device_label = ttk.Label(self.root, text="Device:")
         device_label.grid(row=0, column=0, padx=10, pady=5, sticky="w")
-        device_choices = ["MuoviPro", "Quattrocento", "Simulation"]
+        device_choices = ["Muovi+Pro", "Quattrocento", "File", "SimMuovi+Pro"]
         self.device_dropdown = ttk.Combobox(
             self.root, values=device_choices, textvariable=self.device_var)
         self.device_dropdown.grid(row=0, column=1, padx=10, pady=5, sticky="w")
@@ -101,6 +101,8 @@ class GUIApp:
         self.root.destroy()
 
         # Set flag to completed
+        if selected_device == "SimMuovi+Pro":
+            rospy.set_param("/simulated_device", True)
         rospy.set_param("/gui_completed", True)
 
 

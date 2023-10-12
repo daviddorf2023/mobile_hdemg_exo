@@ -170,6 +170,7 @@ catkin_install_python(
         nodes/emg_stream_node.py
         nodes/startupGUI.py
         nodes/torque_output_node.py
+        nodes/simulated_device_pub.py
         DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

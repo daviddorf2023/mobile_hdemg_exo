@@ -12,8 +12,10 @@
     <param name = 'gui_completed' value = 'False'/>
     <param name = 'connected_to_emg' value = 'False'/>
     <param name = 'calibrated' value = 'False'/>
+    <param name= 'use_simulated_device' value='False'/>
 
     <node name = 'startupGUI' pkg = 'mobile_hdemg_exo' type = 'startupGUI.py' output = 'screen' />
+    <node name= 'simulated_device' pkg='mobile_hdemg_exo' type='simulated_device_pub.py' output='screen'/>
     <node name = 'emg_stream_node' pkg = 'mobile_hdemg_exo' type = 'emg_stream_node.py' output = 'screen' />
     <node name = 'calibrate_node' pkg = 'mobile_hdemg_exo' type = 'calibrate_node.py' output = 'screen' />
     <node name = 'torque_output_node' pkg = 'mobile_hdemg_exo' type = 'torque_output_node.py' output = 'screen' />
