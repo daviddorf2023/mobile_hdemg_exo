@@ -1,15 +1,35 @@
 import numpy as np
 import rospy
 from scipy import signal
-from std_msgs.msg import Float64MultiArray, MultiArrayDimension
-from mobile_hdemg_exo.msg import StampedFloat64MultiArray as hdemg
-
-from mobile_hdemg_exo.model.qc_predict import MUdecomposer
+from std_msgs.msg import Float64
+from mobile_hdemg_exo.msg import StampedFloat64
+import tensorflow as tf
 
 CST_prediction_step_size = 40  # samples
 
 
 # TODO: batch size 20
+
+class MUdecomposer(object):
+    def __init__(self, model_file=None):
+        if model_file == None:
+            raise ValueError("No model file specified")
+        self.model_file = model_file
+        self.model = tf.lite.Interpreter(model_path=model_file)
+        self.model.allocate_tensors()
+        self.input_details = self.model.get_input_details()
+        self.output_details = self.model.get_output_details()
+
+    def predict_MUs(self, hdEMG):
+        self.model.set_tensor(self.input_details[0]["index"], hdEMG)
+        self.model.invoke()
+        result_1 = self.model.get_tensor(self.output_details[0]["index"])
+        result_2 = self.model.get_tensor(self.output_details[1]["index"])
+        result_3 = self.model.get_tensor(self.output_details[2]["index"])
+        result_4 = self.model.get_tensor(self.output_details[3]["index"])
+        self.preds = [result_2, result_4, result_3, result_1]
+        self.preds_binary = tf.where(np.array(self.preds) >= 0.5, 1., 0.)
+        return self.preds_binary
 
 
 class EMGProcessorCST:
@@ -21,10 +41,8 @@ class EMGProcessorCST:
     model: MUdecomposer
 
     def __init__(self):
-        # Neural Net Set-Up
         path = rospy.get_param("/file_dir")
-        model_file = path + "/src/mobile_hdemg_exo/" + \
-            "best_model_cnn-allrun5_c8b_mix4-SG0-ST20-WS40-MU[0, 1, 2, 3]_1644222946_f.h5"
+        model_file = "/home/sralexo/exo/src/technaid_h3_ankle_ros_python/mobile_hdemg_exo/src/mobile_hdemg_exo/model/best_model_cnn-allrun5_c8b_mix4-SG0-ST20-WS40-MU[0, 1, 2, 3]_1644222946_f.tflite"
         self.model = MUdecomposer(model_file)
 
     def process_reading(self, reading):
@@ -86,15 +104,9 @@ class EMGProcessorCST:
         # reading.shape -> (3, unknown)
         reading = self.calculate_hanning()
 
-        stamped_sample = hdemg()
+        stamped_sample = StampedFloat64()
         stamped_sample.header.stamp = rospy.get_rostime()
 
-        sample = Float64MultiArray()
+        sample = Float64()
         sample.data = reading
-        sample.layout.dim = [
-            MultiArrayDimension("rows", 1, reading.shape[0]),
-            MultiArrayDimension("columns", 1, reading.shape[1]),
-        ]
-
-        stamped_sample.data = sample
         publisher.publish(stamped_sample)
