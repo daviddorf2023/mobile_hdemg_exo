@@ -2,7 +2,7 @@ import numpy as np
 import rospy
 from h3_msgs.msg import State
 from std_msgs.msg import Float64
-from mobile_hdemg_exo.msg import hdemg, imu
+from mobile_hdemg_exo.msg import StampedFloat64MultiArray, StampedFloat64
 from matplotlib import pyplot as plt
 from mobile_hdemg_exo.calibration.trial import Trial, TrialDirection
 import tkinter as tk
@@ -53,9 +53,9 @@ class TrialRunner:
         self._torque_sub = rospy.Subscriber(
             '/h3/robot_states', State, self.torque_callback)
         self._emg_sub = rospy.Subscriber(
-            '/hdEMG_stream_processed', hdemg, self.emg_callback)
+            '/hdEMG_stream_processed', StampedFloat64, self.emg_callback)
         self._imu_sub = rospy.Subscriber(
-            '/imu_stream', imu, self.imu_callback)
+            '/imu_stream', StampedFloat64MultiArray, self.imu_callback)
         self._battery_sub = rospy.Subscriber(
             '/h3/robot_states', State, self.battery_callback)
 

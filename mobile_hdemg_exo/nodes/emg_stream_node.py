@@ -8,8 +8,8 @@ from mobile_hdemg_exo.msg import StampedFloat64, StampedFloat64MultiArray
 from mobile_hdemg_exo.processors.emg_process_cst import EMGProcessorCST
 from mobile_hdemg_exo.streamer.emg_file_streamer import EMGFileStreamer
 from mobile_hdemg_exo.streamer.emg_qc_streamer import EMGQCStreamer
-# from mobile_hdemg_exo.streamer.emg_muovi_streamer import EMGMUOVIStreamer
-from mobile_hdemg_exo.streamer.multi_muovi_streamer import EMGMUOVIStreamer
+from mobile_hdemg_exo.streamer.emg_muovi_streamer import EMGMUOVIStreamer
+# from mobile_hdemg_exo.streamer.multi_muovi_streamer import EMGMUOVIStreamer
 from mobile_hdemg_exo.utils.moving_average import MovingAverage
 import RPi.GPIO as GPIO  # Latency analyzer dependency
 

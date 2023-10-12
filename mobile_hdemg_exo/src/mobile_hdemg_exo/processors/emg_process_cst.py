@@ -2,7 +2,7 @@ import numpy as np
 import rospy
 from scipy import signal
 from std_msgs.msg import Float64MultiArray, MultiArrayDimension
-from mobile_hdemg_exo.msg import hdemg
+from mobile_hdemg_exo.msg import StampedFloat64MultiArray as hdemg
 
 from mobile_hdemg_exo.model.qc_predict import MUdecomposer
 

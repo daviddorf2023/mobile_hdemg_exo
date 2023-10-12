@@ -2,7 +2,7 @@ import numpy as np
 import rospy
 from scipy import signal
 from std_msgs.msg import Float64
-from mobile_hdemg_exo.msg import hdemg
+from mobile_hdemg_exo.msg import StampedFloat64
 from mobile_hdemg_exo.model.qc_predict import MUdecomposer
 
 CST_prediction_step_size = 40  # samples
@@ -84,7 +84,7 @@ class EMGProcessorCST:
         # reading.shape -> (3, unknown)
         reading = self.calculate_hanning()
 
-        stamped_sample = hdemg()
+        stamped_sample = StampedFloat64()
         stamped_sample.header.stamp = rospy.get_rostime()
 
         sample = Float64()
