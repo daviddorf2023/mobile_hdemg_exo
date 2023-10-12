@@ -34,15 +34,14 @@ def publish_emg_data():
     emg_data = Float64MultiArray()
 
     # Set the amplitude and frequency of the sin wave
-    amplitude = 1.0
-    frequency = 10.0
+    amplitude = 10.0
+    frequency = 100.0
 
     # Set the phase offsets for each channel
     phase_offsets = [math.pi/2, math.pi/4, 0, -math.pi/4, -math.pi/2]
 
     # Loop until the node is shut down
     while not rospy.is_shutdown():
-        # Generate sin wave data for each channel with phase offsets
         data = []
         for i in range(70):
             phase_offset = phase_offsets[i % len(phase_offsets)]
@@ -62,8 +61,9 @@ def publish_emg_data():
 
 
 if __name__ == '__main__':
-    if rospy.get_param("use_simulated_device"):
-        try:
-            publish_emg_data()
-        except rospy.ROSInterruptException:
-            pass
+    while not rospy.get_param("/use_simulated_device"):
+        rospy.sleep(0.1)
+    try:
+        publish_emg_data()
+    except rospy.ROSInterruptException:
+        pass

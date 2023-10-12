@@ -99,6 +99,7 @@ class EMGStreamNode:
         Args:
             data: A list of floats representing EMG data.
         """
+        print(data.data)
         self.simulation_reading = data.data
 
     def notch_filter(self, data):
