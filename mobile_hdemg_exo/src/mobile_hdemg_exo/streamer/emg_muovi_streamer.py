@@ -25,20 +25,14 @@ class EMGMUOVIStreamer:
     def sample_frequency(self) -> int:
         return MUOVI_SAMPLING_FREQUENCY
 
-
-def initialize(self):
-    for socket_index, muovi_socket in enumerate(self._muovi_sockets):
-        if socket_index == 0:
-            muovi_socket.bind(('0.0.0.0', 54321))
-        else:
-            # Replace with the correct IP address
-            muovi_socket.bind(('192.168.1.100', 54321 + socket_index))
-        muovi_socket.listen(1)
-        print(f'Waiting for connection on socket {socket_index}...')
-        conn, addr = muovi_socket.accept()
-        print(f'Connected to the Muovi+ probe on socket {socket_index}')
-        conn.send(struct.pack('B', 9))  # Send the command to Muovi+ probe
-        rospy.set_param(f"connected_to_emg_{socket_index}", True)
+    def initialize(self):
+        self.t.bind(('0.0.0.0', 54321))
+        print('Waiting for connection...')
+        self.t.listen(1)
+        self.conn, self.addr = self.t.accept()
+        print('Connected to Muovi+ probe')
+        self.conn.send(struct.pack('B', 9))  # Send the command to Muovi+ probe
+        rospy.set_param("connected_to_emg", True)
 
     def close(self):
         self.conn.close()
