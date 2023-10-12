@@ -215,7 +215,7 @@ class EMGStreamNode:
             # Apply notch filter
             hdemg_reading = self.notch_filter(hdemg_reading)
             # Apply bandpass filter
-            b, a = self.butter_bandpass(300, 600, SAMPLING_FREQUENCY)
+            b, a = self.butter_bandpass(20, 500, SAMPLING_FREQUENCY)
             hdemg_reading = signal.filtfilt(b, a, hdemg_reading)
             # Publish the processed EMG data
             self.publish_reading(self.emg_pub, smooth_emg)
