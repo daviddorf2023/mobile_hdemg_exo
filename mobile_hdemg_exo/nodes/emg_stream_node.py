@@ -86,8 +86,10 @@ class EMGStreamNode:
             raise ValueError('Invalid EMG_DEVICE')
 
         # Match the streamer's publishing rate
+        self.r = rospy.Rate(SAMPLING_FREQUENCY)
+
+        # Initialize the EMG streamer
         if EMG_DEVICE != 'SimMuovi+Pro':
-            self.r = rospy.Rate(SAMPLING_FREQUENCY)
             self.streamer.initialize()
 
     def simulation_callback(self, data):
