@@ -212,14 +212,14 @@ class EMGStreamNode:
         elif LATENCY_ANALYZER_MODE and EMG_DEVICE == 'Muovi+Pro':
             processed_emg = hdemg_reading[-1]  # Last channel is auxiliary
         elif EMG_PROCESS_METHOD == 'RMS':
-            processed_emg = (np.mean(hdemg_reading ** 2))**0.5
+            processed_emg = (np.mean(np.array(hdemg_reading) ** 2))**0.5
             # Apply moving average filter
             self.moving_avg.add_data_point(processed_emg)
             smooth_emg = self.moving_avg.get_smoothed_value()
             # Apply notch filter
             hdemg_reading = self.notch_filter(hdemg_reading)
             # Apply bandpass filter
-            b, a = self.butter_bandpass(20, 500, SAMPLING_FREQUENCY)
+            b, a = self.butter_bandpass(20, 100, SAMPLING_FREQUENCY)
             hdemg_reading = signal.filtfilt(b, a, hdemg_reading)
             # Publish the processed EMG data
             self.publish_reading(self.emg_pub, smooth_emg)
