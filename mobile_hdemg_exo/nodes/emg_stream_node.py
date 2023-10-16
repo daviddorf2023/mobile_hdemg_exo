@@ -57,6 +57,7 @@ class EMGStreamNode:
         self.old_reading = 0.
         self.moving_avg = MovingAverage(window_size=100)
         self.simulation_reading = np.zeros(70)
+        self.receive_flag = False
 
         # Initialize the PWM output pin
         if LATENCY_ANALYZER_MODE:
@@ -172,6 +173,22 @@ class EMGStreamNode:
         yaw = np.arctan2(2 * (w * z + x * y), 1 - 2 * (y**2 + z**2))
         return roll, pitch, yaw
 
+    def normalize_reading(self, reading):
+        """
+        Normalizes the EMG reading.
+
+        Args:
+            reading: A list of integers representing an EMG reading.
+
+        Returns:
+            A list of integers representing a normalized EMG reading.
+        """
+        # Subtract the mean
+        reading = reading - np.mean(reading)
+        # Divide by the standard deviation
+        reading = reading / np.std(reading)
+        return reading
+
     def run_emg(self):
         """
         Runs the EMG streamer and processor.
@@ -206,29 +223,43 @@ class EMGStreamNode:
         else:
             raise ValueError('Invalid EMG_DEVICE')
 
+        # Wait until data is available
+        if hdemg_reading is None or sum(hdemg_reading) == 0:
+            print('No data available yet')
+            rospy.sleep(0.1)
+            return
+        elif self.receive_flag:
+            pass
+        else:
+            print('EMG data received')
+            self.receive_flag = True
+
         # Method-specific processing
         if LATENCY_ANALYZER_MODE and EMG_DEVICE == 'Quattrocento':
             processed_emg = hdemg_reading[96]  # Auxiliary channel 1
         elif LATENCY_ANALYZER_MODE and EMG_DEVICE == 'Muovi+Pro':
             processed_emg = hdemg_reading[-1]  # Last channel is auxiliary
         elif EMG_PROCESS_METHOD == 'RMS':
-            processed_emg = (np.mean(np.array(hdemg_reading) ** 2))**0.5
-            # Apply moving average filter
-            self.moving_avg.add_data_point(processed_emg)
-            smooth_emg = self.moving_avg.get_smoothed_value()
+            normalized_emg = self.normalize_reading(hdemg_reading)
             # Apply notch filter
-            hdemg_reading = self.notch_filter(hdemg_reading)
+            notch_reading = self.notch_filter(normalized_emg)
             # Apply bandpass filter
             b, a = self.butter_bandpass(20, 100, SAMPLING_FREQUENCY)
-            hdemg_reading = signal.filtfilt(b, a, hdemg_reading)
+            butter_reading = signal.filtfilt(b, a, notch_reading)
+            # Calculate RMS
+            rms_emg = (np.mean(np.array(butter_reading)**2))**0.5
+            # Apply moving average filter
+            self.moving_avg.add_data_point(rms_emg)
+            smooth_emg = self.moving_avg.get_smoothed_value()
             # Publish the processed EMG data
             self.publish_reading(self.emg_pub, smooth_emg)
         elif EMG_PROCESS_METHOD == 'CST':
             self.processor = EMGProcessorCST()
             processed_emg = self.processor.process_reading(hdemg_reading)
-            self.moving_avg.add_data_point(processed_emg)
-            smooth_emg = self.moving_avg.get_smoothed_value()
-            self.processor.publish_reading(self.emg_pub, smooth_emg)
+            if processed_emg is not None:
+                self.moving_avg.add_data_point(processed_emg)
+                smooth_emg = self.moving_avg.get_smoothed_value()
+            self.publish_reading(self.emg_pub, processed_emg)
         elif EMG_PROCESS_METHOD == 'Raw':
             # Add 1 through 64 to the raw EMG data to make it easier to visualize
             spacing = 10
