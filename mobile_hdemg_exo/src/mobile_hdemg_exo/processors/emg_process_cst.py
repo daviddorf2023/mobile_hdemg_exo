@@ -42,7 +42,8 @@ class EMGProcessorCST:
 
     def __init__(self):
         path = rospy.get_param("/file_dir")
-        model_file = "/home/sralexo/exo/src/technaid_h3_ankle_ros_python/mobile_hdemg_exo/src/mobile_hdemg_exo/model/best_model_cnn-allrun5_c8b_mix4-SG0-ST20-WS40-MU[0, 1, 2, 3]_1644222946_f.tflite"
+        model_file = path + \
+            "/src/mobile_hdemg_exo/model/best_model_cnn-allrun5_c8b_mix4-SG0-ST20-WS40-MU[0, 1, 2, 3]_1644222946_f.tflite"
         self.model = MUdecomposer(model_file)
 
     def process_reading(self, reading):
