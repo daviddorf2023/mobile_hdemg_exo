@@ -224,7 +224,7 @@ class EMGStreamNode:
             raise ValueError('Invalid EMG_DEVICE')
 
         # Wait until data is available
-        if hdemg_reading is None or sum(hdemg_reading) == 0:
+        if hdemg_reading is None:
             print('No data available yet')
             rospy.sleep(0.1)
             return
