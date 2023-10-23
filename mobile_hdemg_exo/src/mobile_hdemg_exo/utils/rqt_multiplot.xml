@@ -59,7 +59,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -110,7 +110,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -161,7 +161,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -212,7 +212,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -263,7 +263,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -314,7 +314,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -365,7 +365,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -416,7 +416,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -467,7 +467,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -518,7 +518,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -569,7 +569,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -620,7 +620,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -671,7 +671,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -722,7 +722,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -773,7 +773,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -824,7 +824,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -875,7 +875,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -926,7 +926,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -977,7 +977,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -1028,7 +1028,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -1079,7 +1079,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -1130,7 +1130,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -1181,7 +1181,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -1232,7 +1232,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -1283,7 +1283,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -1334,7 +1334,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -1385,7 +1385,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -1436,7 +1436,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -1487,7 +1487,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -1538,7 +1538,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -1589,7 +1589,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -1640,7 +1640,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -1691,7 +1691,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -1742,7 +1742,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -1793,7 +1793,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -1844,7 +1844,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -1895,7 +1895,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -1946,7 +1946,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -1997,7 +1997,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -2048,7 +2048,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -2099,7 +2099,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -2150,7 +2150,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -2201,7 +2201,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -2252,7 +2252,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -2303,7 +2303,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -2354,7 +2354,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -2405,7 +2405,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -2456,7 +2456,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -2507,7 +2507,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -2558,7 +2558,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -2609,7 +2609,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -2660,7 +2660,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -2711,7 +2711,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -2762,7 +2762,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -2813,7 +2813,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -2864,7 +2864,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -2915,7 +2915,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -2966,7 +2966,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -3017,7 +3017,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -3068,7 +3068,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -3119,7 +3119,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -3170,7 +3170,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -3221,7 +3221,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>
@@ -3272,7 +3272,7 @@
                             <data>
                                 <circular_buffer_capacity>1000</circular_buffer_capacity>
                                 <time_frame_length>10</time_frame_length>
-                                <type>0</type>
+                                <type>3</type>
                             </data>
                             <style>
                                 <lines_interpolate>false</lines_interpolate>

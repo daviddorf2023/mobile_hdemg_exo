@@ -85,7 +85,7 @@ class EMGMUOVIStreamer:
         Stream the EMG data from the Muovi+ probes
         """
         emg_reading = b''
-        emg_reading += self.conn.recv(BLOCKDATA)
+        emg_reading += self.conn1.recv(BLOCKDATA)
         # Read one second of data into signed integer
         emg_reading = np.frombuffer(emg_reading, dtype=np.int16)
         emg_reading = emg_reading * CONVFACT  # Convert to mV
