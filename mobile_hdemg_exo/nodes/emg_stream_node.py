@@ -218,6 +218,9 @@ class EMGStreamNode:
             print('EMG data received')
             self.receive_flag = True
 
+        # remove channels here
+        # hdemg_reading = np.delete(hdemg_reading, [0, 1, 2, 3, 4, 5, 6, 7, 8,
+
         # Method-specific processing
         if LATENCY_ANALYZER_MODE and EMG_DEVICE == 'Quattrocento':
             processed_emg = hdemg_reading[96]  # Auxiliary channel 1
