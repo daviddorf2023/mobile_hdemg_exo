@@ -233,17 +233,19 @@ class EMGStreamNode:
             self.publish_reading(self.emg_pub, smooth_emg)
         elif EMG_PROCESS_METHOD == 'CST':
             self.processor = EMGProcessorCST()
-            processed_emg = self.processor.process_reading(
-                hdemg_reading) / 100  # Divide by 100 to scale to training data
-            if processed_emg is not None:
-                self.moving_avg.add_data_point(processed_emg)
+            processed_emg = self.processor.process_reading(hdemg_reading)
+            if processed_emg is not None and processed_emg != 0:
+                # Divide by 100 to scale to training data
+                self.moving_avg.add_data_point(processed_emg / 100)
                 smooth_emg = self.moving_avg.get_smoothed_value()
-            self.publish_reading(self.emg_pub, processed_emg)
+                self.publish_reading(self.emg_pub, processed_emg)
         elif EMG_PROCESS_METHOD == 'Raw':
-            spacing = 10  # Spacing between channels for visualization
+            spacing = 30  # Spacing between channels for visualization
             hdemg_reading = hdemg_reading + spacing * np.arange(1, 65)
+            hdemg_reading = hdemg_reading / spacing  # Scale to channel numbers
             raw_message = StampedFloat64MultiArray()
-            raw_message.header.stamp = rospy.get_rostime()
+            raw_message.header.stamp = rospy.get_rostime().from_sec(
+                rospy.get_time() - self.start_time)
             raw_message.data = Float64MultiArray(data=hdemg_reading)
             self.array_emg_pub.publish(raw_message)
         else:

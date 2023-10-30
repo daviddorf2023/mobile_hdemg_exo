@@ -11,13 +11,13 @@
                     <axes>
                         <axes>
                             <x_axis>
-                                <custom_title>Untitled Axis</custom_title>
-                                <title_type>0</title_type>
+                                <custom_title>Timestamp</custom_title>
+                                <title_type>1</title_type>
                                 <title_visible>true</title_visible>
                             </x_axis>
                             <y_axis>
-                                <custom_title>Untitled Axis</custom_title>
-                                <title_type>0</title_type>
+                                <custom_title>Channel Number</custom_title>
+                                <title_type>1</title_type>
                                 <title_visible>true</title_visible>
                             </y_axis>
                         </axes>
@@ -57,8 +57,8 @@
                                 <type>0</type>
                             </color>
                             <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
                                 <type>3</type>
                             </data>
                             <style>
@@ -108,8 +108,8 @@
                                 <type>0</type>
                             </color>
                             <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
                                 <type>3</type>
                             </data>
                             <style>
@@ -126,1179 +126,6 @@
                             <title>Channel 1</title>
                         </curve_1>
                         <curve_10>
-                            <axes>
-                                <x_axis>
-                                    <field>header/stamp</field>
-                                    <field_type>0</field_type>
-                                    <scale>
-                                        <absolute_maximum>1000</absolute_maximum>
-                                        <absolute_minimum>0</absolute_minimum>
-                                        <relative_maximum>0</relative_maximum>
-                                        <relative_minimum>-1000</relative_minimum>
-                                        <type>0</type>
-                                    </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
-                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
-                                </x_axis>
-                                <y_axis>
-                                    <field>data/data/10</field>
-                                    <field_type>0</field_type>
-                                    <scale>
-                                        <absolute_maximum>1000</absolute_maximum>
-                                        <absolute_minimum>0</absolute_minimum>
-                                        <relative_maximum>0</relative_maximum>
-                                        <relative_minimum>-1000</relative_minimum>
-                                        <type>0</type>
-                                    </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
-                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
-                                </y_axis>
-                            </axes>
-                            <color>
-                                <custom_color>#000000</custom_color>
-                                <type>0</type>
-                            </color>
-                            <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
-                                <type>3</type>
-                            </data>
-                            <style>
-                                <lines_interpolate>false</lines_interpolate>
-                                <pen_style>1</pen_style>
-                                <pen_width>1</pen_width>
-                                <render_antialias>false</render_antialias>
-                                <steps_invert>false</steps_invert>
-                                <sticks_baseline>0</sticks_baseline>
-                                <sticks_orientation>2</sticks_orientation>
-                                <type>0</type>
-                            </style>
-                            <subscriber_queue_size>100</subscriber_queue_size>
-                            <title>Channel 10</title>
-                        </curve_10>
-                        <curve_11>
-                            <axes>
-                                <x_axis>
-                                    <field>header/stamp</field>
-                                    <field_type>0</field_type>
-                                    <scale>
-                                        <absolute_maximum>1000</absolute_maximum>
-                                        <absolute_minimum>0</absolute_minimum>
-                                        <relative_maximum>0</relative_maximum>
-                                        <relative_minimum>-1000</relative_minimum>
-                                        <type>0</type>
-                                    </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
-                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
-                                </x_axis>
-                                <y_axis>
-                                    <field>data/data/11</field>
-                                    <field_type>0</field_type>
-                                    <scale>
-                                        <absolute_maximum>1000</absolute_maximum>
-                                        <absolute_minimum>0</absolute_minimum>
-                                        <relative_maximum>0</relative_maximum>
-                                        <relative_minimum>-1000</relative_minimum>
-                                        <type>0</type>
-                                    </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
-                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
-                                </y_axis>
-                            </axes>
-                            <color>
-                                <custom_color>#000000</custom_color>
-                                <type>0</type>
-                            </color>
-                            <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
-                                <type>3</type>
-                            </data>
-                            <style>
-                                <lines_interpolate>false</lines_interpolate>
-                                <pen_style>1</pen_style>
-                                <pen_width>1</pen_width>
-                                <render_antialias>false</render_antialias>
-                                <steps_invert>false</steps_invert>
-                                <sticks_baseline>0</sticks_baseline>
-                                <sticks_orientation>2</sticks_orientation>
-                                <type>0</type>
-                            </style>
-                            <subscriber_queue_size>100</subscriber_queue_size>
-                            <title>Channel 11</title>
-                        </curve_11>
-                        <curve_12>
-                            <axes>
-                                <x_axis>
-                                    <field>header/stamp</field>
-                                    <field_type>0</field_type>
-                                    <scale>
-                                        <absolute_maximum>1000</absolute_maximum>
-                                        <absolute_minimum>0</absolute_minimum>
-                                        <relative_maximum>0</relative_maximum>
-                                        <relative_minimum>-1000</relative_minimum>
-                                        <type>0</type>
-                                    </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
-                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
-                                </x_axis>
-                                <y_axis>
-                                    <field>data/data/12</field>
-                                    <field_type>0</field_type>
-                                    <scale>
-                                        <absolute_maximum>1000</absolute_maximum>
-                                        <absolute_minimum>0</absolute_minimum>
-                                        <relative_maximum>0</relative_maximum>
-                                        <relative_minimum>-1000</relative_minimum>
-                                        <type>0</type>
-                                    </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
-                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
-                                </y_axis>
-                            </axes>
-                            <color>
-                                <custom_color>#000000</custom_color>
-                                <type>0</type>
-                            </color>
-                            <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
-                                <type>3</type>
-                            </data>
-                            <style>
-                                <lines_interpolate>false</lines_interpolate>
-                                <pen_style>1</pen_style>
-                                <pen_width>1</pen_width>
-                                <render_antialias>false</render_antialias>
-                                <steps_invert>false</steps_invert>
-                                <sticks_baseline>0</sticks_baseline>
-                                <sticks_orientation>2</sticks_orientation>
-                                <type>0</type>
-                            </style>
-                            <subscriber_queue_size>100</subscriber_queue_size>
-                            <title>Channel 12</title>
-                        </curve_12>
-                        <curve_13>
-                            <axes>
-                                <x_axis>
-                                    <field>header/stamp</field>
-                                    <field_type>0</field_type>
-                                    <scale>
-                                        <absolute_maximum>1000</absolute_maximum>
-                                        <absolute_minimum>0</absolute_minimum>
-                                        <relative_maximum>0</relative_maximum>
-                                        <relative_minimum>-1000</relative_minimum>
-                                        <type>0</type>
-                                    </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
-                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
-                                </x_axis>
-                                <y_axis>
-                                    <field>data/data/13</field>
-                                    <field_type>0</field_type>
-                                    <scale>
-                                        <absolute_maximum>1000</absolute_maximum>
-                                        <absolute_minimum>0</absolute_minimum>
-                                        <relative_maximum>0</relative_maximum>
-                                        <relative_minimum>-1000</relative_minimum>
-                                        <type>0</type>
-                                    </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
-                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
-                                </y_axis>
-                            </axes>
-                            <color>
-                                <custom_color>#000000</custom_color>
-                                <type>0</type>
-                            </color>
-                            <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
-                                <type>3</type>
-                            </data>
-                            <style>
-                                <lines_interpolate>false</lines_interpolate>
-                                <pen_style>1</pen_style>
-                                <pen_width>1</pen_width>
-                                <render_antialias>false</render_antialias>
-                                <steps_invert>false</steps_invert>
-                                <sticks_baseline>0</sticks_baseline>
-                                <sticks_orientation>2</sticks_orientation>
-                                <type>0</type>
-                            </style>
-                            <subscriber_queue_size>100</subscriber_queue_size>
-                            <title>Channel 13</title>
-                        </curve_13>
-                        <curve_14>
-                            <axes>
-                                <x_axis>
-                                    <field>header/stamp</field>
-                                    <field_type>0</field_type>
-                                    <scale>
-                                        <absolute_maximum>1000</absolute_maximum>
-                                        <absolute_minimum>0</absolute_minimum>
-                                        <relative_maximum>0</relative_maximum>
-                                        <relative_minimum>-1000</relative_minimum>
-                                        <type>0</type>
-                                    </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
-                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
-                                </x_axis>
-                                <y_axis>
-                                    <field>data/data/14</field>
-                                    <field_type>0</field_type>
-                                    <scale>
-                                        <absolute_maximum>1000</absolute_maximum>
-                                        <absolute_minimum>0</absolute_minimum>
-                                        <relative_maximum>0</relative_maximum>
-                                        <relative_minimum>-1000</relative_minimum>
-                                        <type>0</type>
-                                    </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
-                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
-                                </y_axis>
-                            </axes>
-                            <color>
-                                <custom_color>#000000</custom_color>
-                                <type>0</type>
-                            </color>
-                            <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
-                                <type>3</type>
-                            </data>
-                            <style>
-                                <lines_interpolate>false</lines_interpolate>
-                                <pen_style>1</pen_style>
-                                <pen_width>1</pen_width>
-                                <render_antialias>false</render_antialias>
-                                <steps_invert>false</steps_invert>
-                                <sticks_baseline>0</sticks_baseline>
-                                <sticks_orientation>2</sticks_orientation>
-                                <type>0</type>
-                            </style>
-                            <subscriber_queue_size>100</subscriber_queue_size>
-                            <title>Channel 14</title>
-                        </curve_14>
-                        <curve_15>
-                            <axes>
-                                <x_axis>
-                                    <field>header/stamp</field>
-                                    <field_type>0</field_type>
-                                    <scale>
-                                        <absolute_maximum>1000</absolute_maximum>
-                                        <absolute_minimum>0</absolute_minimum>
-                                        <relative_maximum>0</relative_maximum>
-                                        <relative_minimum>-1000</relative_minimum>
-                                        <type>0</type>
-                                    </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
-                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
-                                </x_axis>
-                                <y_axis>
-                                    <field>data/data/15</field>
-                                    <field_type>0</field_type>
-                                    <scale>
-                                        <absolute_maximum>1000</absolute_maximum>
-                                        <absolute_minimum>0</absolute_minimum>
-                                        <relative_maximum>0</relative_maximum>
-                                        <relative_minimum>-1000</relative_minimum>
-                                        <type>0</type>
-                                    </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
-                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
-                                </y_axis>
-                            </axes>
-                            <color>
-                                <custom_color>#000000</custom_color>
-                                <type>0</type>
-                            </color>
-                            <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
-                                <type>3</type>
-                            </data>
-                            <style>
-                                <lines_interpolate>false</lines_interpolate>
-                                <pen_style>1</pen_style>
-                                <pen_width>1</pen_width>
-                                <render_antialias>false</render_antialias>
-                                <steps_invert>false</steps_invert>
-                                <sticks_baseline>0</sticks_baseline>
-                                <sticks_orientation>2</sticks_orientation>
-                                <type>0</type>
-                            </style>
-                            <subscriber_queue_size>100</subscriber_queue_size>
-                            <title>Channel 15</title>
-                        </curve_15>
-                        <curve_16>
-                            <axes>
-                                <x_axis>
-                                    <field>header/stamp</field>
-                                    <field_type>0</field_type>
-                                    <scale>
-                                        <absolute_maximum>1000</absolute_maximum>
-                                        <absolute_minimum>0</absolute_minimum>
-                                        <relative_maximum>0</relative_maximum>
-                                        <relative_minimum>-1000</relative_minimum>
-                                        <type>0</type>
-                                    </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
-                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
-                                </x_axis>
-                                <y_axis>
-                                    <field>data/data/16</field>
-                                    <field_type>0</field_type>
-                                    <scale>
-                                        <absolute_maximum>1000</absolute_maximum>
-                                        <absolute_minimum>0</absolute_minimum>
-                                        <relative_maximum>0</relative_maximum>
-                                        <relative_minimum>-1000</relative_minimum>
-                                        <type>0</type>
-                                    </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
-                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
-                                </y_axis>
-                            </axes>
-                            <color>
-                                <custom_color>#000000</custom_color>
-                                <type>0</type>
-                            </color>
-                            <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
-                                <type>3</type>
-                            </data>
-                            <style>
-                                <lines_interpolate>false</lines_interpolate>
-                                <pen_style>1</pen_style>
-                                <pen_width>1</pen_width>
-                                <render_antialias>false</render_antialias>
-                                <steps_invert>false</steps_invert>
-                                <sticks_baseline>0</sticks_baseline>
-                                <sticks_orientation>2</sticks_orientation>
-                                <type>0</type>
-                            </style>
-                            <subscriber_queue_size>100</subscriber_queue_size>
-                            <title>Channel 16</title>
-                        </curve_16>
-                        <curve_17>
-                            <axes>
-                                <x_axis>
-                                    <field>header/stamp</field>
-                                    <field_type>0</field_type>
-                                    <scale>
-                                        <absolute_maximum>1000</absolute_maximum>
-                                        <absolute_minimum>0</absolute_minimum>
-                                        <relative_maximum>0</relative_maximum>
-                                        <relative_minimum>-1000</relative_minimum>
-                                        <type>0</type>
-                                    </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
-                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
-                                </x_axis>
-                                <y_axis>
-                                    <field>data/data/17</field>
-                                    <field_type>0</field_type>
-                                    <scale>
-                                        <absolute_maximum>1000</absolute_maximum>
-                                        <absolute_minimum>0</absolute_minimum>
-                                        <relative_maximum>0</relative_maximum>
-                                        <relative_minimum>-1000</relative_minimum>
-                                        <type>0</type>
-                                    </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
-                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
-                                </y_axis>
-                            </axes>
-                            <color>
-                                <custom_color>#000000</custom_color>
-                                <type>0</type>
-                            </color>
-                            <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
-                                <type>3</type>
-                            </data>
-                            <style>
-                                <lines_interpolate>false</lines_interpolate>
-                                <pen_style>1</pen_style>
-                                <pen_width>1</pen_width>
-                                <render_antialias>false</render_antialias>
-                                <steps_invert>false</steps_invert>
-                                <sticks_baseline>0</sticks_baseline>
-                                <sticks_orientation>2</sticks_orientation>
-                                <type>0</type>
-                            </style>
-                            <subscriber_queue_size>100</subscriber_queue_size>
-                            <title>Channel 17</title>
-                        </curve_17>
-                        <curve_18>
-                            <axes>
-                                <x_axis>
-                                    <field>header/stamp</field>
-                                    <field_type>0</field_type>
-                                    <scale>
-                                        <absolute_maximum>1000</absolute_maximum>
-                                        <absolute_minimum>0</absolute_minimum>
-                                        <relative_maximum>0</relative_maximum>
-                                        <relative_minimum>-1000</relative_minimum>
-                                        <type>0</type>
-                                    </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
-                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
-                                </x_axis>
-                                <y_axis>
-                                    <field>data/data/18</field>
-                                    <field_type>0</field_type>
-                                    <scale>
-                                        <absolute_maximum>1000</absolute_maximum>
-                                        <absolute_minimum>0</absolute_minimum>
-                                        <relative_maximum>0</relative_maximum>
-                                        <relative_minimum>-1000</relative_minimum>
-                                        <type>0</type>
-                                    </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
-                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
-                                </y_axis>
-                            </axes>
-                            <color>
-                                <custom_color>#000000</custom_color>
-                                <type>0</type>
-                            </color>
-                            <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
-                                <type>3</type>
-                            </data>
-                            <style>
-                                <lines_interpolate>false</lines_interpolate>
-                                <pen_style>1</pen_style>
-                                <pen_width>1</pen_width>
-                                <render_antialias>false</render_antialias>
-                                <steps_invert>false</steps_invert>
-                                <sticks_baseline>0</sticks_baseline>
-                                <sticks_orientation>2</sticks_orientation>
-                                <type>0</type>
-                            </style>
-                            <subscriber_queue_size>100</subscriber_queue_size>
-                            <title>Channel 18</title>
-                        </curve_18>
-                        <curve_19>
-                            <axes>
-                                <x_axis>
-                                    <field>header/stamp</field>
-                                    <field_type>0</field_type>
-                                    <scale>
-                                        <absolute_maximum>1000</absolute_maximum>
-                                        <absolute_minimum>0</absolute_minimum>
-                                        <relative_maximum>0</relative_maximum>
-                                        <relative_minimum>-1000</relative_minimum>
-                                        <type>0</type>
-                                    </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
-                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
-                                </x_axis>
-                                <y_axis>
-                                    <field>data/data/19</field>
-                                    <field_type>0</field_type>
-                                    <scale>
-                                        <absolute_maximum>1000</absolute_maximum>
-                                        <absolute_minimum>0</absolute_minimum>
-                                        <relative_maximum>0</relative_maximum>
-                                        <relative_minimum>-1000</relative_minimum>
-                                        <type>0</type>
-                                    </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
-                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
-                                </y_axis>
-                            </axes>
-                            <color>
-                                <custom_color>#000000</custom_color>
-                                <type>0</type>
-                            </color>
-                            <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
-                                <type>3</type>
-                            </data>
-                            <style>
-                                <lines_interpolate>false</lines_interpolate>
-                                <pen_style>1</pen_style>
-                                <pen_width>1</pen_width>
-                                <render_antialias>false</render_antialias>
-                                <steps_invert>false</steps_invert>
-                                <sticks_baseline>0</sticks_baseline>
-                                <sticks_orientation>2</sticks_orientation>
-                                <type>0</type>
-                            </style>
-                            <subscriber_queue_size>100</subscriber_queue_size>
-                            <title>Channel 19</title>
-                        </curve_19>
-                        <curve_2>
-                            <axes>
-                                <x_axis>
-                                    <field>header/stamp</field>
-                                    <field_type>0</field_type>
-                                    <scale>
-                                        <absolute_maximum>1000</absolute_maximum>
-                                        <absolute_minimum>0</absolute_minimum>
-                                        <relative_maximum>0</relative_maximum>
-                                        <relative_minimum>-1000</relative_minimum>
-                                        <type>0</type>
-                                    </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
-                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
-                                </x_axis>
-                                <y_axis>
-                                    <field>data/data/2</field>
-                                    <field_type>0</field_type>
-                                    <scale>
-                                        <absolute_maximum>1000</absolute_maximum>
-                                        <absolute_minimum>0</absolute_minimum>
-                                        <relative_maximum>0</relative_maximum>
-                                        <relative_minimum>-1000</relative_minimum>
-                                        <type>0</type>
-                                    </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
-                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
-                                </y_axis>
-                            </axes>
-                            <color>
-                                <custom_color>#000000</custom_color>
-                                <type>0</type>
-                            </color>
-                            <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
-                                <type>3</type>
-                            </data>
-                            <style>
-                                <lines_interpolate>false</lines_interpolate>
-                                <pen_style>1</pen_style>
-                                <pen_width>1</pen_width>
-                                <render_antialias>false</render_antialias>
-                                <steps_invert>false</steps_invert>
-                                <sticks_baseline>0</sticks_baseline>
-                                <sticks_orientation>2</sticks_orientation>
-                                <type>0</type>
-                            </style>
-                            <subscriber_queue_size>100</subscriber_queue_size>
-                            <title>Channel 2</title>
-                        </curve_2>
-                        <curve_20>
-                            <axes>
-                                <x_axis>
-                                    <field>header/stamp</field>
-                                    <field_type>0</field_type>
-                                    <scale>
-                                        <absolute_maximum>1000</absolute_maximum>
-                                        <absolute_minimum>0</absolute_minimum>
-                                        <relative_maximum>0</relative_maximum>
-                                        <relative_minimum>-1000</relative_minimum>
-                                        <type>0</type>
-                                    </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
-                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
-                                </x_axis>
-                                <y_axis>
-                                    <field>data/data/20</field>
-                                    <field_type>0</field_type>
-                                    <scale>
-                                        <absolute_maximum>1000</absolute_maximum>
-                                        <absolute_minimum>0</absolute_minimum>
-                                        <relative_maximum>0</relative_maximum>
-                                        <relative_minimum>-1000</relative_minimum>
-                                        <type>0</type>
-                                    </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
-                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
-                                </y_axis>
-                            </axes>
-                            <color>
-                                <custom_color>#000000</custom_color>
-                                <type>0</type>
-                            </color>
-                            <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
-                                <type>3</type>
-                            </data>
-                            <style>
-                                <lines_interpolate>false</lines_interpolate>
-                                <pen_style>1</pen_style>
-                                <pen_width>1</pen_width>
-                                <render_antialias>false</render_antialias>
-                                <steps_invert>false</steps_invert>
-                                <sticks_baseline>0</sticks_baseline>
-                                <sticks_orientation>2</sticks_orientation>
-                                <type>0</type>
-                            </style>
-                            <subscriber_queue_size>100</subscriber_queue_size>
-                            <title>Channel 20</title>
-                        </curve_20>
-                        <curve_21>
-                            <axes>
-                                <x_axis>
-                                    <field>header/stamp</field>
-                                    <field_type>0</field_type>
-                                    <scale>
-                                        <absolute_maximum>1000</absolute_maximum>
-                                        <absolute_minimum>0</absolute_minimum>
-                                        <relative_maximum>0</relative_maximum>
-                                        <relative_minimum>-1000</relative_minimum>
-                                        <type>0</type>
-                                    </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
-                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
-                                </x_axis>
-                                <y_axis>
-                                    <field>data/data/21</field>
-                                    <field_type>0</field_type>
-                                    <scale>
-                                        <absolute_maximum>1000</absolute_maximum>
-                                        <absolute_minimum>0</absolute_minimum>
-                                        <relative_maximum>0</relative_maximum>
-                                        <relative_minimum>-1000</relative_minimum>
-                                        <type>0</type>
-                                    </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
-                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
-                                </y_axis>
-                            </axes>
-                            <color>
-                                <custom_color>#000000</custom_color>
-                                <type>0</type>
-                            </color>
-                            <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
-                                <type>3</type>
-                            </data>
-                            <style>
-                                <lines_interpolate>false</lines_interpolate>
-                                <pen_style>1</pen_style>
-                                <pen_width>1</pen_width>
-                                <render_antialias>false</render_antialias>
-                                <steps_invert>false</steps_invert>
-                                <sticks_baseline>0</sticks_baseline>
-                                <sticks_orientation>2</sticks_orientation>
-                                <type>0</type>
-                            </style>
-                            <subscriber_queue_size>100</subscriber_queue_size>
-                            <title>Channel 21</title>
-                        </curve_21>
-                        <curve_22>
-                            <axes>
-                                <x_axis>
-                                    <field>header/stamp</field>
-                                    <field_type>0</field_type>
-                                    <scale>
-                                        <absolute_maximum>1000</absolute_maximum>
-                                        <absolute_minimum>0</absolute_minimum>
-                                        <relative_maximum>0</relative_maximum>
-                                        <relative_minimum>-1000</relative_minimum>
-                                        <type>0</type>
-                                    </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
-                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
-                                </x_axis>
-                                <y_axis>
-                                    <field>data/data/22</field>
-                                    <field_type>0</field_type>
-                                    <scale>
-                                        <absolute_maximum>1000</absolute_maximum>
-                                        <absolute_minimum>0</absolute_minimum>
-                                        <relative_maximum>0</relative_maximum>
-                                        <relative_minimum>-1000</relative_minimum>
-                                        <type>0</type>
-                                    </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
-                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
-                                </y_axis>
-                            </axes>
-                            <color>
-                                <custom_color>#000000</custom_color>
-                                <type>0</type>
-                            </color>
-                            <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
-                                <type>3</type>
-                            </data>
-                            <style>
-                                <lines_interpolate>false</lines_interpolate>
-                                <pen_style>1</pen_style>
-                                <pen_width>1</pen_width>
-                                <render_antialias>false</render_antialias>
-                                <steps_invert>false</steps_invert>
-                                <sticks_baseline>0</sticks_baseline>
-                                <sticks_orientation>2</sticks_orientation>
-                                <type>0</type>
-                            </style>
-                            <subscriber_queue_size>100</subscriber_queue_size>
-                            <title>Channel 22</title>
-                        </curve_22>
-                        <curve_23>
-                            <axes>
-                                <x_axis>
-                                    <field>header/stamp</field>
-                                    <field_type>0</field_type>
-                                    <scale>
-                                        <absolute_maximum>1000</absolute_maximum>
-                                        <absolute_minimum>0</absolute_minimum>
-                                        <relative_maximum>0</relative_maximum>
-                                        <relative_minimum>-1000</relative_minimum>
-                                        <type>0</type>
-                                    </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
-                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
-                                </x_axis>
-                                <y_axis>
-                                    <field>data/data/23</field>
-                                    <field_type>0</field_type>
-                                    <scale>
-                                        <absolute_maximum>1000</absolute_maximum>
-                                        <absolute_minimum>0</absolute_minimum>
-                                        <relative_maximum>0</relative_maximum>
-                                        <relative_minimum>-1000</relative_minimum>
-                                        <type>0</type>
-                                    </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
-                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
-                                </y_axis>
-                            </axes>
-                            <color>
-                                <custom_color>#000000</custom_color>
-                                <type>0</type>
-                            </color>
-                            <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
-                                <type>3</type>
-                            </data>
-                            <style>
-                                <lines_interpolate>false</lines_interpolate>
-                                <pen_style>1</pen_style>
-                                <pen_width>1</pen_width>
-                                <render_antialias>false</render_antialias>
-                                <steps_invert>false</steps_invert>
-                                <sticks_baseline>0</sticks_baseline>
-                                <sticks_orientation>2</sticks_orientation>
-                                <type>0</type>
-                            </style>
-                            <subscriber_queue_size>100</subscriber_queue_size>
-                            <title>Channel 23</title>
-                        </curve_23>
-                        <curve_24>
-                            <axes>
-                                <x_axis>
-                                    <field>header/stamp</field>
-                                    <field_type>0</field_type>
-                                    <scale>
-                                        <absolute_maximum>1000</absolute_maximum>
-                                        <absolute_minimum>0</absolute_minimum>
-                                        <relative_maximum>0</relative_maximum>
-                                        <relative_minimum>-1000</relative_minimum>
-                                        <type>0</type>
-                                    </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
-                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
-                                </x_axis>
-                                <y_axis>
-                                    <field>data/data/24</field>
-                                    <field_type>0</field_type>
-                                    <scale>
-                                        <absolute_maximum>1000</absolute_maximum>
-                                        <absolute_minimum>0</absolute_minimum>
-                                        <relative_maximum>0</relative_maximum>
-                                        <relative_minimum>-1000</relative_minimum>
-                                        <type>0</type>
-                                    </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
-                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
-                                </y_axis>
-                            </axes>
-                            <color>
-                                <custom_color>#000000</custom_color>
-                                <type>0</type>
-                            </color>
-                            <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
-                                <type>3</type>
-                            </data>
-                            <style>
-                                <lines_interpolate>false</lines_interpolate>
-                                <pen_style>1</pen_style>
-                                <pen_width>1</pen_width>
-                                <render_antialias>false</render_antialias>
-                                <steps_invert>false</steps_invert>
-                                <sticks_baseline>0</sticks_baseline>
-                                <sticks_orientation>2</sticks_orientation>
-                                <type>0</type>
-                            </style>
-                            <subscriber_queue_size>100</subscriber_queue_size>
-                            <title>Channel 24</title>
-                        </curve_24>
-                        <curve_25>
-                            <axes>
-                                <x_axis>
-                                    <field>header/stamp</field>
-                                    <field_type>0</field_type>
-                                    <scale>
-                                        <absolute_maximum>1000</absolute_maximum>
-                                        <absolute_minimum>0</absolute_minimum>
-                                        <relative_maximum>0</relative_maximum>
-                                        <relative_minimum>-1000</relative_minimum>
-                                        <type>0</type>
-                                    </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
-                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
-                                </x_axis>
-                                <y_axis>
-                                    <field>data/data/25</field>
-                                    <field_type>0</field_type>
-                                    <scale>
-                                        <absolute_maximum>1000</absolute_maximum>
-                                        <absolute_minimum>0</absolute_minimum>
-                                        <relative_maximum>0</relative_maximum>
-                                        <relative_minimum>-1000</relative_minimum>
-                                        <type>0</type>
-                                    </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
-                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
-                                </y_axis>
-                            </axes>
-                            <color>
-                                <custom_color>#000000</custom_color>
-                                <type>0</type>
-                            </color>
-                            <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
-                                <type>3</type>
-                            </data>
-                            <style>
-                                <lines_interpolate>false</lines_interpolate>
-                                <pen_style>1</pen_style>
-                                <pen_width>1</pen_width>
-                                <render_antialias>false</render_antialias>
-                                <steps_invert>false</steps_invert>
-                                <sticks_baseline>0</sticks_baseline>
-                                <sticks_orientation>2</sticks_orientation>
-                                <type>0</type>
-                            </style>
-                            <subscriber_queue_size>100</subscriber_queue_size>
-                            <title>Channel 25</title>
-                        </curve_25>
-                        <curve_26>
-                            <axes>
-                                <x_axis>
-                                    <field>header/stamp</field>
-                                    <field_type>0</field_type>
-                                    <scale>
-                                        <absolute_maximum>1000</absolute_maximum>
-                                        <absolute_minimum>0</absolute_minimum>
-                                        <relative_maximum>0</relative_maximum>
-                                        <relative_minimum>-1000</relative_minimum>
-                                        <type>0</type>
-                                    </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
-                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
-                                </x_axis>
-                                <y_axis>
-                                    <field>data/data/26</field>
-                                    <field_type>0</field_type>
-                                    <scale>
-                                        <absolute_maximum>1000</absolute_maximum>
-                                        <absolute_minimum>0</absolute_minimum>
-                                        <relative_maximum>0</relative_maximum>
-                                        <relative_minimum>-1000</relative_minimum>
-                                        <type>0</type>
-                                    </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
-                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
-                                </y_axis>
-                            </axes>
-                            <color>
-                                <custom_color>#000000</custom_color>
-                                <type>0</type>
-                            </color>
-                            <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
-                                <type>3</type>
-                            </data>
-                            <style>
-                                <lines_interpolate>false</lines_interpolate>
-                                <pen_style>1</pen_style>
-                                <pen_width>1</pen_width>
-                                <render_antialias>false</render_antialias>
-                                <steps_invert>false</steps_invert>
-                                <sticks_baseline>0</sticks_baseline>
-                                <sticks_orientation>2</sticks_orientation>
-                                <type>0</type>
-                            </style>
-                            <subscriber_queue_size>100</subscriber_queue_size>
-                            <title>Channel 26</title>
-                        </curve_26>
-                        <curve_27>
-                            <axes>
-                                <x_axis>
-                                    <field>header/stamp</field>
-                                    <field_type>0</field_type>
-                                    <scale>
-                                        <absolute_maximum>1000</absolute_maximum>
-                                        <absolute_minimum>0</absolute_minimum>
-                                        <relative_maximum>0</relative_maximum>
-                                        <relative_minimum>-1000</relative_minimum>
-                                        <type>0</type>
-                                    </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
-                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
-                                </x_axis>
-                                <y_axis>
-                                    <field>data/data/27</field>
-                                    <field_type>0</field_type>
-                                    <scale>
-                                        <absolute_maximum>1000</absolute_maximum>
-                                        <absolute_minimum>0</absolute_minimum>
-                                        <relative_maximum>0</relative_maximum>
-                                        <relative_minimum>-1000</relative_minimum>
-                                        <type>0</type>
-                                    </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
-                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
-                                </y_axis>
-                            </axes>
-                            <color>
-                                <custom_color>#000000</custom_color>
-                                <type>0</type>
-                            </color>
-                            <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
-                                <type>3</type>
-                            </data>
-                            <style>
-                                <lines_interpolate>false</lines_interpolate>
-                                <pen_style>1</pen_style>
-                                <pen_width>1</pen_width>
-                                <render_antialias>false</render_antialias>
-                                <steps_invert>false</steps_invert>
-                                <sticks_baseline>0</sticks_baseline>
-                                <sticks_orientation>2</sticks_orientation>
-                                <type>0</type>
-                            </style>
-                            <subscriber_queue_size>100</subscriber_queue_size>
-                            <title>Channel 27</title>
-                        </curve_27>
-                        <curve_28>
-                            <axes>
-                                <x_axis>
-                                    <field>header/stamp</field>
-                                    <field_type>0</field_type>
-                                    <scale>
-                                        <absolute_maximum>1000</absolute_maximum>
-                                        <absolute_minimum>0</absolute_minimum>
-                                        <relative_maximum>0</relative_maximum>
-                                        <relative_minimum>-1000</relative_minimum>
-                                        <type>0</type>
-                                    </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
-                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
-                                </x_axis>
-                                <y_axis>
-                                    <field>data/data/28</field>
-                                    <field_type>0</field_type>
-                                    <scale>
-                                        <absolute_maximum>1000</absolute_maximum>
-                                        <absolute_minimum>0</absolute_minimum>
-                                        <relative_maximum>0</relative_maximum>
-                                        <relative_minimum>-1000</relative_minimum>
-                                        <type>0</type>
-                                    </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
-                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
-                                </y_axis>
-                            </axes>
-                            <color>
-                                <custom_color>#000000</custom_color>
-                                <type>0</type>
-                            </color>
-                            <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
-                                <type>3</type>
-                            </data>
-                            <style>
-                                <lines_interpolate>false</lines_interpolate>
-                                <pen_style>1</pen_style>
-                                <pen_width>1</pen_width>
-                                <render_antialias>false</render_antialias>
-                                <steps_invert>false</steps_invert>
-                                <sticks_baseline>0</sticks_baseline>
-                                <sticks_orientation>2</sticks_orientation>
-                                <type>0</type>
-                            </style>
-                            <subscriber_queue_size>100</subscriber_queue_size>
-                            <title>Channel 28</title>
-                        </curve_28>
-                        <curve_29>
-                            <axes>
-                                <x_axis>
-                                    <field>header/stamp</field>
-                                    <field_type>0</field_type>
-                                    <scale>
-                                        <absolute_maximum>1000</absolute_maximum>
-                                        <absolute_minimum>0</absolute_minimum>
-                                        <relative_maximum>0</relative_maximum>
-                                        <relative_minimum>-1000</relative_minimum>
-                                        <type>0</type>
-                                    </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
-                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
-                                </x_axis>
-                                <y_axis>
-                                    <field>data/data/29</field>
-                                    <field_type>0</field_type>
-                                    <scale>
-                                        <absolute_maximum>1000</absolute_maximum>
-                                        <absolute_minimum>0</absolute_minimum>
-                                        <relative_maximum>0</relative_maximum>
-                                        <relative_minimum>-1000</relative_minimum>
-                                        <type>0</type>
-                                    </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
-                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
-                                </y_axis>
-                            </axes>
-                            <color>
-                                <custom_color>#000000</custom_color>
-                                <type>0</type>
-                            </color>
-                            <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
-                                <type>3</type>
-                            </data>
-                            <style>
-                                <lines_interpolate>false</lines_interpolate>
-                                <pen_style>1</pen_style>
-                                <pen_width>1</pen_width>
-                                <render_antialias>false</render_antialias>
-                                <steps_invert>false</steps_invert>
-                                <sticks_baseline>0</sticks_baseline>
-                                <sticks_orientation>2</sticks_orientation>
-                                <type>0</type>
-                            </style>
-                            <subscriber_queue_size>100</subscriber_queue_size>
-                            <title>Channel 29</title>
-                        </curve_29>
-                        <curve_3>
-                            <axes>
-                                <x_axis>
-                                    <field>header/stamp</field>
-                                    <field_type>0</field_type>
-                                    <scale>
-                                        <absolute_maximum>1000</absolute_maximum>
-                                        <absolute_minimum>0</absolute_minimum>
-                                        <relative_maximum>0</relative_maximum>
-                                        <relative_minimum>-1000</relative_minimum>
-                                        <type>0</type>
-                                    </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
-                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
-                                </x_axis>
-                                <y_axis>
-                                    <field>data/data/3</field>
-                                    <field_type>0</field_type>
-                                    <scale>
-                                        <absolute_maximum>1000</absolute_maximum>
-                                        <absolute_minimum>0</absolute_minimum>
-                                        <relative_maximum>0</relative_maximum>
-                                        <relative_minimum>-1000</relative_minimum>
-                                        <type>0</type>
-                                    </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
-                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
-                                </y_axis>
-                            </axes>
-                            <color>
-                                <custom_color>#000000</custom_color>
-                                <type>0</type>
-                            </color>
-                            <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
-                                <type>3</type>
-                            </data>
-                            <style>
-                                <lines_interpolate>false</lines_interpolate>
-                                <pen_style>1</pen_style>
-                                <pen_width>1</pen_width>
-                                <render_antialias>false</render_antialias>
-                                <steps_invert>false</steps_invert>
-                                <sticks_baseline>0</sticks_baseline>
-                                <sticks_orientation>2</sticks_orientation>
-                                <type>0</type>
-                            </style>
-                            <subscriber_queue_size>100</subscriber_queue_size>
-                            <title>Channel 3</title>
-                        </curve_3>
-                        <curve_30>
-                            <axes>
-                                <x_axis>
-                                    <field>header/stamp</field>
-                                    <field_type>0</field_type>
-                                    <scale>
-                                        <absolute_maximum>1000</absolute_maximum>
-                                        <absolute_minimum>0</absolute_minimum>
-                                        <relative_maximum>0</relative_maximum>
-                                        <relative_minimum>-1000</relative_minimum>
-                                        <type>0</type>
-                                    </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
-                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
-                                </x_axis>
-                                <y_axis>
-                                    <field>data/data/30</field>
-                                    <field_type>0</field_type>
-                                    <scale>
-                                        <absolute_maximum>1000</absolute_maximum>
-                                        <absolute_minimum>0</absolute_minimum>
-                                        <relative_maximum>0</relative_maximum>
-                                        <relative_minimum>-1000</relative_minimum>
-                                        <type>0</type>
-                                    </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
-                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
-                                </y_axis>
-                            </axes>
-                            <color>
-                                <custom_color>#000000</custom_color>
-                                <type>0</type>
-                            </color>
-                            <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
-                                <type>3</type>
-                            </data>
-                            <style>
-                                <lines_interpolate>false</lines_interpolate>
-                                <pen_style>1</pen_style>
-                                <pen_width>1</pen_width>
-                                <render_antialias>false</render_antialias>
-                                <steps_invert>false</steps_invert>
-                                <sticks_baseline>0</sticks_baseline>
-                                <sticks_orientation>2</sticks_orientation>
-                                <type>0</type>
-                            </style>
-                            <subscriber_queue_size>100</subscriber_queue_size>
-                            <title>Channel 30</title>
-                        </curve_30>
-                        <curve_31>
                             <axes>
                                 <x_axis>
                                     <field>header/stamp</field>
@@ -1332,8 +159,8 @@
                                 <type>0</type>
                             </color>
                             <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
                                 <type>3</type>
                             </data>
                             <style>
@@ -1348,8 +175,8 @@
                             </style>
                             <subscriber_queue_size>100</subscriber_queue_size>
                             <title>Channel 31</title>
-                        </curve_31>
-                        <curve_32>
+                        </curve_10>
+                        <curve_11>
                             <axes>
                                 <x_axis>
                                     <field>header/stamp</field>
@@ -1383,8 +210,8 @@
                                 <type>0</type>
                             </color>
                             <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
                                 <type>3</type>
                             </data>
                             <style>
@@ -1399,8 +226,59 @@
                             </style>
                             <subscriber_queue_size>100</subscriber_queue_size>
                             <title>Channel 32</title>
-                        </curve_32>
-                        <curve_33>
+                        </curve_11>
+                        <curve_12>
+                            <axes>
+                                <x_axis>
+                                    <field>header/stamp</field>
+                                    <field_type>0</field_type>
+                                    <scale>
+                                        <absolute_maximum>1000</absolute_maximum>
+                                        <absolute_minimum>0</absolute_minimum>
+                                        <relative_maximum>0</relative_maximum>
+                                        <relative_minimum>-1000</relative_minimum>
+                                        <type>0</type>
+                                    </scale>
+                                    <topic>/hdEMG_stream_raw</topic>
+                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
+                                </x_axis>
+                                <y_axis>
+                                    <field>data/data/18</field>
+                                    <field_type>0</field_type>
+                                    <scale>
+                                        <absolute_maximum>1000</absolute_maximum>
+                                        <absolute_minimum>0</absolute_minimum>
+                                        <relative_maximum>0</relative_maximum>
+                                        <relative_minimum>-1000</relative_minimum>
+                                        <type>0</type>
+                                    </scale>
+                                    <topic>/hdEMG_stream_raw</topic>
+                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
+                                </y_axis>
+                            </axes>
+                            <color>
+                                <custom_color>#000000</custom_color>
+                                <type>0</type>
+                            </color>
+                            <data>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
+                                <type>3</type>
+                            </data>
+                            <style>
+                                <lines_interpolate>false</lines_interpolate>
+                                <pen_style>1</pen_style>
+                                <pen_width>1</pen_width>
+                                <render_antialias>false</render_antialias>
+                                <steps_invert>false</steps_invert>
+                                <sticks_baseline>0</sticks_baseline>
+                                <sticks_orientation>2</sticks_orientation>
+                                <type>0</type>
+                            </style>
+                            <subscriber_queue_size>100</subscriber_queue_size>
+                            <title>Channel 18</title>
+                        </curve_12>
+                        <curve_13>
                             <axes>
                                 <x_axis>
                                     <field>header/stamp</field>
@@ -1434,8 +312,8 @@
                                 <type>0</type>
                             </color>
                             <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
                                 <type>3</type>
                             </data>
                             <style>
@@ -1450,8 +328,8 @@
                             </style>
                             <subscriber_queue_size>100</subscriber_queue_size>
                             <title>Channel 33</title>
-                        </curve_33>
-                        <curve_34>
+                        </curve_13>
+                        <curve_14>
                             <axes>
                                 <x_axis>
                                     <field>header/stamp</field>
@@ -1485,8 +363,8 @@
                                 <type>0</type>
                             </color>
                             <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
                                 <type>3</type>
                             </data>
                             <style>
@@ -1501,8 +379,8 @@
                             </style>
                             <subscriber_queue_size>100</subscriber_queue_size>
                             <title>Channel 34</title>
-                        </curve_34>
-                        <curve_35>
+                        </curve_14>
+                        <curve_15>
                             <axes>
                                 <x_axis>
                                     <field>header/stamp</field>
@@ -1536,8 +414,8 @@
                                 <type>0</type>
                             </color>
                             <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
                                 <type>3</type>
                             </data>
                             <style>
@@ -1552,8 +430,59 @@
                             </style>
                             <subscriber_queue_size>100</subscriber_queue_size>
                             <title>Channel 35</title>
-                        </curve_35>
-                        <curve_36>
+                        </curve_15>
+                        <curve_16>
+                            <axes>
+                                <x_axis>
+                                    <field>header/stamp</field>
+                                    <field_type>0</field_type>
+                                    <scale>
+                                        <absolute_maximum>1000</absolute_maximum>
+                                        <absolute_minimum>0</absolute_minimum>
+                                        <relative_maximum>0</relative_maximum>
+                                        <relative_minimum>-1000</relative_minimum>
+                                        <type>0</type>
+                                    </scale>
+                                    <topic>/hdEMG_stream_raw</topic>
+                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
+                                </x_axis>
+                                <y_axis>
+                                    <field>data/data/11</field>
+                                    <field_type>0</field_type>
+                                    <scale>
+                                        <absolute_maximum>1000</absolute_maximum>
+                                        <absolute_minimum>0</absolute_minimum>
+                                        <relative_maximum>0</relative_maximum>
+                                        <relative_minimum>-1000</relative_minimum>
+                                        <type>0</type>
+                                    </scale>
+                                    <topic>/hdEMG_stream_raw</topic>
+                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
+                                </y_axis>
+                            </axes>
+                            <color>
+                                <custom_color>#000000</custom_color>
+                                <type>0</type>
+                            </color>
+                            <data>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
+                                <type>3</type>
+                            </data>
+                            <style>
+                                <lines_interpolate>false</lines_interpolate>
+                                <pen_style>1</pen_style>
+                                <pen_width>1</pen_width>
+                                <render_antialias>false</render_antialias>
+                                <steps_invert>false</steps_invert>
+                                <sticks_baseline>0</sticks_baseline>
+                                <sticks_orientation>2</sticks_orientation>
+                                <type>0</type>
+                            </style>
+                            <subscriber_queue_size>100</subscriber_queue_size>
+                            <title>Channel 11</title>
+                        </curve_16>
+                        <curve_17>
                             <axes>
                                 <x_axis>
                                     <field>header/stamp</field>
@@ -1587,8 +516,8 @@
                                 <type>0</type>
                             </color>
                             <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
                                 <type>3</type>
                             </data>
                             <style>
@@ -1603,8 +532,8 @@
                             </style>
                             <subscriber_queue_size>100</subscriber_queue_size>
                             <title>Channel 36</title>
-                        </curve_36>
-                        <curve_37>
+                        </curve_17>
+                        <curve_18>
                             <axes>
                                 <x_axis>
                                     <field>header/stamp</field>
@@ -1638,8 +567,8 @@
                                 <type>0</type>
                             </color>
                             <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
                                 <type>3</type>
                             </data>
                             <style>
@@ -1654,8 +583,8 @@
                             </style>
                             <subscriber_queue_size>100</subscriber_queue_size>
                             <title>Channel 37</title>
-                        </curve_37>
-                        <curve_38>
+                        </curve_18>
+                        <curve_19>
                             <axes>
                                 <x_axis>
                                     <field>header/stamp</field>
@@ -1689,8 +618,8 @@
                                 <type>0</type>
                             </color>
                             <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
                                 <type>3</type>
                             </data>
                             <style>
@@ -1705,8 +634,59 @@
                             </style>
                             <subscriber_queue_size>100</subscriber_queue_size>
                             <title>Channel 38</title>
-                        </curve_38>
-                        <curve_39>
+                        </curve_19>
+                        <curve_2>
+                            <axes>
+                                <x_axis>
+                                    <field>header/stamp</field>
+                                    <field_type>0</field_type>
+                                    <scale>
+                                        <absolute_maximum>1000</absolute_maximum>
+                                        <absolute_minimum>0</absolute_minimum>
+                                        <relative_maximum>0</relative_maximum>
+                                        <relative_minimum>-1000</relative_minimum>
+                                        <type>0</type>
+                                    </scale>
+                                    <topic>/hdEMG_stream_raw</topic>
+                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
+                                </x_axis>
+                                <y_axis>
+                                    <field>data/data/25</field>
+                                    <field_type>0</field_type>
+                                    <scale>
+                                        <absolute_maximum>1000</absolute_maximum>
+                                        <absolute_minimum>0</absolute_minimum>
+                                        <relative_maximum>0</relative_maximum>
+                                        <relative_minimum>-1000</relative_minimum>
+                                        <type>0</type>
+                                    </scale>
+                                    <topic>/hdEMG_stream_raw</topic>
+                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
+                                </y_axis>
+                            </axes>
+                            <color>
+                                <custom_color>#000000</custom_color>
+                                <type>0</type>
+                            </color>
+                            <data>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
+                                <type>3</type>
+                            </data>
+                            <style>
+                                <lines_interpolate>false</lines_interpolate>
+                                <pen_style>1</pen_style>
+                                <pen_width>1</pen_width>
+                                <render_antialias>false</render_antialias>
+                                <steps_invert>false</steps_invert>
+                                <sticks_baseline>0</sticks_baseline>
+                                <sticks_orientation>2</sticks_orientation>
+                                <type>0</type>
+                            </style>
+                            <subscriber_queue_size>100</subscriber_queue_size>
+                            <title>Channel 25</title>
+                        </curve_2>
+                        <curve_20>
                             <axes>
                                 <x_axis>
                                     <field>header/stamp</field>
@@ -1740,8 +720,8 @@
                                 <type>0</type>
                             </color>
                             <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
                                 <type>3</type>
                             </data>
                             <style>
@@ -1756,8 +736,8 @@
                             </style>
                             <subscriber_queue_size>100</subscriber_queue_size>
                             <title>Channel 39</title>
-                        </curve_39>
-                        <curve_4>
+                        </curve_20>
+                        <curve_21>
                             <axes>
                                 <x_axis>
                                     <field>header/stamp</field>
@@ -1791,8 +771,8 @@
                                 <type>0</type>
                             </color>
                             <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
                                 <type>3</type>
                             </data>
                             <style>
@@ -1807,8 +787,8 @@
                             </style>
                             <subscriber_queue_size>100</subscriber_queue_size>
                             <title>Channel 4</title>
-                        </curve_4>
-                        <curve_40>
+                        </curve_21>
+                        <curve_22>
                             <axes>
                                 <x_axis>
                                     <field>header/stamp</field>
@@ -1842,8 +822,8 @@
                                 <type>0</type>
                             </color>
                             <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
                                 <type>3</type>
                             </data>
                             <style>
@@ -1858,8 +838,59 @@
                             </style>
                             <subscriber_queue_size>100</subscriber_queue_size>
                             <title>Channel 40</title>
-                        </curve_40>
-                        <curve_41>
+                        </curve_22>
+                        <curve_23>
+                            <axes>
+                                <x_axis>
+                                    <field>header/stamp</field>
+                                    <field_type>0</field_type>
+                                    <scale>
+                                        <absolute_maximum>1000</absolute_maximum>
+                                        <absolute_minimum>0</absolute_minimum>
+                                        <relative_maximum>0</relative_maximum>
+                                        <relative_minimum>-1000</relative_minimum>
+                                        <type>0</type>
+                                    </scale>
+                                    <topic>/hdEMG_stream_raw</topic>
+                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
+                                </x_axis>
+                                <y_axis>
+                                    <field>data/data/19</field>
+                                    <field_type>0</field_type>
+                                    <scale>
+                                        <absolute_maximum>1000</absolute_maximum>
+                                        <absolute_minimum>0</absolute_minimum>
+                                        <relative_maximum>0</relative_maximum>
+                                        <relative_minimum>-1000</relative_minimum>
+                                        <type>0</type>
+                                    </scale>
+                                    <topic>/hdEMG_stream_raw</topic>
+                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
+                                </y_axis>
+                            </axes>
+                            <color>
+                                <custom_color>#000000</custom_color>
+                                <type>0</type>
+                            </color>
+                            <data>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
+                                <type>3</type>
+                            </data>
+                            <style>
+                                <lines_interpolate>false</lines_interpolate>
+                                <pen_style>1</pen_style>
+                                <pen_width>1</pen_width>
+                                <render_antialias>false</render_antialias>
+                                <steps_invert>false</steps_invert>
+                                <sticks_baseline>0</sticks_baseline>
+                                <sticks_orientation>2</sticks_orientation>
+                                <type>0</type>
+                            </style>
+                            <subscriber_queue_size>100</subscriber_queue_size>
+                            <title>Channel 19</title>
+                        </curve_23>
+                        <curve_24>
                             <axes>
                                 <x_axis>
                                     <field>header/stamp</field>
@@ -1893,8 +924,8 @@
                                 <type>0</type>
                             </color>
                             <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
                                 <type>3</type>
                             </data>
                             <style>
@@ -1909,8 +940,8 @@
                             </style>
                             <subscriber_queue_size>100</subscriber_queue_size>
                             <title>Channel 41</title>
-                        </curve_41>
-                        <curve_42>
+                        </curve_24>
+                        <curve_25>
                             <axes>
                                 <x_axis>
                                     <field>header/stamp</field>
@@ -1944,8 +975,8 @@
                                 <type>0</type>
                             </color>
                             <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
                                 <type>3</type>
                             </data>
                             <style>
@@ -1960,8 +991,8 @@
                             </style>
                             <subscriber_queue_size>100</subscriber_queue_size>
                             <title>Channel 42</title>
-                        </curve_42>
-                        <curve_43>
+                        </curve_25>
+                        <curve_26>
                             <axes>
                                 <x_axis>
                                     <field>header/stamp</field>
@@ -1995,8 +1026,8 @@
                                 <type>0</type>
                             </color>
                             <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
                                 <type>3</type>
                             </data>
                             <style>
@@ -2011,8 +1042,8 @@
                             </style>
                             <subscriber_queue_size>100</subscriber_queue_size>
                             <title>Channel 43</title>
-                        </curve_43>
-                        <curve_44>
+                        </curve_26>
+                        <curve_27>
                             <axes>
                                 <x_axis>
                                     <field>header/stamp</field>
@@ -2046,8 +1077,8 @@
                                 <type>0</type>
                             </color>
                             <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
                                 <type>3</type>
                             </data>
                             <style>
@@ -2062,8 +1093,59 @@
                             </style>
                             <subscriber_queue_size>100</subscriber_queue_size>
                             <title>Channel 44</title>
-                        </curve_44>
-                        <curve_45>
+                        </curve_27>
+                        <curve_28>
+                            <axes>
+                                <x_axis>
+                                    <field>header/stamp</field>
+                                    <field_type>0</field_type>
+                                    <scale>
+                                        <absolute_maximum>1000</absolute_maximum>
+                                        <absolute_minimum>0</absolute_minimum>
+                                        <relative_maximum>0</relative_maximum>
+                                        <relative_minimum>-1000</relative_minimum>
+                                        <type>0</type>
+                                    </scale>
+                                    <topic>/hdEMG_stream_raw</topic>
+                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
+                                </x_axis>
+                                <y_axis>
+                                    <field>data/data/12</field>
+                                    <field_type>0</field_type>
+                                    <scale>
+                                        <absolute_maximum>1000</absolute_maximum>
+                                        <absolute_minimum>0</absolute_minimum>
+                                        <relative_maximum>0</relative_maximum>
+                                        <relative_minimum>-1000</relative_minimum>
+                                        <type>0</type>
+                                    </scale>
+                                    <topic>/hdEMG_stream_raw</topic>
+                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
+                                </y_axis>
+                            </axes>
+                            <color>
+                                <custom_color>#000000</custom_color>
+                                <type>0</type>
+                            </color>
+                            <data>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
+                                <type>3</type>
+                            </data>
+                            <style>
+                                <lines_interpolate>false</lines_interpolate>
+                                <pen_style>1</pen_style>
+                                <pen_width>1</pen_width>
+                                <render_antialias>false</render_antialias>
+                                <steps_invert>false</steps_invert>
+                                <sticks_baseline>0</sticks_baseline>
+                                <sticks_orientation>2</sticks_orientation>
+                                <type>0</type>
+                            </style>
+                            <subscriber_queue_size>100</subscriber_queue_size>
+                            <title>Channel 12</title>
+                        </curve_28>
+                        <curve_29>
                             <axes>
                                 <x_axis>
                                     <field>header/stamp</field>
@@ -2097,8 +1179,8 @@
                                 <type>0</type>
                             </color>
                             <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
                                 <type>3</type>
                             </data>
                             <style>
@@ -2113,8 +1195,59 @@
                             </style>
                             <subscriber_queue_size>100</subscriber_queue_size>
                             <title>Channel 45</title>
-                        </curve_45>
-                        <curve_46>
+                        </curve_29>
+                        <curve_3>
+                            <axes>
+                                <x_axis>
+                                    <field>header/stamp</field>
+                                    <field_type>0</field_type>
+                                    <scale>
+                                        <absolute_maximum>1000</absolute_maximum>
+                                        <absolute_minimum>0</absolute_minimum>
+                                        <relative_maximum>0</relative_maximum>
+                                        <relative_minimum>-1000</relative_minimum>
+                                        <type>0</type>
+                                    </scale>
+                                    <topic>/hdEMG_stream_raw</topic>
+                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
+                                </x_axis>
+                                <y_axis>
+                                    <field>data/data/26</field>
+                                    <field_type>0</field_type>
+                                    <scale>
+                                        <absolute_maximum>1000</absolute_maximum>
+                                        <absolute_minimum>0</absolute_minimum>
+                                        <relative_maximum>0</relative_maximum>
+                                        <relative_minimum>-1000</relative_minimum>
+                                        <type>0</type>
+                                    </scale>
+                                    <topic>/hdEMG_stream_raw</topic>
+                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
+                                </y_axis>
+                            </axes>
+                            <color>
+                                <custom_color>#000000</custom_color>
+                                <type>0</type>
+                            </color>
+                            <data>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
+                                <type>3</type>
+                            </data>
+                            <style>
+                                <lines_interpolate>false</lines_interpolate>
+                                <pen_style>1</pen_style>
+                                <pen_width>1</pen_width>
+                                <render_antialias>false</render_antialias>
+                                <steps_invert>false</steps_invert>
+                                <sticks_baseline>0</sticks_baseline>
+                                <sticks_orientation>2</sticks_orientation>
+                                <type>0</type>
+                            </style>
+                            <subscriber_queue_size>100</subscriber_queue_size>
+                            <title>Channel 26</title>
+                        </curve_3>
+                        <curve_30>
                             <axes>
                                 <x_axis>
                                     <field>header/stamp</field>
@@ -2148,8 +1281,8 @@
                                 <type>0</type>
                             </color>
                             <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
                                 <type>3</type>
                             </data>
                             <style>
@@ -2164,8 +1297,8 @@
                             </style>
                             <subscriber_queue_size>100</subscriber_queue_size>
                             <title>Channel 46</title>
-                        </curve_46>
-                        <curve_47>
+                        </curve_30>
+                        <curve_31>
                             <axes>
                                 <x_axis>
                                     <field>header/stamp</field>
@@ -2199,8 +1332,8 @@
                                 <type>0</type>
                             </color>
                             <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
                                 <type>3</type>
                             </data>
                             <style>
@@ -2215,8 +1348,8 @@
                             </style>
                             <subscriber_queue_size>100</subscriber_queue_size>
                             <title>Channel 47</title>
-                        </curve_47>
-                        <curve_48>
+                        </curve_31>
+                        <curve_32>
                             <axes>
                                 <x_axis>
                                     <field>header/stamp</field>
@@ -2250,8 +1383,8 @@
                                 <type>0</type>
                             </color>
                             <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
                                 <type>3</type>
                             </data>
                             <style>
@@ -2266,8 +1399,8 @@
                             </style>
                             <subscriber_queue_size>100</subscriber_queue_size>
                             <title>Channel 48</title>
-                        </curve_48>
-                        <curve_49>
+                        </curve_32>
+                        <curve_33>
                             <axes>
                                 <x_axis>
                                     <field>header/stamp</field>
@@ -2301,8 +1434,8 @@
                                 <type>0</type>
                             </color>
                             <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
                                 <type>3</type>
                             </data>
                             <style>
@@ -2317,8 +1450,59 @@
                             </style>
                             <subscriber_queue_size>100</subscriber_queue_size>
                             <title>Channel 49</title>
-                        </curve_49>
-                        <curve_5>
+                        </curve_33>
+                        <curve_34>
+                            <axes>
+                                <x_axis>
+                                    <field>header/stamp</field>
+                                    <field_type>0</field_type>
+                                    <scale>
+                                        <absolute_maximum>1000</absolute_maximum>
+                                        <absolute_minimum>0</absolute_minimum>
+                                        <relative_maximum>0</relative_maximum>
+                                        <relative_minimum>-1000</relative_minimum>
+                                        <type>0</type>
+                                    </scale>
+                                    <topic>/hdEMG_stream_raw</topic>
+                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
+                                </x_axis>
+                                <y_axis>
+                                    <field>data/data/2</field>
+                                    <field_type>0</field_type>
+                                    <scale>
+                                        <absolute_maximum>1000</absolute_maximum>
+                                        <absolute_minimum>0</absolute_minimum>
+                                        <relative_maximum>0</relative_maximum>
+                                        <relative_minimum>-1000</relative_minimum>
+                                        <type>0</type>
+                                    </scale>
+                                    <topic>/hdEMG_stream_raw</topic>
+                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
+                                </y_axis>
+                            </axes>
+                            <color>
+                                <custom_color>#000000</custom_color>
+                                <type>0</type>
+                            </color>
+                            <data>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
+                                <type>3</type>
+                            </data>
+                            <style>
+                                <lines_interpolate>false</lines_interpolate>
+                                <pen_style>1</pen_style>
+                                <pen_width>1</pen_width>
+                                <render_antialias>false</render_antialias>
+                                <steps_invert>false</steps_invert>
+                                <sticks_baseline>0</sticks_baseline>
+                                <sticks_orientation>2</sticks_orientation>
+                                <type>0</type>
+                            </style>
+                            <subscriber_queue_size>100</subscriber_queue_size>
+                            <title>Channel 2</title>
+                        </curve_34>
+                        <curve_35>
                             <axes>
                                 <x_axis>
                                     <field>header/stamp</field>
@@ -2352,8 +1536,8 @@
                                 <type>0</type>
                             </color>
                             <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
                                 <type>3</type>
                             </data>
                             <style>
@@ -2368,8 +1552,8 @@
                             </style>
                             <subscriber_queue_size>100</subscriber_queue_size>
                             <title>Channel 5</title>
-                        </curve_5>
-                        <curve_50>
+                        </curve_35>
+                        <curve_36>
                             <axes>
                                 <x_axis>
                                     <field>header/stamp</field>
@@ -2403,8 +1587,8 @@
                                 <type>0</type>
                             </color>
                             <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
                                 <type>3</type>
                             </data>
                             <style>
@@ -2419,8 +1603,8 @@
                             </style>
                             <subscriber_queue_size>100</subscriber_queue_size>
                             <title>Channel 50</title>
-                        </curve_50>
-                        <curve_51>
+                        </curve_36>
+                        <curve_37>
                             <axes>
                                 <x_axis>
                                     <field>header/stamp</field>
@@ -2454,8 +1638,8 @@
                                 <type>0</type>
                             </color>
                             <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
                                 <type>3</type>
                             </data>
                             <style>
@@ -2470,8 +1654,8 @@
                             </style>
                             <subscriber_queue_size>100</subscriber_queue_size>
                             <title>Channel 51</title>
-                        </curve_51>
-                        <curve_52>
+                        </curve_37>
+                        <curve_38>
                             <axes>
                                 <x_axis>
                                     <field>header/stamp</field>
@@ -2505,8 +1689,8 @@
                                 <type>0</type>
                             </color>
                             <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
                                 <type>3</type>
                             </data>
                             <style>
@@ -2521,8 +1705,8 @@
                             </style>
                             <subscriber_queue_size>100</subscriber_queue_size>
                             <title>Channel 52</title>
-                        </curve_52>
-                        <curve_53>
+                        </curve_38>
+                        <curve_39>
                             <axes>
                                 <x_axis>
                                     <field>header/stamp</field>
@@ -2556,8 +1740,8 @@
                                 <type>0</type>
                             </color>
                             <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
                                 <type>3</type>
                             </data>
                             <style>
@@ -2572,8 +1756,110 @@
                             </style>
                             <subscriber_queue_size>100</subscriber_queue_size>
                             <title>Channel 53</title>
-                        </curve_53>
-                        <curve_54>
+                        </curve_39>
+                        <curve_4>
+                            <axes>
+                                <x_axis>
+                                    <field>header/stamp</field>
+                                    <field_type>0</field_type>
+                                    <scale>
+                                        <absolute_maximum>1000</absolute_maximum>
+                                        <absolute_minimum>0</absolute_minimum>
+                                        <relative_maximum>0</relative_maximum>
+                                        <relative_minimum>-1000</relative_minimum>
+                                        <type>0</type>
+                                    </scale>
+                                    <topic>/hdEMG_stream_raw</topic>
+                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
+                                </x_axis>
+                                <y_axis>
+                                    <field>data/data/10</field>
+                                    <field_type>0</field_type>
+                                    <scale>
+                                        <absolute_maximum>1000</absolute_maximum>
+                                        <absolute_minimum>0</absolute_minimum>
+                                        <relative_maximum>0</relative_maximum>
+                                        <relative_minimum>-1000</relative_minimum>
+                                        <type>0</type>
+                                    </scale>
+                                    <topic>/hdEMG_stream_raw</topic>
+                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
+                                </y_axis>
+                            </axes>
+                            <color>
+                                <custom_color>#000000</custom_color>
+                                <type>0</type>
+                            </color>
+                            <data>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
+                                <type>3</type>
+                            </data>
+                            <style>
+                                <lines_interpolate>false</lines_interpolate>
+                                <pen_style>1</pen_style>
+                                <pen_width>1</pen_width>
+                                <render_antialias>false</render_antialias>
+                                <steps_invert>false</steps_invert>
+                                <sticks_baseline>0</sticks_baseline>
+                                <sticks_orientation>2</sticks_orientation>
+                                <type>0</type>
+                            </style>
+                            <subscriber_queue_size>100</subscriber_queue_size>
+                            <title>Channel 10</title>
+                        </curve_4>
+                        <curve_40>
+                            <axes>
+                                <x_axis>
+                                    <field>header/stamp</field>
+                                    <field_type>0</field_type>
+                                    <scale>
+                                        <absolute_maximum>1000</absolute_maximum>
+                                        <absolute_minimum>0</absolute_minimum>
+                                        <relative_maximum>0</relative_maximum>
+                                        <relative_minimum>-1000</relative_minimum>
+                                        <type>0</type>
+                                    </scale>
+                                    <topic>/hdEMG_stream_raw</topic>
+                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
+                                </x_axis>
+                                <y_axis>
+                                    <field>data/data/13</field>
+                                    <field_type>0</field_type>
+                                    <scale>
+                                        <absolute_maximum>1000</absolute_maximum>
+                                        <absolute_minimum>0</absolute_minimum>
+                                        <relative_maximum>0</relative_maximum>
+                                        <relative_minimum>-1000</relative_minimum>
+                                        <type>0</type>
+                                    </scale>
+                                    <topic>/hdEMG_stream_raw</topic>
+                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
+                                </y_axis>
+                            </axes>
+                            <color>
+                                <custom_color>#000000</custom_color>
+                                <type>0</type>
+                            </color>
+                            <data>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
+                                <type>3</type>
+                            </data>
+                            <style>
+                                <lines_interpolate>false</lines_interpolate>
+                                <pen_style>1</pen_style>
+                                <pen_width>1</pen_width>
+                                <render_antialias>false</render_antialias>
+                                <steps_invert>false</steps_invert>
+                                <sticks_baseline>0</sticks_baseline>
+                                <sticks_orientation>2</sticks_orientation>
+                                <type>0</type>
+                            </style>
+                            <subscriber_queue_size>100</subscriber_queue_size>
+                            <title>Channel 13</title>
+                        </curve_40>
+                        <curve_41>
                             <axes>
                                 <x_axis>
                                     <field>header/stamp</field>
@@ -2607,8 +1893,8 @@
                                 <type>0</type>
                             </color>
                             <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
                                 <type>3</type>
                             </data>
                             <style>
@@ -2623,8 +1909,8 @@
                             </style>
                             <subscriber_queue_size>100</subscriber_queue_size>
                             <title>Channel 54</title>
-                        </curve_54>
-                        <curve_55>
+                        </curve_41>
+                        <curve_42>
                             <axes>
                                 <x_axis>
                                     <field>header/stamp</field>
@@ -2658,8 +1944,8 @@
                                 <type>0</type>
                             </color>
                             <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
                                 <type>3</type>
                             </data>
                             <style>
@@ -2674,8 +1960,8 @@
                             </style>
                             <subscriber_queue_size>100</subscriber_queue_size>
                             <title>Channel 55</title>
-                        </curve_55>
-                        <curve_56>
+                        </curve_42>
+                        <curve_43>
                             <axes>
                                 <x_axis>
                                     <field>header/stamp</field>
@@ -2709,8 +1995,8 @@
                                 <type>0</type>
                             </color>
                             <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
                                 <type>3</type>
                             </data>
                             <style>
@@ -2725,8 +2011,8 @@
                             </style>
                             <subscriber_queue_size>100</subscriber_queue_size>
                             <title>Channel 56</title>
-                        </curve_56>
-                        <curve_57>
+                        </curve_43>
+                        <curve_44>
                             <axes>
                                 <x_axis>
                                     <field>header/stamp</field>
@@ -2760,8 +2046,8 @@
                                 <type>0</type>
                             </color>
                             <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
                                 <type>3</type>
                             </data>
                             <style>
@@ -2776,8 +2062,59 @@
                             </style>
                             <subscriber_queue_size>100</subscriber_queue_size>
                             <title>Channel 57</title>
-                        </curve_57>
-                        <curve_58>
+                        </curve_44>
+                        <curve_45>
+                            <axes>
+                                <x_axis>
+                                    <field>header/stamp</field>
+                                    <field_type>0</field_type>
+                                    <scale>
+                                        <absolute_maximum>1000</absolute_maximum>
+                                        <absolute_minimum>0</absolute_minimum>
+                                        <relative_maximum>0</relative_maximum>
+                                        <relative_minimum>-1000</relative_minimum>
+                                        <type>0</type>
+                                    </scale>
+                                    <topic>/hdEMG_stream_raw</topic>
+                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
+                                </x_axis>
+                                <y_axis>
+                                    <field>data/data/20</field>
+                                    <field_type>0</field_type>
+                                    <scale>
+                                        <absolute_maximum>1000</absolute_maximum>
+                                        <absolute_minimum>0</absolute_minimum>
+                                        <relative_maximum>0</relative_maximum>
+                                        <relative_minimum>-1000</relative_minimum>
+                                        <type>0</type>
+                                    </scale>
+                                    <topic>/hdEMG_stream_raw</topic>
+                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
+                                </y_axis>
+                            </axes>
+                            <color>
+                                <custom_color>#000000</custom_color>
+                                <type>0</type>
+                            </color>
+                            <data>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
+                                <type>3</type>
+                            </data>
+                            <style>
+                                <lines_interpolate>false</lines_interpolate>
+                                <pen_style>1</pen_style>
+                                <pen_width>1</pen_width>
+                                <render_antialias>false</render_antialias>
+                                <steps_invert>false</steps_invert>
+                                <sticks_baseline>0</sticks_baseline>
+                                <sticks_orientation>2</sticks_orientation>
+                                <type>0</type>
+                            </style>
+                            <subscriber_queue_size>100</subscriber_queue_size>
+                            <title>Channel 20</title>
+                        </curve_45>
+                        <curve_46>
                             <axes>
                                 <x_axis>
                                     <field>header/stamp</field>
@@ -2811,8 +2148,8 @@
                                 <type>0</type>
                             </color>
                             <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
                                 <type>3</type>
                             </data>
                             <style>
@@ -2827,8 +2164,8 @@
                             </style>
                             <subscriber_queue_size>100</subscriber_queue_size>
                             <title>Channel 58</title>
-                        </curve_58>
-                        <curve_59>
+                        </curve_46>
+                        <curve_47>
                             <axes>
                                 <x_axis>
                                     <field>header/stamp</field>
@@ -2862,8 +2199,8 @@
                                 <type>0</type>
                             </color>
                             <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
                                 <type>3</type>
                             </data>
                             <style>
@@ -2878,8 +2215,8 @@
                             </style>
                             <subscriber_queue_size>100</subscriber_queue_size>
                             <title>Channel 59</title>
-                        </curve_59>
-                        <curve_6>
+                        </curve_47>
+                        <curve_48>
                             <axes>
                                 <x_axis>
                                     <field>header/stamp</field>
@@ -2913,8 +2250,8 @@
                                 <type>0</type>
                             </color>
                             <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
                                 <type>3</type>
                             </data>
                             <style>
@@ -2929,8 +2266,8 @@
                             </style>
                             <subscriber_queue_size>100</subscriber_queue_size>
                             <title>Channel 6</title>
-                        </curve_6>
-                        <curve_60>
+                        </curve_48>
+                        <curve_49>
                             <axes>
                                 <x_axis>
                                     <field>header/stamp</field>
@@ -2964,8 +2301,8 @@
                                 <type>0</type>
                             </color>
                             <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
                                 <type>3</type>
                             </data>
                             <style>
@@ -2980,8 +2317,59 @@
                             </style>
                             <subscriber_queue_size>100</subscriber_queue_size>
                             <title>Channel 60</title>
-                        </curve_60>
-                        <curve_61>
+                        </curve_49>
+                        <curve_5>
+                            <axes>
+                                <x_axis>
+                                    <field>header/stamp</field>
+                                    <field_type>0</field_type>
+                                    <scale>
+                                        <absolute_maximum>1000</absolute_maximum>
+                                        <absolute_minimum>0</absolute_minimum>
+                                        <relative_maximum>0</relative_maximum>
+                                        <relative_minimum>-1000</relative_minimum>
+                                        <type>0</type>
+                                    </scale>
+                                    <topic>/hdEMG_stream_raw</topic>
+                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
+                                </x_axis>
+                                <y_axis>
+                                    <field>data/data/27</field>
+                                    <field_type>0</field_type>
+                                    <scale>
+                                        <absolute_maximum>1000</absolute_maximum>
+                                        <absolute_minimum>0</absolute_minimum>
+                                        <relative_maximum>0</relative_maximum>
+                                        <relative_minimum>-1000</relative_minimum>
+                                        <type>0</type>
+                                    </scale>
+                                    <topic>/hdEMG_stream_raw</topic>
+                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
+                                </y_axis>
+                            </axes>
+                            <color>
+                                <custom_color>#000000</custom_color>
+                                <type>0</type>
+                            </color>
+                            <data>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
+                                <type>3</type>
+                            </data>
+                            <style>
+                                <lines_interpolate>false</lines_interpolate>
+                                <pen_style>1</pen_style>
+                                <pen_width>1</pen_width>
+                                <render_antialias>false</render_antialias>
+                                <steps_invert>false</steps_invert>
+                                <sticks_baseline>0</sticks_baseline>
+                                <sticks_orientation>2</sticks_orientation>
+                                <type>0</type>
+                            </style>
+                            <subscriber_queue_size>100</subscriber_queue_size>
+                            <title>Channel 27</title>
+                        </curve_5>
+                        <curve_50>
                             <axes>
                                 <x_axis>
                                     <field>header/stamp</field>
@@ -3015,8 +2403,8 @@
                                 <type>0</type>
                             </color>
                             <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
                                 <type>3</type>
                             </data>
                             <style>
@@ -3031,8 +2419,8 @@
                             </style>
                             <subscriber_queue_size>100</subscriber_queue_size>
                             <title>Channel 61</title>
-                        </curve_61>
-                        <curve_62>
+                        </curve_50>
+                        <curve_51>
                             <axes>
                                 <x_axis>
                                     <field>header/stamp</field>
@@ -3066,8 +2454,8 @@
                                 <type>0</type>
                             </color>
                             <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
                                 <type>3</type>
                             </data>
                             <style>
@@ -3082,8 +2470,59 @@
                             </style>
                             <subscriber_queue_size>100</subscriber_queue_size>
                             <title>Channel 62</title>
-                        </curve_62>
-                        <curve_63>
+                        </curve_51>
+                        <curve_52>
+                            <axes>
+                                <x_axis>
+                                    <field>header/stamp</field>
+                                    <field_type>0</field_type>
+                                    <scale>
+                                        <absolute_maximum>1000</absolute_maximum>
+                                        <absolute_minimum>0</absolute_minimum>
+                                        <relative_maximum>0</relative_maximum>
+                                        <relative_minimum>-1000</relative_minimum>
+                                        <type>0</type>
+                                    </scale>
+                                    <topic>/hdEMG_stream_raw</topic>
+                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
+                                </x_axis>
+                                <y_axis>
+                                    <field>data/data/14</field>
+                                    <field_type>0</field_type>
+                                    <scale>
+                                        <absolute_maximum>1000</absolute_maximum>
+                                        <absolute_minimum>0</absolute_minimum>
+                                        <relative_maximum>0</relative_maximum>
+                                        <relative_minimum>-1000</relative_minimum>
+                                        <type>0</type>
+                                    </scale>
+                                    <topic>/hdEMG_stream_raw</topic>
+                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
+                                </y_axis>
+                            </axes>
+                            <color>
+                                <custom_color>#000000</custom_color>
+                                <type>0</type>
+                            </color>
+                            <data>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
+                                <type>3</type>
+                            </data>
+                            <style>
+                                <lines_interpolate>false</lines_interpolate>
+                                <pen_style>1</pen_style>
+                                <pen_width>1</pen_width>
+                                <render_antialias>false</render_antialias>
+                                <steps_invert>false</steps_invert>
+                                <sticks_baseline>0</sticks_baseline>
+                                <sticks_orientation>2</sticks_orientation>
+                                <type>0</type>
+                            </style>
+                            <subscriber_queue_size>100</subscriber_queue_size>
+                            <title>Channel 14</title>
+                        </curve_52>
+                        <curve_53>
                             <axes>
                                 <x_axis>
                                     <field>header/stamp</field>
@@ -3117,8 +2556,8 @@
                                 <type>0</type>
                             </color>
                             <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
                                 <type>3</type>
                             </data>
                             <style>
@@ -3133,8 +2572,8 @@
                             </style>
                             <subscriber_queue_size>100</subscriber_queue_size>
                             <title>Channel 63</title>
-                        </curve_63>
-                        <curve_7>
+                        </curve_53>
+                        <curve_54>
                             <axes>
                                 <x_axis>
                                     <field>header/stamp</field>
@@ -3168,8 +2607,8 @@
                                 <type>0</type>
                             </color>
                             <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
                                 <type>3</type>
                             </data>
                             <style>
@@ -3184,8 +2623,8 @@
                             </style>
                             <subscriber_queue_size>100</subscriber_queue_size>
                             <title>Channel 7</title>
-                        </curve_7>
-                        <curve_8>
+                        </curve_54>
+                        <curve_55>
                             <axes>
                                 <x_axis>
                                     <field>header/stamp</field>
@@ -3219,8 +2658,8 @@
                                 <type>0</type>
                             </color>
                             <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
                                 <type>3</type>
                             </data>
                             <style>
@@ -3235,8 +2674,59 @@
                             </style>
                             <subscriber_queue_size>100</subscriber_queue_size>
                             <title>Channel 8</title>
-                        </curve_8>
-                        <curve_9>
+                        </curve_55>
+                        <curve_56>
+                            <axes>
+                                <x_axis>
+                                    <field>header/stamp</field>
+                                    <field_type>0</field_type>
+                                    <scale>
+                                        <absolute_maximum>1000</absolute_maximum>
+                                        <absolute_minimum>0</absolute_minimum>
+                                        <relative_maximum>0</relative_maximum>
+                                        <relative_minimum>-1000</relative_minimum>
+                                        <type>0</type>
+                                    </scale>
+                                    <topic>/hdEMG_stream_raw</topic>
+                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
+                                </x_axis>
+                                <y_axis>
+                                    <field>data/data/21</field>
+                                    <field_type>0</field_type>
+                                    <scale>
+                                        <absolute_maximum>1000</absolute_maximum>
+                                        <absolute_minimum>0</absolute_minimum>
+                                        <relative_maximum>0</relative_maximum>
+                                        <relative_minimum>-1000</relative_minimum>
+                                        <type>0</type>
+                                    </scale>
+                                    <topic>/hdEMG_stream_raw</topic>
+                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
+                                </y_axis>
+                            </axes>
+                            <color>
+                                <custom_color>#000000</custom_color>
+                                <type>0</type>
+                            </color>
+                            <data>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
+                                <type>3</type>
+                            </data>
+                            <style>
+                                <lines_interpolate>false</lines_interpolate>
+                                <pen_style>1</pen_style>
+                                <pen_width>1</pen_width>
+                                <render_antialias>false</render_antialias>
+                                <steps_invert>false</steps_invert>
+                                <sticks_baseline>0</sticks_baseline>
+                                <sticks_orientation>2</sticks_orientation>
+                                <type>0</type>
+                            </style>
+                            <subscriber_queue_size>100</subscriber_queue_size>
+                            <title>Channel 21</title>
+                        </curve_56>
+                        <curve_57>
                             <axes>
                                 <x_axis>
                                     <field>header/stamp</field>
@@ -3270,8 +2760,8 @@
                                 <type>0</type>
                             </color>
                             <data>
-                                <circular_buffer_capacity>1000</circular_buffer_capacity>
-                                <time_frame_length>10</time_frame_length>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
                                 <type>3</type>
                             </data>
                             <style>
@@ -3286,12 +2776,522 @@
                             </style>
                             <subscriber_queue_size>100</subscriber_queue_size>
                             <title>Channel 9</title>
+                        </curve_57>
+                        <curve_58>
+                            <axes>
+                                <x_axis>
+                                    <field>header/stamp</field>
+                                    <field_type>0</field_type>
+                                    <scale>
+                                        <absolute_maximum>1000</absolute_maximum>
+                                        <absolute_minimum>0</absolute_minimum>
+                                        <relative_maximum>0</relative_maximum>
+                                        <relative_minimum>-1000</relative_minimum>
+                                        <type>0</type>
+                                    </scale>
+                                    <topic>/hdEMG_stream_raw</topic>
+                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
+                                </x_axis>
+                                <y_axis>
+                                    <field>data/data/15</field>
+                                    <field_type>0</field_type>
+                                    <scale>
+                                        <absolute_maximum>1000</absolute_maximum>
+                                        <absolute_minimum>0</absolute_minimum>
+                                        <relative_maximum>0</relative_maximum>
+                                        <relative_minimum>-1000</relative_minimum>
+                                        <type>0</type>
+                                    </scale>
+                                    <topic>/hdEMG_stream_raw</topic>
+                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
+                                </y_axis>
+                            </axes>
+                            <color>
+                                <custom_color>#000000</custom_color>
+                                <type>0</type>
+                            </color>
+                            <data>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
+                                <type>3</type>
+                            </data>
+                            <style>
+                                <lines_interpolate>false</lines_interpolate>
+                                <pen_style>1</pen_style>
+                                <pen_width>1</pen_width>
+                                <render_antialias>false</render_antialias>
+                                <steps_invert>false</steps_invert>
+                                <sticks_baseline>0</sticks_baseline>
+                                <sticks_orientation>2</sticks_orientation>
+                                <type>0</type>
+                            </style>
+                            <subscriber_queue_size>100</subscriber_queue_size>
+                            <title>Channel 15</title>
+                        </curve_58>
+                        <curve_59>
+                            <axes>
+                                <x_axis>
+                                    <field>header/stamp</field>
+                                    <field_type>0</field_type>
+                                    <scale>
+                                        <absolute_maximum>1000</absolute_maximum>
+                                        <absolute_minimum>0</absolute_minimum>
+                                        <relative_maximum>0</relative_maximum>
+                                        <relative_minimum>-1000</relative_minimum>
+                                        <type>0</type>
+                                    </scale>
+                                    <topic>/hdEMG_stream_raw</topic>
+                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
+                                </x_axis>
+                                <y_axis>
+                                    <field>data/data/16</field>
+                                    <field_type>0</field_type>
+                                    <scale>
+                                        <absolute_maximum>1000</absolute_maximum>
+                                        <absolute_minimum>0</absolute_minimum>
+                                        <relative_maximum>0</relative_maximum>
+                                        <relative_minimum>-1000</relative_minimum>
+                                        <type>0</type>
+                                    </scale>
+                                    <topic>/hdEMG_stream_raw</topic>
+                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
+                                </y_axis>
+                            </axes>
+                            <color>
+                                <custom_color>#000000</custom_color>
+                                <type>0</type>
+                            </color>
+                            <data>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
+                                <type>3</type>
+                            </data>
+                            <style>
+                                <lines_interpolate>false</lines_interpolate>
+                                <pen_style>1</pen_style>
+                                <pen_width>1</pen_width>
+                                <render_antialias>false</render_antialias>
+                                <steps_invert>false</steps_invert>
+                                <sticks_baseline>0</sticks_baseline>
+                                <sticks_orientation>2</sticks_orientation>
+                                <type>0</type>
+                            </style>
+                            <subscriber_queue_size>100</subscriber_queue_size>
+                            <title>Channel 16</title>
+                        </curve_59>
+                        <curve_6>
+                            <axes>
+                                <x_axis>
+                                    <field>header/stamp</field>
+                                    <field_type>0</field_type>
+                                    <scale>
+                                        <absolute_maximum>1000</absolute_maximum>
+                                        <absolute_minimum>0</absolute_minimum>
+                                        <relative_maximum>0</relative_maximum>
+                                        <relative_minimum>-1000</relative_minimum>
+                                        <type>0</type>
+                                    </scale>
+                                    <topic>/hdEMG_stream_raw</topic>
+                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
+                                </x_axis>
+                                <y_axis>
+                                    <field>data/data/28</field>
+                                    <field_type>0</field_type>
+                                    <scale>
+                                        <absolute_maximum>1000</absolute_maximum>
+                                        <absolute_minimum>0</absolute_minimum>
+                                        <relative_maximum>0</relative_maximum>
+                                        <relative_minimum>-1000</relative_minimum>
+                                        <type>0</type>
+                                    </scale>
+                                    <topic>/hdEMG_stream_raw</topic>
+                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
+                                </y_axis>
+                            </axes>
+                            <color>
+                                <custom_color>#000000</custom_color>
+                                <type>0</type>
+                            </color>
+                            <data>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
+                                <type>3</type>
+                            </data>
+                            <style>
+                                <lines_interpolate>false</lines_interpolate>
+                                <pen_style>1</pen_style>
+                                <pen_width>1</pen_width>
+                                <render_antialias>false</render_antialias>
+                                <steps_invert>false</steps_invert>
+                                <sticks_baseline>0</sticks_baseline>
+                                <sticks_orientation>2</sticks_orientation>
+                                <type>0</type>
+                            </style>
+                            <subscriber_queue_size>100</subscriber_queue_size>
+                            <title>Channel 28</title>
+                        </curve_6>
+                        <curve_60>
+                            <axes>
+                                <x_axis>
+                                    <field>header/stamp</field>
+                                    <field_type>0</field_type>
+                                    <scale>
+                                        <absolute_maximum>1000</absolute_maximum>
+                                        <absolute_minimum>0</absolute_minimum>
+                                        <relative_maximum>0</relative_maximum>
+                                        <relative_minimum>-1000</relative_minimum>
+                                        <type>0</type>
+                                    </scale>
+                                    <topic>/hdEMG_stream_raw</topic>
+                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
+                                </x_axis>
+                                <y_axis>
+                                    <field>data/data/17</field>
+                                    <field_type>0</field_type>
+                                    <scale>
+                                        <absolute_maximum>1000</absolute_maximum>
+                                        <absolute_minimum>0</absolute_minimum>
+                                        <relative_maximum>0</relative_maximum>
+                                        <relative_minimum>-1000</relative_minimum>
+                                        <type>0</type>
+                                    </scale>
+                                    <topic>/hdEMG_stream_raw</topic>
+                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
+                                </y_axis>
+                            </axes>
+                            <color>
+                                <custom_color>#000000</custom_color>
+                                <type>0</type>
+                            </color>
+                            <data>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
+                                <type>3</type>
+                            </data>
+                            <style>
+                                <lines_interpolate>false</lines_interpolate>
+                                <pen_style>1</pen_style>
+                                <pen_width>1</pen_width>
+                                <render_antialias>false</render_antialias>
+                                <steps_invert>false</steps_invert>
+                                <sticks_baseline>0</sticks_baseline>
+                                <sticks_orientation>2</sticks_orientation>
+                                <type>0</type>
+                            </style>
+                            <subscriber_queue_size>100</subscriber_queue_size>
+                            <title>Channel 17</title>
+                        </curve_60>
+                        <curve_61>
+                            <axes>
+                                <x_axis>
+                                    <field>header/stamp</field>
+                                    <field_type>0</field_type>
+                                    <scale>
+                                        <absolute_maximum>1000</absolute_maximum>
+                                        <absolute_minimum>0</absolute_minimum>
+                                        <relative_maximum>0</relative_maximum>
+                                        <relative_minimum>-1000</relative_minimum>
+                                        <type>0</type>
+                                    </scale>
+                                    <topic>/hdEMG_stream_raw</topic>
+                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
+                                </x_axis>
+                                <y_axis>
+                                    <field>data/data/22</field>
+                                    <field_type>0</field_type>
+                                    <scale>
+                                        <absolute_maximum>1000</absolute_maximum>
+                                        <absolute_minimum>0</absolute_minimum>
+                                        <relative_maximum>0</relative_maximum>
+                                        <relative_minimum>-1000</relative_minimum>
+                                        <type>0</type>
+                                    </scale>
+                                    <topic>/hdEMG_stream_raw</topic>
+                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
+                                </y_axis>
+                            </axes>
+                            <color>
+                                <custom_color>#000000</custom_color>
+                                <type>0</type>
+                            </color>
+                            <data>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
+                                <type>3</type>
+                            </data>
+                            <style>
+                                <lines_interpolate>false</lines_interpolate>
+                                <pen_style>1</pen_style>
+                                <pen_width>1</pen_width>
+                                <render_antialias>false</render_antialias>
+                                <steps_invert>false</steps_invert>
+                                <sticks_baseline>0</sticks_baseline>
+                                <sticks_orientation>2</sticks_orientation>
+                                <type>0</type>
+                            </style>
+                            <subscriber_queue_size>100</subscriber_queue_size>
+                            <title>Channel 22</title>
+                        </curve_61>
+                        <curve_62>
+                            <axes>
+                                <x_axis>
+                                    <field>header/stamp</field>
+                                    <field_type>0</field_type>
+                                    <scale>
+                                        <absolute_maximum>1000</absolute_maximum>
+                                        <absolute_minimum>0</absolute_minimum>
+                                        <relative_maximum>0</relative_maximum>
+                                        <relative_minimum>-1000</relative_minimum>
+                                        <type>0</type>
+                                    </scale>
+                                    <topic>/hdEMG_stream_raw</topic>
+                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
+                                </x_axis>
+                                <y_axis>
+                                    <field>data/data/23</field>
+                                    <field_type>0</field_type>
+                                    <scale>
+                                        <absolute_maximum>1000</absolute_maximum>
+                                        <absolute_minimum>0</absolute_minimum>
+                                        <relative_maximum>0</relative_maximum>
+                                        <relative_minimum>-1000</relative_minimum>
+                                        <type>0</type>
+                                    </scale>
+                                    <topic>/hdEMG_stream_raw</topic>
+                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
+                                </y_axis>
+                            </axes>
+                            <color>
+                                <custom_color>#000000</custom_color>
+                                <type>0</type>
+                            </color>
+                            <data>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
+                                <type>3</type>
+                            </data>
+                            <style>
+                                <lines_interpolate>false</lines_interpolate>
+                                <pen_style>1</pen_style>
+                                <pen_width>1</pen_width>
+                                <render_antialias>false</render_antialias>
+                                <steps_invert>false</steps_invert>
+                                <sticks_baseline>0</sticks_baseline>
+                                <sticks_orientation>2</sticks_orientation>
+                                <type>0</type>
+                            </style>
+                            <subscriber_queue_size>100</subscriber_queue_size>
+                            <title>Channel 23</title>
+                        </curve_62>
+                        <curve_63>
+                            <axes>
+                                <x_axis>
+                                    <field>header/stamp</field>
+                                    <field_type>0</field_type>
+                                    <scale>
+                                        <absolute_maximum>1000</absolute_maximum>
+                                        <absolute_minimum>0</absolute_minimum>
+                                        <relative_maximum>0</relative_maximum>
+                                        <relative_minimum>-1000</relative_minimum>
+                                        <type>0</type>
+                                    </scale>
+                                    <topic>/hdEMG_stream_raw</topic>
+                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
+                                </x_axis>
+                                <y_axis>
+                                    <field>data/data/24</field>
+                                    <field_type>0</field_type>
+                                    <scale>
+                                        <absolute_maximum>1000</absolute_maximum>
+                                        <absolute_minimum>0</absolute_minimum>
+                                        <relative_maximum>0</relative_maximum>
+                                        <relative_minimum>-1000</relative_minimum>
+                                        <type>0</type>
+                                    </scale>
+                                    <topic>/hdEMG_stream_raw</topic>
+                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
+                                </y_axis>
+                            </axes>
+                            <color>
+                                <custom_color>#000000</custom_color>
+                                <type>0</type>
+                            </color>
+                            <data>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
+                                <type>3</type>
+                            </data>
+                            <style>
+                                <lines_interpolate>false</lines_interpolate>
+                                <pen_style>1</pen_style>
+                                <pen_width>1</pen_width>
+                                <render_antialias>false</render_antialias>
+                                <steps_invert>false</steps_invert>
+                                <sticks_baseline>0</sticks_baseline>
+                                <sticks_orientation>2</sticks_orientation>
+                                <type>0</type>
+                            </style>
+                            <subscriber_queue_size>100</subscriber_queue_size>
+                            <title>Channel 24</title>
+                        </curve_63>
+                        <curve_7>
+                            <axes>
+                                <x_axis>
+                                    <field>header/stamp</field>
+                                    <field_type>0</field_type>
+                                    <scale>
+                                        <absolute_maximum>1000</absolute_maximum>
+                                        <absolute_minimum>0</absolute_minimum>
+                                        <relative_maximum>0</relative_maximum>
+                                        <relative_minimum>-1000</relative_minimum>
+                                        <type>0</type>
+                                    </scale>
+                                    <topic>/hdEMG_stream_raw</topic>
+                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
+                                </x_axis>
+                                <y_axis>
+                                    <field>data/data/29</field>
+                                    <field_type>0</field_type>
+                                    <scale>
+                                        <absolute_maximum>1000</absolute_maximum>
+                                        <absolute_minimum>0</absolute_minimum>
+                                        <relative_maximum>0</relative_maximum>
+                                        <relative_minimum>-1000</relative_minimum>
+                                        <type>0</type>
+                                    </scale>
+                                    <topic>/hdEMG_stream_raw</topic>
+                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
+                                </y_axis>
+                            </axes>
+                            <color>
+                                <custom_color>#000000</custom_color>
+                                <type>0</type>
+                            </color>
+                            <data>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
+                                <type>3</type>
+                            </data>
+                            <style>
+                                <lines_interpolate>false</lines_interpolate>
+                                <pen_style>1</pen_style>
+                                <pen_width>1</pen_width>
+                                <render_antialias>false</render_antialias>
+                                <steps_invert>false</steps_invert>
+                                <sticks_baseline>0</sticks_baseline>
+                                <sticks_orientation>2</sticks_orientation>
+                                <type>0</type>
+                            </style>
+                            <subscriber_queue_size>100</subscriber_queue_size>
+                            <title>Channel 29</title>
+                        </curve_7>
+                        <curve_8>
+                            <axes>
+                                <x_axis>
+                                    <field>header/stamp</field>
+                                    <field_type>0</field_type>
+                                    <scale>
+                                        <absolute_maximum>1000</absolute_maximum>
+                                        <absolute_minimum>0</absolute_minimum>
+                                        <relative_maximum>0</relative_maximum>
+                                        <relative_minimum>-1000</relative_minimum>
+                                        <type>0</type>
+                                    </scale>
+                                    <topic>/hdEMG_stream_raw</topic>
+                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
+                                </x_axis>
+                                <y_axis>
+                                    <field>data/data/3</field>
+                                    <field_type>0</field_type>
+                                    <scale>
+                                        <absolute_maximum>1000</absolute_maximum>
+                                        <absolute_minimum>0</absolute_minimum>
+                                        <relative_maximum>0</relative_maximum>
+                                        <relative_minimum>-1000</relative_minimum>
+                                        <type>0</type>
+                                    </scale>
+                                    <topic>/hdEMG_stream_raw</topic>
+                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
+                                </y_axis>
+                            </axes>
+                            <color>
+                                <custom_color>#000000</custom_color>
+                                <type>0</type>
+                            </color>
+                            <data>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
+                                <type>3</type>
+                            </data>
+                            <style>
+                                <lines_interpolate>false</lines_interpolate>
+                                <pen_style>1</pen_style>
+                                <pen_width>1</pen_width>
+                                <render_antialias>false</render_antialias>
+                                <steps_invert>false</steps_invert>
+                                <sticks_baseline>0</sticks_baseline>
+                                <sticks_orientation>2</sticks_orientation>
+                                <type>0</type>
+                            </style>
+                            <subscriber_queue_size>100</subscriber_queue_size>
+                            <title>Channel 3</title>
+                        </curve_8>
+                        <curve_9>
+                            <axes>
+                                <x_axis>
+                                    <field>header/stamp</field>
+                                    <field_type>0</field_type>
+                                    <scale>
+                                        <absolute_maximum>1000</absolute_maximum>
+                                        <absolute_minimum>0</absolute_minimum>
+                                        <relative_maximum>0</relative_maximum>
+                                        <relative_minimum>-1000</relative_minimum>
+                                        <type>0</type>
+                                    </scale>
+                                    <topic>/hdEMG_stream_raw</topic>
+                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
+                                </x_axis>
+                                <y_axis>
+                                    <field>data/data/30</field>
+                                    <field_type>0</field_type>
+                                    <scale>
+                                        <absolute_maximum>1000</absolute_maximum>
+                                        <absolute_minimum>0</absolute_minimum>
+                                        <relative_maximum>0</relative_maximum>
+                                        <relative_minimum>-1000</relative_minimum>
+                                        <type>0</type>
+                                    </scale>
+                                    <topic>/hdEMG_stream_raw</topic>
+                                    <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
+                                </y_axis>
+                            </axes>
+                            <color>
+                                <custom_color>#000000</custom_color>
+                                <type>0</type>
+                            </color>
+                            <data>
+                                <circular_buffer_capacity>10</circular_buffer_capacity>
+                                <time_frame_length>2</time_frame_length>
+                                <type>3</type>
+                            </data>
+                            <style>
+                                <lines_interpolate>false</lines_interpolate>
+                                <pen_style>1</pen_style>
+                                <pen_width>1</pen_width>
+                                <render_antialias>false</render_antialias>
+                                <steps_invert>false</steps_invert>
+                                <sticks_baseline>0</sticks_baseline>
+                                <sticks_orientation>2</sticks_orientation>
+                                <type>0</type>
+                            </style>
+                            <subscriber_queue_size>100</subscriber_queue_size>
+                            <title>Channel 30</title>
                         </curve_9>
                     </curves>
                     <legend>
                         <visible>false</visible>
                     </legend>
-                    <plot_rate>30</plot_rate>
+                    <plot_rate>512</plot_rate>
                     <title>64 EMG Channels</title>
                 </column_0>
             </row_0>
