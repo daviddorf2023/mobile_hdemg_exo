@@ -15,7 +15,7 @@
     <param name = 'use_simulated_device' value='False'/>
 
     <node name = 'rqt_multiplot' pkg = 'rqt_multiplot' type = 'rqt_multiplot' output = 'screen' />
-    <node name = 'rqt_reconfigure' pkg = 'rqt_reconfigure' type = 'rqt_reconfigure' output = 'screen' />
+    <!-- <node name = 'rqt_reconfigure' pkg = 'rqt_reconfigure' type = 'rqt_reconfigure' output = 'screen' /> -->
     <node name = 'startupGUI' pkg = 'mobile_hdemg_exo' type = 'startupGUI.py' output = 'screen' />
     <node name = 'simulated_device_pub' pkg='mobile_hdemg_exo' type='simulated_device_pub.py' output='screen'/>
     <node name = 'emg_stream_node' pkg = 'mobile_hdemg_exo' type = 'emg_stream_node.py' output = 'screen' />
