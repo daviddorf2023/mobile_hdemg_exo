@@ -68,9 +68,23 @@ class GUIApp:
         trials_entry = ttk.Entry(self.root, textvariable=self.trials_var)
         trials_entry.grid(row=5, column=1, padx=10, pady=5, sticky="w")
 
-        start_button = ttk.Button(
-            self.root, text="Start", command=self.start_process)
-        start_button.grid(row=6, columnspan=2, pady=10)
+        remove_channels_label = ttk.Label(
+            self.root, text="Channels to Remove (comma-separated):")
+        remove_channels_label.grid(
+            row=6, column=0, padx=10, pady=5, sticky="w")
+        self.remove_channels_var = tk.StringVar()
+        remove_channels_entry = ttk.Entry(
+            self.root, textvariable=self.remove_channels_var)
+        remove_channels_entry.grid(
+            row=6, column=1, padx=10, pady=5, sticky="w")
+
+        run_button = ttk.Button(
+            self.root, text="Run", command=self.start_process)
+        run_button.grid(row=7, columnspan=2, pady=10)
+
+        exit_button = ttk.Button(
+            self.root, text="Exit", command=self.root.destroy)
+        exit_button.grid(row=8, columnspan=2, pady=10)
 
     def start_process(self):
         selected_device = self.device_var.get()
@@ -83,6 +97,7 @@ class GUIApp:
         selected_muscles = int(self.muscles_var.get())
         selected_trials = int(self.trials_var.get())
         selected_trials = max(1, min(selected_trials, 10))
+        channels_to_remove = self.remove_channels_var.get()
 
         rospy.set_param("/device", selected_device)
         rospy.set_param("/method", selected_method)
@@ -90,15 +105,14 @@ class GUIApp:
         rospy.set_param("/side", selected_side)
         rospy.set_param("/muscle_count", selected_muscles)
         rospy.set_param("/num_trials", selected_trials)
+        rospy.set_param("/channels_to_remove", channels_to_remove)
 
-        print("Selected Device:", selected_device)
-        print("Selected Method:", selected_method)
-        print("Selected Analyzer:", selected_analyzer)
-        print("Selected Side:", selected_side)
-        print("Selected Muscles:", selected_muscles)
-
-        # Close the GUI window
-        self.root.destroy()
+        print("Device:", selected_device)
+        print("Method:", selected_method)
+        print("Analyzer:", selected_analyzer)
+        print("Side:", selected_side)
+        print("Muscles:", selected_muscles)
+        print("Removed Channels:", channels_to_remove)
 
         # Set flag to completed
         if selected_device == "SimMuovi+Pro":
