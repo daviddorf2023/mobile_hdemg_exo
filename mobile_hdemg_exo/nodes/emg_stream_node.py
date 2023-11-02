@@ -5,11 +5,9 @@ import numpy as np
 from scipy import signal
 from std_msgs.msg import Float64, Float64MultiArray
 from mobile_hdemg_exo.msg import StampedFloat64, StampedFloat64MultiArray
-from mobile_hdemg_exo.processors.emg_process_cst import EMGProcessorCST
 from mobile_hdemg_exo.streamer.emg_file_streamer import EMGFileStreamer
 from mobile_hdemg_exo.streamer.emg_qc_streamer import EMGQCStreamer
 from mobile_hdemg_exo.streamer.emg_muovi_streamer import EMGMUOVIStreamer
-# from mobile_hdemg_exo.streamer.multi_muovi_streamer import EMGMUOVIStreamer
 from mobile_hdemg_exo.utils.moving_average import MovingAverage
 
 
@@ -218,8 +216,23 @@ class EMGStreamNode:
             print('EMG data received')
             self.receive_flag = True
 
-        # remove channels here
-        # hdemg_reading = np.delete(hdemg_reading, [0, 1, 2, 3, 4, 5, 6, 7, 8,
+        # Remove dead channels (optional)
+        if rospy.get_param("/channels_to_remove") != "":
+            removed_channels = rospy.get_param("/channels_to_remove")
+            removed_channels = removed_channels.split(',')
+            removed_channels = list(map(int, removed_channels))
+            hdemg_reading = np.delete(hdemg_reading, removed_channels)
+
+        # Publish raw EMG data
+        spacing = 30  # Spacing between channels for visualization
+        hdemg_reading = hdemg_reading + \
+            spacing * np.arange(len(hdemg_reading))
+        hdemg_reading = hdemg_reading / spacing  # Scale to channel numbers
+        raw_message = StampedFloat64MultiArray()
+        raw_message.header.stamp = rospy.get_rostime().from_sec(
+            rospy.get_time() - self.start_time)
+        raw_message.data = Float64MultiArray(data=hdemg_reading)
+        self.array_emg_pub.publish(raw_message)
 
         # Method-specific processing
         if LATENCY_ANALYZER_MODE and EMG_DEVICE == 'Quattrocento':
@@ -235,6 +248,7 @@ class EMGStreamNode:
             smooth_emg = self.moving_avg.get_smoothed_value()
             self.publish_reading(self.emg_pub, smooth_emg)
         elif EMG_PROCESS_METHOD == 'CST':
+            from mobile_hdemg_exo.processors.emg_process_cst import EMGProcessorCST
             self.processor = EMGProcessorCST()
             processed_emg = self.processor.process_reading(hdemg_reading)
             if processed_emg is not None and processed_emg != 0:
@@ -242,15 +256,6 @@ class EMGStreamNode:
                 self.moving_avg.add_data_point(processed_emg / 100)
                 smooth_emg = self.moving_avg.get_smoothed_value()
                 self.publish_reading(self.emg_pub, processed_emg)
-        elif EMG_PROCESS_METHOD == 'Raw':
-            spacing = 30  # Spacing between channels for visualization
-            hdemg_reading = hdemg_reading + spacing * np.arange(1, 65)
-            hdemg_reading = hdemg_reading / spacing  # Scale to channel numbers
-            raw_message = StampedFloat64MultiArray()
-            raw_message.header.stamp = rospy.get_rostime().from_sec(
-                rospy.get_time() - self.start_time)
-            raw_message.data = Float64MultiArray(data=hdemg_reading)
-            self.array_emg_pub.publish(raw_message)
         else:
             raise ValueError('Invalid EMG_PROCESS_METHOD')
 

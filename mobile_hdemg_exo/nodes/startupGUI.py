@@ -16,7 +16,7 @@ class GUIApp:
         self.muscles_var = tk.StringVar()
 
         # Set window size
-        self.root.geometry("400x300")  # Adjust dimensions as needed
+        self.root.geometry("500x320")
 
         # Initialize ROS node
         rospy.init_node("gui_node")
@@ -33,7 +33,7 @@ class GUIApp:
 
         method_label = ttk.Label(self.root, text="Method:")
         method_label.grid(row=1, column=0, padx=10, pady=5, sticky="w")
-        method_choices = ["RMS", "CST", "Raw"]
+        method_choices = ["RMS", "CST"]
         self.method_dropdown = ttk.Combobox(
             self.root, values=method_choices, textvariable=self.method_var)
         self.method_dropdown.grid(row=1, column=1, padx=10, pady=5, sticky="w")
