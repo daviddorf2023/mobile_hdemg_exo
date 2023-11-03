@@ -74,7 +74,7 @@ class EMGStreamNode:
             self.streamer = EMGMUOVIStreamer(MUSCLE_COUNT)
         elif EMG_DEVICE == 'File':
             self.path = rospy.get_param(
-                "/file_dir") + "/src/mobile_hdemg_exo/data/cst_test_data_nov1/raw_emg_7.csv"
+                "/file_dir") + "/data/cst_test_data_nov1/raw_emg_7.csv"
             self.streamer = EMGFileStreamer(
                 MUSCLE_COUNT, SAMPLING_FREQUENCY, self.path)
         elif EMG_DEVICE == 'SimMuovi+Pro':
