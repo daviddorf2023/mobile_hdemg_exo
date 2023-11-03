@@ -19,11 +19,14 @@ def publish_emg_data():
     # Set the loop rate to 512 Hz
     rate = rospy.Rate(rospy.get_param("/sampling_frequency", int))
 
+    # Get the muscle count from the /muscle_count parameter
+    muscles = rospy.get_param("/muscle_count", int)
+
     # Initialize the dimensions of the Float64MultiArray
     dim = MultiArrayDimension()
     dim.label = "channels"
-    dim.size = 64
-    dim.stride = 64
+    dim.size = 64 * muscles
+    dim.stride = 64 * muscles
 
     # Initialize the layout of the Float64MultiArray
     layout = MultiArrayLayout()
@@ -46,7 +49,7 @@ def publish_emg_data():
         while not rospy.get_param("/use_simulated_device"):
             rospy.sleep(0.1)
         data = []
-        for i in range(64):
+        for i in range(64 * muscles):
             phase_offset = phase_offsets[i % len(phase_offsets)]
             value = amplitude * \
                 math.sin(2 * math.pi * frequency *
