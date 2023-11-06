@@ -217,10 +217,13 @@ class EMGStreamNode:
             self.receive_flag = True
 
         # Remove dead channels (optional)
-        if rospy.get_param("/channels_to_remove") != "":
-            removed_channels = rospy.get_param("/channels_to_remove")
+        removed_channels = rospy.get_param("/channels_to_remove")
+        if removed_channels != '':
             removed_channels = removed_channels.split(',')
             removed_channels = list(map(int, removed_channels))
+            # Ensure the channels are valid
+            removed_channels = [
+                x for x in removed_channels if x < MUSCLE_COUNT * 64]
             hdemg_reading = np.delete(hdemg_reading, removed_channels)
 
         # Publish raw EMG data
