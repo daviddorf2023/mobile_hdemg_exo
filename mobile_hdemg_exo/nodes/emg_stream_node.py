@@ -216,21 +216,19 @@ class EMGStreamNode:
             print('EMG data received')
             self.receive_flag = True
 
-        # Remove dead channels (optional)
-        removed_channels = rospy.get_param("/channels_to_remove")
-        if removed_channels != '':
-            removed_channels = removed_channels.split(',')
-            removed_channels = list(map(int, removed_channels))
-            # Ensure the channels are valid
-            removed_channels = [
-                x for x in removed_channels if x < MUSCLE_COUNT * 64]
-            hdemg_reading = np.delete(hdemg_reading, removed_channels)
-
-        # Publish raw EMG data
         spacing = 30  # Spacing between channels for visualization
         hdemg_reading = hdemg_reading + \
             spacing * np.arange(len(hdemg_reading))
         hdemg_reading = hdemg_reading / spacing  # Scale to channel numbers
+
+        removed_channels = rospy.get_param("/channels_to_remove")
+        if removed_channels != '':
+            removed_channels = removed_channels.split(',')
+            removed_channels = list(map(int, removed_channels))
+            removed_channels = [
+                x for x in removed_channels if x < MUSCLE_COUNT * 64]
+            hdemg_reading = np.delete(hdemg_reading, removed_channels)
+
         raw_message = StampedFloat64MultiArray()
         raw_message.header.stamp = rospy.get_rostime().from_sec(
             rospy.get_time() - self.start_time)
