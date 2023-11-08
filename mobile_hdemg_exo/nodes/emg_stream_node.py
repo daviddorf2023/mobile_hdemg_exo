@@ -4,6 +4,7 @@ import rospy
 import numpy as np
 from scipy import signal
 from std_msgs.msg import Float64, Float64MultiArray
+from mobile_hdemg_exo.processors.emg_process_cst import EMGProcessorCST
 from mobile_hdemg_exo.msg import StampedFloat64, StampedFloat64MultiArray
 from mobile_hdemg_exo.streamer.emg_file_streamer import EMGFileStreamer
 from mobile_hdemg_exo.streamer.emg_qc_streamer import EMGQCStreamer
@@ -83,6 +84,9 @@ class EMGStreamNode:
                              Float64MultiArray, self.simulation_callback)
         else:
             raise ValueError('Invalid EMG_DEVICE')
+
+        if EMG_PROCESS_METHOD == 'CST':
+            self.processor = EMGProcessorCST()
 
         # Match the streamer's publishing rate
         self.r = rospy.Rate(SAMPLING_FREQUENCY)
@@ -178,6 +182,16 @@ class EMGStreamNode:
         Reads EMG data from the streamer, processes it using the selected method, and publishes the raw and processed data
         to ROS topics.
         """
+        # Launch file arguments [Can be overwritten by startup GUI]
+        EMG_DEVICE = rospy.get_param("/device")
+        EMG_PROCESS_METHOD = rospy.get_param("/method")
+        LATENCY_ANALYZER_MODE = rospy.get_param("/latency_analyzer")
+        MUSCLE_COUNT = rospy.get_param("/muscle_count", int)
+        PWM_OUTPUT_PIN = rospy.get_param("/pwm_output_pin", int)
+        SAMPLING_FREQUENCY = rospy.get_param("/sampling_frequency", int)
+        NUM_TRIALS = rospy.get_param("/num_trials", int)
+        TRIAL_DURATION_SECONDS = 35 * NUM_TRIALS
+
         if EMG_DEVICE != 'SimMuovi+Pro':
             raw_reading = self.streamer.stream_data()
         else:
@@ -201,7 +215,7 @@ class EMGStreamNode:
         elif EMG_DEVICE == 'SimMuovi+Pro':
             hdemg_reading = raw_reading[:MUSCLE_COUNT * 64]
         elif EMG_DEVICE == 'File':
-            hdemg_reading = raw_reading
+            hdemg_reading = raw_reading[128: MUSCLE_COUNT * 64 + 128]
         else:
             raise ValueError('Invalid EMG_DEVICE')
 
@@ -217,9 +231,9 @@ class EMGStreamNode:
             self.receive_flag = True
 
         spacing = 30  # Spacing between channels for visualization
-        hdemg_reading = hdemg_reading + \
+        raw_hdemg_reading = hdemg_reading + \
             spacing * np.arange(len(hdemg_reading))
-        hdemg_reading = hdemg_reading / spacing  # Scale to channel numbers
+        raw_hdemg_reading = raw_hdemg_reading / spacing  # Scale to channel numbers
 
         removed_channels = rospy.get_param("/channels_to_remove")
         if removed_channels != '':
@@ -227,13 +241,19 @@ class EMGStreamNode:
             removed_channels = list(map(int, removed_channels))
             removed_channels = [
                 x for x in removed_channels if x < MUSCLE_COUNT * 64]
-            hdemg_reading = np.delete(hdemg_reading, removed_channels)
+
+            raw_hdemg_reading = np.delete(
+                raw_hdemg_reading, removed_channels)
 
         raw_message = StampedFloat64MultiArray()
         raw_message.header.stamp = rospy.get_rostime().from_sec(
             rospy.get_time() - self.start_time)
-        raw_message.data = Float64MultiArray(data=hdemg_reading)
+        raw_message.data = Float64MultiArray(data=raw_hdemg_reading)
         self.array_emg_pub.publish(raw_message)
+
+        notch_reading = self.notch_filter(hdemg_reading)
+        b, a = self.butter_bandpass(20, 100, SAMPLING_FREQUENCY)
+        hdemg_filtered = signal.filtfilt(b, a, notch_reading)
 
         # Method-specific processing
         if LATENCY_ANALYZER_MODE and EMG_DEVICE == 'Quattrocento':
@@ -241,22 +261,20 @@ class EMGStreamNode:
         elif LATENCY_ANALYZER_MODE and EMG_DEVICE == 'Muovi+Pro':
             processed_emg = hdemg_reading[-1]  # Last channel is auxiliary
         elif EMG_PROCESS_METHOD == 'RMS':
-            notch_reading = self.notch_filter(hdemg_reading)
-            b, a = self.butter_bandpass(20, 100, SAMPLING_FREQUENCY)
-            butter_reading = signal.filtfilt(b, a, notch_reading)
-            rms_emg = (np.mean(np.array(butter_reading)**2))**0.5
+            # ToDO: multiple muscle
+            # hdemg_filtered = np.delete(hdemg_filtered, removed_channels)
+            rms_emg = (np.mean(np.array(hdemg_filtered)**2))**0.5
             self.moving_avg.add_data_point(rms_emg)
             smooth_emg = self.moving_avg.get_smoothed_value()
             self.publish_reading(self.emg_pub, smooth_emg)
         elif EMG_PROCESS_METHOD == 'CST':
-            from mobile_hdemg_exo.processors.emg_process_cst import EMGProcessorCST
-            self.processor = EMGProcessorCST()
-            processed_emg = self.processor.process_reading(hdemg_reading)
-            if processed_emg is not None and processed_emg != 0:
-                # Divide by 100 to scale to training data
-                self.moving_avg.add_data_point(processed_emg / 100)
-                smooth_emg = self.moving_avg.get_smoothed_value()
-                self.publish_reading(self.emg_pub, processed_emg)
+            for channel in removed_channels:
+                hdemg_filtered[channel] = 0
+            processed_emg = self.processor.process_reading(hdemg_filtered/100)
+            # if processed_emg is not None and processed_emg != 0:
+            #     self.moving_avg.add_data_point(processed_emg)
+            #     smooth_emg = self.moving_avg.get_smoothed_value()
+            self.publish_reading(self.emg_pub, processed_emg)
         else:
             raise ValueError('Invalid EMG_PROCESS_METHOD')
 
