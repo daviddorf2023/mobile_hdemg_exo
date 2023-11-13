@@ -43,7 +43,6 @@ class EMGProcessorCST:
     def process_reading(self, reading):
         self.raw_readings.append(reading)
         self.sample_count += 1
-        print(rospy.get_time())
         if self.sample_count % self.CST_prediction_step_size == 0:
             self.calculate_mu()
             return self.cst_readings[-1]
