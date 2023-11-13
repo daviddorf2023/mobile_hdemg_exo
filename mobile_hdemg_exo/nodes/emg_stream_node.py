@@ -17,6 +17,8 @@ MUSCLE_COUNT = rospy.get_param("/muscle_count", int)
 SAMPLING_FREQUENCY = rospy.get_param("/sampling_frequency", int)
 LATENCY_ANALYZER_MODE = rospy.get_param("/latency_analyzer")
 PWM_OUTPUT_PIN = rospy.get_param("/pwm_output_pin", int)
+SPACING = 30  # Spacing between channels for visualization
+
 
 while not rospy.get_param("gui_completed"):
     rospy.sleep(0.1)
@@ -109,6 +111,13 @@ class EMGStreamNode:
             rospy.sleep(0.1)
         print('EMG data received')
 
+        self.removed_channels = rospy.get_param("/channels_to_remove")
+        if self.removed_channels != '':
+            self.removed_channels = self.removed_channels.split(',')
+            self.removed_channels = list(map(int, self.removed_channels))
+            self.removed_channels = [
+                x for x in self.removed_channels if x < MUSCLE_COUNT * 64]
+
     def simulation_callback(self, data):
         """
         Callback function for the /hdEMG_Simulation topic.
@@ -189,6 +198,19 @@ class EMGStreamNode:
         yaw = np.arctan2(2 * (w * z + x * y), 1 - 2 * (y**2 + z**2))
         return roll, pitch, yaw
 
+    def smooth_emg(self, emg_reading):
+        """
+        Smoothes the EMG reading.
+
+        Args:
+            emg_reading: A list of integers representing an EMG reading.
+
+        Returns:
+            A list of integers representing a smoothed EMG reading.
+        """
+        self.moving_avg.add_data_point(emg_reading)
+        return self.moving_avg.get_smoothed_value()
+
     def run_emg(self):
         """
         Runs the EMG streamer and processor.
@@ -196,38 +218,33 @@ class EMGStreamNode:
         Reads EMG data from the streamer, processes it using the selected method, and publishes the raw and processed data
         to ROS topics.
         """
-        spacing = 30  # Spacing between channels for visualization
+        # Publish raw EMG data
         raw_hdemg_reading = self.hdemg_reading + \
-            spacing * np.arange(len(self.hdemg_reading))
-        raw_hdemg_reading = raw_hdemg_reading / spacing  # Scale to channel numbers
-        removed_channels = rospy.get_param("/channels_to_remove")
-        if removed_channels != '':
-            removed_channels = removed_channels.split(',')
-            removed_channels = list(map(int, removed_channels))
-            removed_channels = [
-                x for x in removed_channels if x < MUSCLE_COUNT * 64]
-            raw_hdemg_reading = np.delete(
-                raw_hdemg_reading, removed_channels)
+            SPACING * np.arange(len(self.hdemg_reading))
+        raw_hdemg_reading = raw_hdemg_reading / SPACING  # Scale to channel numbers
+        raw_hdemg_reading = np.delete(
+            raw_hdemg_reading, self.removed_channels)
         raw_message = StampedFloat64MultiArray()
         raw_message.header.stamp = rospy.get_rostime().from_sec(
             rospy.get_time() - self.start_time)
         raw_message.data = Float64MultiArray(data=raw_hdemg_reading)
         self.array_emg_pub.publish(raw_message)
+
+        # Publish processed EMG data
         notch_reading = self.notch_filter(self.hdemg_reading)
         b, a = self.butter_bandpass(20, 100, SAMPLING_FREQUENCY)
         hdemg_filtered = signal.filtfilt(b, a, notch_reading)
         if EMG_PROCESS_METHOD == 'RMS':
+            for channel in self.removed_channels:
+                hdemg_filtered[channel] = np.mean(hdemg_filtered)
             rms_emg = (np.mean(np.array(hdemg_filtered)**2))**0.5
-            self.moving_avg.add_data_point(rms_emg)
-            smooth_emg = self.moving_avg.get_smoothed_value()
+            smooth_emg = self.smooth_emg(rms_emg)
             self.publish_reading(self.emg_pub, smooth_emg)
         elif EMG_PROCESS_METHOD == 'CST':
-            for channel in removed_channels:
+            for channel in self.removed_channels:
                 hdemg_filtered[channel] = 0
             processed_emg = self.processor.process_reading(hdemg_filtered/100)
-            if processed_emg is not None and processed_emg != 0:
-                self.moving_avg.add_data_point(processed_emg)
-                smooth_emg = self.moving_avg.get_smoothed_value()
+            smooth_emg = self.smooth_emg(processed_emg)
             self.publish_reading(self.emg_pub, processed_emg)
         else:
             raise ValueError('Invalid EMG_PROCESS_METHOD')
