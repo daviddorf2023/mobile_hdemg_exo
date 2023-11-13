@@ -189,6 +189,16 @@ class EMGStreamNode:
         self.moving_avg.add_data_point(emg_reading)
         return self.moving_avg.get_smoothed_value()
 
+    def csv_output(self, emg_reading):
+        """
+        Outputs the EMG reading to a CSV file.
+
+        Args:
+            emg_reading: A list of integers representing an EMG reading.
+        """
+        with open('emg_data.csv', 'a') as f:
+            f.write(str(emg_reading) + '\n')
+
     def run_emg(self):
         """
         Runs the EMG streamer and processor.
@@ -218,12 +228,14 @@ class EMGStreamNode:
             rms_emg = (np.mean(np.array(hdemg_filtered)**2))**0.5
             smooth_emg = self.smooth_emg(rms_emg)
             self.publish_reading(self.emg_pub, smooth_emg)
+            self.csv_output(smooth_emg)
         elif EMG_PROCESS_METHOD == 'CST':
             for channel in self.removed_channels:
                 hdemg_filtered[channel] = 0
             processed_emg = self.processor.process_reading(hdemg_filtered/100)
             smooth_emg = self.smooth_emg(processed_emg)
             self.publish_reading(self.emg_pub, processed_emg)
+            self.csv_output(smooth_emg)
         else:
             raise ValueError('Invalid EMG_PROCESS_METHOD')
         self.r.sleep()
