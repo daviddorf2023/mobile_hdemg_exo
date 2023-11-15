@@ -4,11 +4,11 @@ import rospy
 import numpy as np
 from scipy import signal
 from std_msgs.msg import Float64, Float64MultiArray
-from mobile_hdemg_exo.processors.emg_process_cst import EMGProcessorCST
 from mobile_hdemg_exo.msg import StampedFloat64, StampedFloat64MultiArray
 from mobile_hdemg_exo.streamer.emg_file_streamer import EMGFileStreamer
 from mobile_hdemg_exo.streamer.emg_qc_streamer import EMGQCStreamer
 from mobile_hdemg_exo.streamer.emg_muovi_streamer import EMGMUOVIStreamer
+from mobile_hdemg_exo.processors.emg_process_cst import EMGProcessorCST
 from mobile_hdemg_exo.utils.moving_average import MovingAverage
 
 
@@ -42,17 +42,13 @@ class EMGStreamNode:
         Sets up the ROS publishers and initializes the EMG streamer and processor. Also sets up objects for latency analysis, smoothing, and simulation.
         """
         rospy.init_node('emg_stream_node')
+        self.r = rospy.Rate(SAMPLING_FREQUENCY)
         self.start_time = rospy.get_time()
         self.emg_pub = rospy.Publisher(
             'hdEMG_stream_processed', StampedFloat64, queue_size=10)
-        self.array_emg_pub = rospy.Publisher(
-            'hdEMG_stream_raw', StampedFloat64MultiArray, queue_size=10)
-        self.imu_pub = rospy.Publisher(
-            'imu_stream', StampedFloat64MultiArray, queue_size=10)
-        self.old_reading = 0.
+        self.visual_pub = rospy.Publisher(
+            'hdEMG_stream_visual', StampedFloat64MultiArray, queue_size=10)
         self.moving_avg = MovingAverage(window_size=100)
-        self.simulation_reading = np.zeros(70)
-        self.receive_flag = False
 
         # Initialize the PWM output pin
         if LATENCY_ANALYZER_MODE:
@@ -65,8 +61,10 @@ class EMGStreamNode:
             self.p = None
 
         # Initialize the EMG streamer
+        self.emg_offset = 0
         if EMG_DEVICE == 'Quattrocento':
             self.streamer = EMGQCStreamer(MUSCLE_COUNT)
+            self.emg_offset = 32 * MUSCLE_COUNT
         elif EMG_DEVICE == 'Muovi+Pro':
             self.streamer = EMGMUOVIStreamer(MUSCLE_COUNT)
         elif EMG_DEVICE == 'File':
@@ -74,23 +72,21 @@ class EMGStreamNode:
                 "/file_dir") + "/data/cst_test_data_nov1/raw_emg_7.csv"
             self.streamer = EMGFileStreamer(
                 MUSCLE_COUNT, SAMPLING_FREQUENCY, self.path)
+            self.emg_offset = 128
         elif EMG_DEVICE == 'SimMuovi+Pro':
-            rospy.Subscriber('/hdEMG_Simulation',
-                             Float64MultiArray, self.simulation_callback)
+            self.streamer = rospy.Subscriber('/hdEMG_Simulation',
+                                             Float64MultiArray, self.simulation_callback)
         else:
             raise ValueError('Invalid EMG_DEVICE')
 
+        if EMG_DEVICE != 'SimMuovi+Pro':
+            self.streamer.initialize()
+        else:
+            self.simulation_reading = np.zeros(64 * MUSCLE_COUNT)
+
+        # Initialize the EMG processor
         if EMG_PROCESS_METHOD == 'CST':
             self.processor = EMGProcessorCST()
-
-        # Match the streamer's publishing rate
-        self.r = rospy.Rate(SAMPLING_FREQUENCY)
-
-        # Initialize the EMG streamer
-        if EMG_DEVICE == 'SimMuovi+Pro':
-            self.raw_reading = self.simulation_reading
-        else:
-            self.streamer.initialize()
 
     def simulation_callback(self, data):
         """
@@ -175,28 +171,17 @@ class EMGStreamNode:
 
     def run_emg(self):
         """
-        Runs the EMG streamer and processor.
-
-        Reads EMG data from the streamer, processes it using the selected method, and publishes the raw and processed data
-        to ROS topics.
+        Reads EMG data from the streamer and publishes it to /hdEMG_stream_raw
         """
         # Obtain EMG data from the streamer
         if EMG_DEVICE == 'SimMuovi+Pro':
             raw_reading = self.simulation_reading
         else:
             raw_reading = self.streamer.stream_data()
-        if EMG_DEVICE == 'Quattrocento':
-            offset = 32 * MUSCLE_COUNT
-            hdemg_reading = raw_reading[offset:offset +
-                                        MUSCLE_COUNT * 64]
-        elif EMG_DEVICE == 'Muovi+Pro' or EMG_DEVICE == 'SimMuovi+Pro':
-            hdemg_reading = raw_reading[:MUSCLE_COUNT * 64]
-        elif EMG_DEVICE == 'File':
-            hdemg_reading = raw_reading[128: MUSCLE_COUNT * 64 + 128]
-        else:
-            raise ValueError('Invalid EMG_DEVICE')
+        hdemg_reading = raw_reading[self.emg_offset:
+                                    self.emg_offset + 64 * MUSCLE_COUNT]
 
-        # Remove channels
+        # Publish EMG data for visualization
         self.removed_channels = rospy.get_param("/channels_to_remove")
         if self.removed_channels != '':
             self.removed_channels = self.removed_channels.split(',')
@@ -205,8 +190,6 @@ class EMGStreamNode:
                 x for x in self.removed_channels if x < MUSCLE_COUNT * 64]
         else:
             self.removed_channels = []
-
-        # Publish EMG data for visualization
         normalization_factor = np.max(np.abs(hdemg_reading))
         visual_emg = hdemg_reading + \
             normalization_factor * np.arange(len(hdemg_reading))
@@ -218,7 +201,7 @@ class EMGStreamNode:
         visual_message.header.stamp = rospy.get_rostime().from_sec(
             rospy.get_time() - self.start_time)
         visual_message.data = Float64MultiArray(data=visual_emg)
-        self.array_emg_pub.publish(visual_message)
+        self.visual_pub.publish(visual_message)
 
         # Publish processed EMG data
         notch_reading = self.notch_filter(hdemg_reading)

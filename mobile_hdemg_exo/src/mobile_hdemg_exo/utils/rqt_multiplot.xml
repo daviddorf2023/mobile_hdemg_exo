@@ -35,7 +35,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -48,7 +48,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -86,7 +86,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -99,7 +99,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -137,7 +137,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -150,7 +150,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -188,7 +188,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -201,7 +201,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -239,7 +239,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -252,7 +252,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -290,7 +290,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -303,7 +303,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -341,7 +341,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -354,7 +354,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -392,7 +392,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -405,7 +405,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -443,7 +443,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -456,7 +456,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -494,7 +494,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -507,7 +507,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -545,7 +545,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -558,7 +558,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -596,7 +596,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -609,7 +609,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -647,7 +647,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -660,7 +660,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -698,7 +698,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -711,7 +711,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -749,7 +749,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -762,7 +762,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -800,7 +800,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -813,7 +813,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -851,7 +851,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -864,7 +864,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -902,7 +902,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -915,7 +915,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -953,7 +953,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -966,7 +966,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -1004,7 +1004,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -1017,7 +1017,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -1055,7 +1055,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -1068,7 +1068,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -1106,7 +1106,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -1119,7 +1119,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -1157,7 +1157,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -1170,7 +1170,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -1208,7 +1208,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -1221,7 +1221,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -1259,7 +1259,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -1272,7 +1272,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -1310,7 +1310,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -1323,7 +1323,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -1361,7 +1361,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -1374,7 +1374,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -1412,7 +1412,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -1425,7 +1425,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -1463,7 +1463,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -1476,7 +1476,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -1514,7 +1514,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -1527,7 +1527,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -1565,7 +1565,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -1578,7 +1578,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -1616,7 +1616,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -1629,7 +1629,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -1667,7 +1667,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -1680,7 +1680,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -1718,7 +1718,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -1731,7 +1731,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -1769,7 +1769,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -1782,7 +1782,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -1820,7 +1820,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -1833,7 +1833,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -1871,7 +1871,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -1884,7 +1884,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -1922,7 +1922,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -1935,7 +1935,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -1973,7 +1973,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -1986,7 +1986,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -2024,7 +2024,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -2037,7 +2037,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -2075,7 +2075,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -2088,7 +2088,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -2126,7 +2126,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -2139,7 +2139,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -2177,7 +2177,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -2190,7 +2190,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -2228,7 +2228,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -2241,7 +2241,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -2279,7 +2279,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -2292,7 +2292,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -2330,7 +2330,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -2343,7 +2343,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -2381,7 +2381,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -2394,7 +2394,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -2432,7 +2432,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -2445,7 +2445,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -2483,7 +2483,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -2496,7 +2496,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -2534,7 +2534,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -2547,7 +2547,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -2585,7 +2585,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -2598,7 +2598,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -2636,7 +2636,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -2649,7 +2649,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -2687,7 +2687,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -2700,7 +2700,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -2738,7 +2738,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -2751,7 +2751,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -2789,7 +2789,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -2802,7 +2802,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -2840,7 +2840,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -2853,7 +2853,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -2891,7 +2891,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -2904,7 +2904,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -2942,7 +2942,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -2955,7 +2955,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -2993,7 +2993,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -3006,7 +3006,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -3044,7 +3044,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -3057,7 +3057,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -3095,7 +3095,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -3108,7 +3108,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -3146,7 +3146,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -3159,7 +3159,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -3197,7 +3197,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -3210,7 +3210,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
@@ -3248,7 +3248,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </x_axis>
                                 <y_axis>
@@ -3261,7 +3261,7 @@
                                         <relative_minimum>-1000</relative_minimum>
                                         <type>0</type>
                                     </scale>
-                                    <topic>/hdEMG_stream_raw</topic>
+                                    <topic>/hdEMG_stream_visual</topic>
                                     <type>mobile_hdemg_exo/StampedFloat64MultiArray</type>
                                 </y_axis>
                             </axes>
