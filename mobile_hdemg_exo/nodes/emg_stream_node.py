@@ -2,14 +2,10 @@
 
 import rospy
 import numpy as np
-from scipy import signal
-from std_msgs.msg import Float64, Float64MultiArray
-from mobile_hdemg_exo.msg import StampedFloat64, StampedFloat64MultiArray
+from std_msgs.msg import Float64MultiArray, Float64
 from mobile_hdemg_exo.streamer.emg_file_streamer import EMGFileStreamer
 from mobile_hdemg_exo.streamer.emg_qc_streamer import EMGQCStreamer
 from mobile_hdemg_exo.streamer.emg_muovi_streamer import EMGMUOVIStreamer
-from mobile_hdemg_exo.processors.emg_process_cst import EMGProcessorCST
-from mobile_hdemg_exo.utils.moving_average import MovingAverage
 
 
 while not rospy.get_param("gui_completed"):
@@ -45,10 +41,7 @@ class EMGStreamNode:
         self.r = rospy.Rate(SAMPLING_FREQUENCY)
         self.start_time = rospy.get_time()
         self.emg_pub = rospy.Publisher(
-            'hdEMG_stream_processed', StampedFloat64, queue_size=10)
-        self.visual_pub = rospy.Publisher(
-            'hdEMG_stream_visual', StampedFloat64MultiArray, queue_size=10)
-        self.moving_avg = MovingAverage(window_size=100)
+            'hdEMG_stream_raw', Float64MultiArray, queue_size=10)
 
         # Initialize the PWM output pin
         if LATENCY_ANALYZER_MODE:
@@ -84,10 +77,6 @@ class EMGStreamNode:
         else:
             self.simulation_reading = np.zeros(64 * MUSCLE_COUNT)
 
-        # Initialize the EMG processor
-        if EMG_PROCESS_METHOD == 'CST':
-            self.processor = EMGProcessorCST()
-
     def simulation_callback(self, data):
         """
         Callback function for the /hdEMG_Simulation topic.
@@ -97,38 +86,6 @@ class EMGStreamNode:
         """
         self.simulation_reading = data.data
 
-    def notch_filter(self, data):
-        """ 
-        Applies a notch filter to the EMG data.
-
-        Args:
-            data: A list of integers representing an EMG reading.
-
-        Returns:
-            A list of integers representing an EMG reading with a notch filter applied.
-        """
-        b, a = signal.iirnotch(60, 30, SAMPLING_FREQUENCY)
-        return signal.filtfilt(b, a, data)
-
-    def butter_bandpass(self, lowcut, highcut, fs, order=5):
-        """ 
-        Creates a bandpass filter.
-
-        Args:
-            lowcut: The lower cutoff frequency.
-            highcut: The higher cutoff frequency.
-            fs: The sampling frequency.
-            order: The order of the filter.
-
-        Returns:
-            A list of integers representing an EMG reading with a bandpass filter applied.
-        """
-        nyq = 0.5 * fs
-        low = lowcut / nyq
-        high = highcut / nyq
-        b, a = signal.butter(order, [low, high], btype='band')
-        return b, a
-
     def publish_reading(self, publisher: rospy.topics.Publisher, reading: float):
         """
         Publishes the EMG reading to a ROS topic.
@@ -137,37 +94,12 @@ class EMGStreamNode:
             publisher: A ROS publisher object.
             reading: A list of integers representing an EMG reading.
         """
-        message = StampedFloat64()
-        message.header.stamp = rospy.get_rostime()
-        message.data = Float64(data=reading)
+        message = Float64MultiArray(data=reading)
         publisher.publish(message)
 
     def pwm_cleanup(self):
         self.p.stop()
         GPIO.cleanup()
-
-    def smooth_emg(self, emg_reading):
-        """
-        Smoothes the EMG reading.
-
-        Args:
-            emg_reading: A list of integers representing an EMG reading.
-
-        Returns:
-            A list of integers representing a smoothed EMG reading.
-        """
-        self.moving_avg.add_data_point(emg_reading)
-        return self.moving_avg.get_smoothed_value()
-
-    def csv_output(self, emg_reading):
-        """
-        Outputs the EMG reading to a CSV file.
-
-        Args:
-            emg_reading: A list of integers representing an EMG reading.
-        """
-        with open('emg_data.csv', 'a') as f:
-            f.write(str(emg_reading) + '\n')
 
     def run_emg(self):
         """
@@ -180,49 +112,8 @@ class EMGStreamNode:
             raw_reading = self.streamer.stream_data()
         hdemg_reading = raw_reading[self.emg_offset:
                                     self.emg_offset + 64 * MUSCLE_COUNT]
-
-        # Publish EMG data for visualization
-        self.removed_channels = rospy.get_param("/channels_to_remove")
-        if self.removed_channels != '':
-            self.removed_channels = self.removed_channels.split(',')
-            self.removed_channels = list(map(int, self.removed_channels))
-            self.removed_channels = [
-                x for x in self.removed_channels if x < MUSCLE_COUNT * 64]
-        else:
-            self.removed_channels = []
-        normalization_factor = np.max(np.abs(hdemg_reading))
-        visual_emg = hdemg_reading + \
-            normalization_factor * np.arange(len(hdemg_reading))
-        visual_emg = visual_emg / \
-            normalization_factor
-        visual_emg = np.delete(
-            visual_emg, self.removed_channels)
-        visual_message = StampedFloat64MultiArray()
-        visual_message.header.stamp = rospy.get_rostime().from_sec(
-            rospy.get_time() - self.start_time)
-        visual_message.data = Float64MultiArray(data=visual_emg)
-        self.visual_pub.publish(visual_message)
-
-        # Publish processed EMG data
-        notch_reading = self.notch_filter(hdemg_reading)
-        b, a = self.butter_bandpass(20, 100, SAMPLING_FREQUENCY)
-        hdemg_filtered = signal.filtfilt(b, a, notch_reading)
-        if EMG_PROCESS_METHOD == 'RMS':
-            for channel in self.removed_channels:
-                hdemg_filtered[channel] = np.mean(hdemg_filtered)
-            rms_emg = (np.mean(np.array(hdemg_filtered)**2))**0.5
-            smooth_emg = self.smooth_emg(rms_emg)
-            self.publish_reading(self.emg_pub, smooth_emg)
-            self.csv_output(smooth_emg)
-        elif EMG_PROCESS_METHOD == 'CST':
-            for channel in self.removed_channels:
-                hdemg_filtered[channel] = 0
-            processed_emg = self.processor.process_reading(hdemg_filtered/100)
-            smooth_emg = self.smooth_emg(processed_emg)
-            self.publish_reading(self.emg_pub, processed_emg)
-            self.csv_output(smooth_emg)
-        else:
-            raise ValueError('Invalid EMG_PROCESS_METHOD')
+        # Publish raw EMG data
+        self.publish_reading(self.emg_pub, hdemg_reading)
         self.r.sleep()
 
 
