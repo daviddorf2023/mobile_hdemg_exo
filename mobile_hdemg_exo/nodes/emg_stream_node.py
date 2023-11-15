@@ -43,7 +43,6 @@ class EMGStreamNode:
         """
         rospy.init_node('emg_stream_node')
         self.start_time = rospy.get_time()
-        self.streamer = None
         self.emg_pub = rospy.Publisher(
             'hdEMG_stream_processed', StampedFloat64, queue_size=10)
         self.array_emg_pub = rospy.Publisher(
@@ -182,7 +181,10 @@ class EMGStreamNode:
         to ROS topics.
         """
         # Obtain EMG data from the streamer
-        raw_reading = self.streamer.stream_data()
+        if EMG_DEVICE == 'SimMuovi+Pro':
+            raw_reading = self.simulation_reading
+        else:
+            raw_reading = self.streamer.stream_data()
         if EMG_DEVICE == 'Quattrocento':
             offset = 32 * MUSCLE_COUNT
             hdemg_reading = raw_reading[offset:offset +
@@ -204,21 +206,19 @@ class EMGStreamNode:
         else:
             self.removed_channels = []
 
-        # Normalize EMG data
+        # Publish EMG data for visualization
         normalization_factor = np.max(np.abs(hdemg_reading))
-
-        # Publish raw EMG data
-        raw_hdemg_reading = hdemg_reading + \
+        visual_emg = hdemg_reading + \
             normalization_factor * np.arange(len(hdemg_reading))
-        raw_hdemg_reading = raw_hdemg_reading / \
+        visual_emg = visual_emg / \
             normalization_factor
-        raw_hdemg_reading = np.delete(
-            raw_hdemg_reading, self.removed_channels)
-        raw_message = StampedFloat64MultiArray()
-        raw_message.header.stamp = rospy.get_rostime().from_sec(
+        visual_emg = np.delete(
+            visual_emg, self.removed_channels)
+        visual_message = StampedFloat64MultiArray()
+        visual_message.header.stamp = rospy.get_rostime().from_sec(
             rospy.get_time() - self.start_time)
-        raw_message.data = Float64MultiArray(data=raw_hdemg_reading)
-        self.array_emg_pub.publish(raw_message)
+        visual_message.data = Float64MultiArray(data=visual_emg)
+        self.array_emg_pub.publish(visual_message)
 
         # Publish processed EMG data
         notch_reading = self.notch_filter(hdemg_reading)
