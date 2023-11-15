@@ -11,17 +11,16 @@ from mobile_hdemg_exo.streamer.emg_qc_streamer import EMGQCStreamer
 from mobile_hdemg_exo.streamer.emg_muovi_streamer import EMGMUOVIStreamer
 from mobile_hdemg_exo.utils.moving_average import MovingAverage
 
+
+while not rospy.get_param("gui_completed"):
+    rospy.sleep(0.1)
+
 EMG_DEVICE = rospy.get_param("/device")
 EMG_PROCESS_METHOD = rospy.get_param("/method")
 MUSCLE_COUNT = rospy.get_param("/muscle_count", int)
 SAMPLING_FREQUENCY = rospy.get_param("/sampling_frequency", int)
 LATENCY_ANALYZER_MODE = rospy.get_param("/latency_analyzer")
 PWM_OUTPUT_PIN = rospy.get_param("/pwm_output_pin", int)
-SPACING = 30  # Spacing between channels for visualization
-
-
-while not rospy.get_param("gui_completed"):
-    rospy.sleep(0.1)
 
 
 class EMGStreamNode:
@@ -89,34 +88,10 @@ class EMGStreamNode:
         self.r = rospy.Rate(SAMPLING_FREQUENCY)
 
         # Initialize the EMG streamer
-        if EMG_DEVICE != 'SimMuovi+Pro':
+        if EMG_DEVICE == 'SimMuovi+Pro':
+            self.raw_reading = self.simulation_reading
+        else:
             self.streamer.initialize()
-            raw_reading = self.streamer.stream_data()
-        else:
-            raw_reading = self.simulation_reading
-
-        self.hdemg_reading = None
-        if EMG_DEVICE == 'Quattrocento':
-            offset = 32 * MUSCLE_COUNT
-            self.hdemg_reading = raw_reading[offset:offset + MUSCLE_COUNT * 64]
-        elif EMG_DEVICE == 'Muovi+Pro' or EMG_DEVICE == 'SimMuovi+Pro':
-            self.hdemg_reading = raw_reading[:MUSCLE_COUNT * 64]
-        elif EMG_DEVICE == 'File':
-            self.hdemg_reading = raw_reading[128: MUSCLE_COUNT * 64 + 128]
-        else:
-            raise ValueError('Invalid EMG_DEVICE')
-        
-        if self.hdemg_reading is None:
-            print('No data available yet')
-            rospy.sleep(0.1)
-        print('EMG data received')
-
-        self.removed_channels = rospy.get_param("/channels_to_remove")
-        if self.removed_channels != '':
-            self.removed_channels = self.removed_channels.split(',')
-            self.removed_channels = list(map(int, self.removed_channels))
-            self.removed_channels = [
-                x for x in self.removed_channels if x < MUSCLE_COUNT * 64]
 
     def simulation_callback(self, data):
         """
@@ -206,10 +181,37 @@ class EMGStreamNode:
         Reads EMG data from the streamer, processes it using the selected method, and publishes the raw and processed data
         to ROS topics.
         """
+        # Obtain EMG data from the streamer
+        raw_reading = self.streamer.stream_data()
+        if EMG_DEVICE == 'Quattrocento':
+            offset = 32 * MUSCLE_COUNT
+            hdemg_reading = raw_reading[offset:offset +
+                                        MUSCLE_COUNT * 64]
+        elif EMG_DEVICE == 'Muovi+Pro' or EMG_DEVICE == 'SimMuovi+Pro':
+            hdemg_reading = raw_reading[:MUSCLE_COUNT * 64]
+        elif EMG_DEVICE == 'File':
+            hdemg_reading = raw_reading[128: MUSCLE_COUNT * 64 + 128]
+        else:
+            raise ValueError('Invalid EMG_DEVICE')
+
+        # Remove channels
+        self.removed_channels = rospy.get_param("/channels_to_remove")
+        if self.removed_channels != '':
+            self.removed_channels = self.removed_channels.split(',')
+            self.removed_channels = list(map(int, self.removed_channels))
+            self.removed_channels = [
+                x for x in self.removed_channels if x < MUSCLE_COUNT * 64]
+        else:
+            self.removed_channels = []
+
+        # Normalize EMG data
+        normalization_factor = np.max(np.abs(hdemg_reading))
+
         # Publish raw EMG data
-        raw_hdemg_reading = self.hdemg_reading + \
-            SPACING * np.arange(len(self.hdemg_reading))
-        raw_hdemg_reading = raw_hdemg_reading / SPACING  # Scale to channel numbers
+        raw_hdemg_reading = hdemg_reading + \
+            normalization_factor * np.arange(len(hdemg_reading))
+        raw_hdemg_reading = raw_hdemg_reading / \
+            normalization_factor
         raw_hdemg_reading = np.delete(
             raw_hdemg_reading, self.removed_channels)
         raw_message = StampedFloat64MultiArray()
@@ -219,7 +221,7 @@ class EMGStreamNode:
         self.array_emg_pub.publish(raw_message)
 
         # Publish processed EMG data
-        notch_reading = self.notch_filter(self.hdemg_reading)
+        notch_reading = self.notch_filter(hdemg_reading)
         b, a = self.butter_bandpass(20, 100, SAMPLING_FREQUENCY)
         hdemg_filtered = signal.filtfilt(b, a, notch_reading)
         if EMG_PROCESS_METHOD == 'RMS':
