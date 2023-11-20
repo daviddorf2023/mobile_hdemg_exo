@@ -107,11 +107,11 @@ class GUIApp:
         print("Muscles:", selected_muscles)
         print("Removed Channels:", channels_to_remove)
 
-        rospy.set_param("/gui_completed", True)
+        rospy.set_param("/startup_gui_completed", True)
 
 
 if __name__ == "__main__":
-    rospy.init_node('gui_node', anonymous=True)
+    rospy.init_node('startup_gui_node', anonymous=True)
     root = tk.Tk()
     app = GUIApp(root)
     root.mainloop()

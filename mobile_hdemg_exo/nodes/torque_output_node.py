@@ -6,7 +6,7 @@ from mobile_hdemg_exo.streamer.emg_qc_streamer import EMGQCStreamer
 from mobile_hdemg_exo.streamer.emg_muovi_streamer import EMGMUOVIStreamer
 from mobile_hdemg_exo.utils.moving_average import MovingAverage
 
-while not rospy.get_param("calibrated") or rospy.get_param("method") == "Raw":
+while not rospy.get_param("calibrated"):
     rospy.sleep(0.1)
 
 EMG_DEVICE = rospy.get_param("/device")
