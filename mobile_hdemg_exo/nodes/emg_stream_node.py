@@ -5,7 +5,7 @@ from std_msgs.msg import Float64MultiArray
 from mobile_hdemg_exo.msg import StampedFloat64MultiArray
 
 
-while not rospy.get_param("gui_completed"):
+while not rospy.get_param("startup_gui_completed"):
     rospy.sleep(0.1)
 
 EMG_DEVICE = rospy.get_param("/device")

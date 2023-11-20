@@ -16,6 +16,11 @@ class EMGFileStreamer:
         self._sample_frequency = sample_frequency
         self._muscle_count = muscle_count
         self._file_name = file_name
+        df = pd.read_csv(self._file_name)
+        self._df = df.iloc[:, 1:].dropna()
+        self._data = df.to_numpy()
+        print(
+            f"EMGFileStreamer loaded {self._file_name}, data.shape = {self._data.shape})")
 
     @property
     def muscle_count(self) -> int:
@@ -24,15 +29,6 @@ class EMGFileStreamer:
     @property
     def sample_frequency(self) -> int:
         return self._sample_frequency
-
-    def initialize(self):
-        df = pd.read_csv(self._file_name)
-        self._df = df.iloc[:, 1:].dropna()
-        self._data = df.to_numpy()
-        print(f"EMGFileStreamer loaded {self._file_name}, data.shape = {self._data.shape})")
-
-    def close(self):
-        pass
 
     def stream_data(self):
         data = self._data[self._sample_count % len(self._data)]
