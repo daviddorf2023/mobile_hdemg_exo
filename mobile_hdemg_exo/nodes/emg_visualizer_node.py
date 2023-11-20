@@ -7,6 +7,9 @@ MUSCLE_COUNT = rospy.get_param("/muscle_count")
 
 
 def callback(raw_message):
+    """
+    Normalizes, adds spacing, and removes channels from the raw EMG data for visualization.
+    """
     removed_channels = rospy.get_param("/channels_to_remove")
     if removed_channels != '':
         removed_channels = removed_channels.split(',')

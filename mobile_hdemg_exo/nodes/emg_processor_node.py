@@ -13,6 +13,19 @@ EMG_PROCESS_METHOD = rospy.get_param("/method")
 
 
 class EMGProcessorNode:
+    """
+    A class for processing EMG data.
+
+    Attributes:
+        r: A ROS Rate object.
+        raw_sub: A ROS subscriber for the /hdEMG_stream_raw topic.
+        processed_pub: A ROS publisher for the /hdEMG_stream_processed topic.
+        raw_data: A list of integers representing EMG data.
+        raw_timestamp: The timestamp of the EMG data.
+        moving_avg_object: A MovingAverage object.
+        start_time: The time at which the node was started.
+    """
+
     def __init__(self):
         rospy.init_node('emg_processor_node')
         self.r = rospy.Rate(SAMPLING_FREQUENCY)
