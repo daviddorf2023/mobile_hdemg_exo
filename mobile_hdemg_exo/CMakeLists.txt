@@ -166,13 +166,12 @@ include_directories(
 #)
 catkin_install_python(
         PROGRAMS
-        nodes/calibrate_node.py
         nodes/emg_stream_node.py
-        nodes/startupGUI.py
-        nodes/torque_output_node.py
-        nodes/simulated_device_pub.py
         nodes/emg_processor_node.py
         nodes/emg_visualizer_node.py
+        nodes/startup_gui_node.py
+        nodes/calibrate_node.py
+        nodes/torque_output_node.py
         DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

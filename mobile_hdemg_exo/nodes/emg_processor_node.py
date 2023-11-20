@@ -1,6 +1,6 @@
 import rospy
-from std_msgs.msg import Float64MultiArray
-from mobile_hdemg_exo.msg import StampedFloat64MultiArray
+from std_msgs.msg import Float64
+from mobile_hdemg_exo.msg import StampedFloat64MultiArray, StampedFloat64
 import numpy as np
 from scipy import signal
 from mobile_hdemg_exo.processors.emg_process_cst import EMGProcessorCST
@@ -10,94 +10,110 @@ from mobile_hdemg_exo.utils.moving_average import MovingAverage
 SAMPLING_FREQUENCY = rospy.get_param("/sampling_frequency", int)
 REMOVED_CHANNELS = rospy.get_param("/channels_to_remove")
 EMG_PROCESS_METHOD = rospy.get_param("/method")
-moving_avg_object = MovingAverage(window_size=100)
 
 
-def notch_filter(data):
-    """ 
-    Applies a notch filter to the EMG data.
+class EMGProcessorNode:
+    def __init__(self):
+        rospy.init_node('emg_processor_node')
+        self.r = rospy.Rate(SAMPLING_FREQUENCY)
+        self.raw_sub = rospy.Subscriber(
+            'hdEMG_stream_raw', StampedFloat64MultiArray, self.callback)
+        self.processed_pub = rospy.Publisher(
+            'hdEMG_stream_processed', StampedFloat64, queue_size=10)
+        self.raw_data = None
+        self.raw_timestamp = None
+        self.moving_avg_object = MovingAverage(window_size=100)
+        self.start_time = rospy.get_time()
 
-    Args:
-        data: A list of integers representing an EMG reading.
+    @staticmethod
+    def notch_filter(data):
+        """ 
+        Applies a notch filter to the EMG data.
 
-    Returns:
-        A list of integers representing an EMG reading with a notch filter applied.
-    """
-    b, a = signal.iirnotch(60, 30, SAMPLING_FREQUENCY)
-    return signal.filtfilt(b, a, data)
+        Args:
+            data: A list of integers representing an EMG reading.
 
+        Returns:
+            A list of integers representing an EMG reading with a notch filter applied.
+        """
+        b, a = signal.iirnotch(60, 30, SAMPLING_FREQUENCY)
+        return signal.filtfilt(b, a, data)
 
-def butter_bandpass(lowcut, highcut, fs, order=5):
-    """ 
-    Creates a bandpass filter.
+    @staticmethod
+    def butter_bandpass(lowcut, highcut, fs, order=5):
+        """ 
+        Creates a bandpass filter.
 
-    Args:
-        lowcut: The lower cutoff frequency.
-        highcut: The higher cutoff frequency.
-        fs: The sampling frequency.
-        order: The order of the filter.
+        Args:
+            lowcut: The lower cutoff frequency.
+            highcut: The higher cutoff frequency.
+            fs: The sampling frequency.
+            order: The order of the filter.
 
-    Returns:
-        A list of integers representing an EMG reading with a bandpass filter applied.
-    """
-    nyq = 0.5 * fs
-    low = lowcut / nyq
-    high = highcut / nyq
-    b, a = signal.butter(order, [low, high], btype='band')
-    return b, a
+        Returns:
+            A list of integers representing an EMG reading with a bandpass filter applied.
+        """
+        nyq = 0.5 * fs
+        low = lowcut / nyq
+        high = highcut / nyq
+        b, a = signal.butter(order, [low, high], btype='band')
+        return b, a
 
+    @staticmethod
+    def csv_output(emg_reading):
+        """
+        Outputs the EMG reading to a CSV file.
 
-def csv_output(emg_reading):
-    """
-    Outputs the EMG reading to a CSV file.
+        Args:
+            emg_reading: A list of integers representing an EMG reading.
+        """
+        with open('emg_data.csv', 'a') as f:
+            f.write(str(emg_reading) + '\n')
 
-    Args:
-        emg_reading: A list of integers representing an EMG reading.
-    """
-    with open('emg_data.csv', 'a') as f:
-        f.write(str(emg_reading) + '\n')
+    def moving_avg(self, emg_reading):
+        """
+        Smoothes the EMG reading.
 
+        Args:
+            emg_reading: A list of integers representing an EMG reading.
 
-def moving_avg(emg_reading):
-    """
-    Smoothes the EMG reading.
+        Returns:
+            A list of integers representing a smoothed EMG reading.
+        """
+        self.moving_avg_object.add_data_point(emg_reading)
+        return self.moving_avg_object.get_smoothed_value()
 
-    Args:
-        emg_reading: A list of integers representing an EMG reading.
+    def callback(self, raw_message):
+        self.raw_data = raw_message.data.data
 
-    Returns:
-        A list of integers representing a smoothed EMG reading.
-    """
-    moving_avg.add_data_point(emg_reading)
-    return moving_avg.get_smoothed_value()
-
-
-def callback(data):
-    # Publish processed EMG data
-    notch_reading = notch_filter(data)
-    b, a = butter_bandpass(20, 100, SAMPLING_FREQUENCY)
-    hdemg_filtered = signal.filtfilt(b, a, notch_reading)
-    if EMG_PROCESS_METHOD == 'RMS':
-        for channel in REMOVED_CHANNELS:
-            hdemg_filtered[channel] = np.mean(hdemg_filtered)
-        rms_emg = (np.mean(np.array(hdemg_filtered)**2))**0.5
-        smooth_emg = moving_avg(rms_emg)
-        csv_output(smooth_emg)
-    elif EMG_PROCESS_METHOD == 'CST':
-        for channel in REMOVED_CHANNELS:
-            hdemg_filtered[channel] = 0
-        processed_emg = EMGProcessorCST().process_reading(hdemg_filtered/100)
-        smooth_emg = moving_avg(processed_emg)
-        csv_output(smooth_emg)
-    else:
-        raise ValueError('Invalid EMG_PROCESS_METHOD')
-    pub.publish(smooth_emg)
+    def process_emg(self):
+        notch_reading = self.notch_filter(self.raw_data)
+        b, a = self.butter_bandpass(20, 100, SAMPLING_FREQUENCY)
+        hdemg_filtered = signal.filtfilt(b, a, notch_reading)
+        if EMG_PROCESS_METHOD == 'RMS':
+            for channel in REMOVED_CHANNELS:
+                hdemg_filtered[channel] = np.mean(hdemg_filtered)
+            rms_emg = (np.mean(np.array(hdemg_filtered)**2))**0.5
+            smooth_emg = self.moving_avg(rms_emg)
+            self.csv_output(smooth_emg)
+        elif EMG_PROCESS_METHOD == 'CST':
+            for channel in REMOVED_CHANNELS:
+                hdemg_filtered[channel] = 0
+            processed_emg = EMGProcessorCST().process_reading(hdemg_filtered/100)
+            smooth_emg = self.moving_avg(processed_emg)
+            self.csv_output(smooth_emg)
+        else:
+            raise ValueError('Invalid EMG_PROCESS_METHOD')
+        processed_message = StampedFloat64()
+        processed_message.header.stamp = rospy.get_rostime().from_sec(
+            rospy.get_time() - self.start_time)
+        processed_message.data = Float64(data=smooth_emg)
+        self.processed_pub.publish(processed_message)
 
 
 if __name__ == '__main__':
-    rospy.init_node('emg_processor_node')
-    sub = rospy.Subscriber(
-        'hdEMG_stream_raw', Float64MultiArray, callback)
-    pub = rospy.Publisher('hdEMG_stream_processor',
-                          StampedFloat64MultiArray, queue_size=10)
-    rospy.spin()
+    emg_processor_node = EMGProcessorNode()
+    while not rospy.is_shutdown():
+        if emg_processor_node.raw_data is not None:
+            emg_processor_node.process_emg()
+        emg_processor_node.r.sleep()

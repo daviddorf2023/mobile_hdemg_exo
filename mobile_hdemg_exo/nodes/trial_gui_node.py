@@ -24,9 +24,10 @@ class GUIApp:
         self.create_widgets()
 
     def create_widgets(self):
-        device_label = ttk.Label(self.root, text="Device:")
+        device_label = ttk.Label(self.root, text="Trial Type:")
         device_label.grid(row=0, column=0, padx=10, pady=5, sticky="w")
-        device_choices = ["Muovi+Pro", "Quattrocento", "File", "SimMuovi+Pro"]
+        device_choices = ["Flat", "Trapezoid",
+                          "Sinusoid", "Bidirectional Sinusoid"]
         self.device_dropdown = ttk.Combobox(
             self.root, values=device_choices, textvariable=self.device_var)
         self.device_dropdown.grid(row=0, column=1, padx=10, pady=5, sticky="w")
@@ -87,40 +88,6 @@ class GUIApp:
         exit_button.grid(row=8, columnspan=2, pady=10)
 
     def start_process(self):
-        selected_device = self.device_var.get()
-        selected_method = self.method_var.get()
-        if self.analyzer_var.get() == "On":
-            selected_analyzer = True
-        else:
-            selected_analyzer = False
-        selected_side = self.side_var.get()
-        selected_muscles = int(self.muscles_var.get())
-        selected_trials = int(self.trials_var.get())
-        selected_trials = max(1, min(selected_trials, 10))
-        channels_to_remove = self.remove_channels_var.get()
-
-        rospy.set_param("/device", selected_device)
-        rospy.set_param("/method", selected_method)
-        rospy.set_param("/latency_analyzer", selected_analyzer)
-        rospy.set_param("/side", selected_side)
-        rospy.set_param("/muscle_count", selected_muscles)
-        rospy.set_param("/num_trials", selected_trials)
-        rospy.set_param("/channels_to_remove", channels_to_remove)
-
-        print("Device:", selected_device)
-        print("Method:", selected_method)
-        print("Analyzer:", selected_analyzer)
-        print("Side:", selected_side)
-        print("Muscles:", selected_muscles)
-        print("Removed Channels:", channels_to_remove)
 
         # Set flag to completed
-        if selected_device == "SimMuovi+Pro":
-            rospy.set_param("/use_simulated_device", True)
-        rospy.set_param("/gui_completed", True)
-
-
-if __name__ == "__main__":
-    root = tk.Tk()
-    app = GUIApp(root)
-    root.mainloop()
+        rospy.set_param("/trial_gui_completed", True)
