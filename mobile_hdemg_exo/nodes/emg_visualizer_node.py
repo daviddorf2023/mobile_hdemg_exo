@@ -3,6 +3,9 @@ from std_msgs.msg import Float64MultiArray
 from mobile_hdemg_exo.msg import StampedFloat64MultiArray
 import numpy as np
 
+while not rospy.get_param("startup_gui_completed"):
+    rospy.sleep(0.1)
+
 MUSCLE_COUNT = rospy.get_param("/muscle_count")
 
 

@@ -20,24 +20,13 @@ class EMGQCStreamer:
 
     def __init__(self, muscle_count: int):
         self._muscle_count = muscle_count
-
-    @property
-    def muscle_count(self) -> int:
-        return self._muscle_count
-
-    @property
-    def sample_frequency(self) -> int:
-        return QC_SAMPLING_FREQUENCY
-
-    def initialize(self):
-        self._qc_socket = comm.connect(REFRESH_RATE, QC_SAMPLING_FREQUENCY, self._muscle_count)
-
-    def close(self):
-        comm.disconnect(self._qc_socket)
+        self._qc_socket = comm.connect(
+            REFRESH_RATE, QC_SAMPLING_FREQUENCY, self._muscle_count)
 
     def stream_data(self):
         # with 4 muscles, emg_reading is an array of 408 ints (408 channels = (8*16) + (4*64) + 16 + 8)
-        emg_reading = self._process_socket_data(self._qc_socket, self._muscle_count)
+        emg_reading = self._process_socket_data(
+            self._qc_socket, self._muscle_count)
         self._sample_count += 1
         return emg_reading
 
@@ -59,3 +48,14 @@ class EMGQCStreamer:
             output_milli_volts=False)
 
         return sample_from_channels
+
+    @property
+    def muscle_count(self) -> int:
+        return self._muscle_count
+
+    @property
+    def sample_frequency(self) -> int:
+        return QC_SAMPLING_FREQUENCY
+
+    def __del__(self):
+        comm.disconnect(self._qc_socket)
