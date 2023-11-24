@@ -3,6 +3,7 @@
 import rospy
 from std_msgs.msg import Float64MultiArray
 from mobile_hdemg_exo.msg import StampedFloat64MultiArray
+import numpy as np
 
 
 while not rospy.get_param("startup_gui_completed"):
@@ -61,11 +62,13 @@ class EMGStreamNode:
             from mobile_hdemg_exo.streamer.emg_file_streamer import EMGFileStreamer
             # self.path = rospy.get_param(
             #     "/file_dir") + "/data/cst_test_data_nov1/raw_emg_7.csv"
+            # self.path = rospy.get_param(
+            #     "/file_dir") + "/data/cst_test_data_nov1/sample_trap_data2.csv"
             self.path = rospy.get_param(
-                "/file_dir") + "/data/cst_test_data_nov1/sample_trap_data2.csv"
+                "/file_dir") + "/data/cst_test_data_nov1/reduced_trap_data2.csv"
             self.streamer = EMGFileStreamer(
                 MUSCLE_COUNT, SAMPLING_FREQUENCY, self.path)
-            self.emg_offset = 128
+            self.emg_offset = 0
         else:
             raise ValueError('Invalid EMG_DEVICE')
 
@@ -74,6 +77,9 @@ class EMGStreamNode:
         Reads EMG data from the streamer and publishes it to /hdEMG_stream_raw
         """
         raw_reading = self.streamer.stream_data()
+        if len(raw_reading) < 64 * MUSCLE_COUNT:
+            raw_reading = np.pad(raw_reading, (0, 64 * MUSCLE_COUNT - len(
+                raw_reading)), 'constant', constant_values=(0, 0))
         hdemg_reading = raw_reading[self.emg_offset:
                                     self.emg_offset + 64 * MUSCLE_COUNT]
         raw_message = StampedFloat64MultiArray()

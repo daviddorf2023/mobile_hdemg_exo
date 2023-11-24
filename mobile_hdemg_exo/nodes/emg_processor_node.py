@@ -4,8 +4,9 @@ from mobile_hdemg_exo.msg import StampedFloat64MultiArray, StampedFloat64
 import numpy as np
 from scipy import signal
 from mobile_hdemg_exo.processors.emg_process_cst import EMGProcessorCST
-from mobile_hdemg_exo.utils.moving_average import MovingAverage
 
+while not rospy.get_param("startup_gui_completed"):
+    rospy.sleep(0.1)
 
 SAMPLING_FREQUENCY = rospy.get_param("/sampling_frequency", int)
 REMOVED_CHANNELS = rospy.get_param("/channels_to_remove")
@@ -33,10 +34,13 @@ class EMGProcessorNode:
             'hdEMG_stream_raw', StampedFloat64MultiArray, self.callback)
         self.processed_pub = rospy.Publisher(
             'hdEMG_stream_processed', StampedFloat64, queue_size=10)
+        if EMG_PROCESS_METHOD == 'CST':
+            self.processor = EMGProcessorCST()
         self.raw_data = None
         self.raw_timestamp = None
-        self.moving_avg_object = MovingAverage(window_size=100)
         self.start_time = rospy.get_time()
+        self.smoothing_window = []
+        self.smoothing_window_size = SAMPLING_FREQUENCY  # Default to 1 second
 
     @staticmethod
     def notch_filter(data):
@@ -83,18 +87,20 @@ class EMGProcessorNode:
         with open('emg_data.csv', 'a') as f:
             f.write(str(emg_reading) + '\n')
 
-    def moving_avg(self, emg_reading):
+    def moving_avg(self, data):
         """
-        Smoothes the EMG reading.
+        Calculates the moving average of the EMG data.
 
         Args:
-            emg_reading: A list of integers representing an EMG reading.
+            data: A list of integers representing an EMG reading.
 
         Returns:
-            A list of integers representing a smoothed EMG reading.
+            A list of integers representing an EMG reading with a moving average applied.
         """
-        self.moving_avg_object.add_data_point(emg_reading)
-        return self.moving_avg_object.get_smoothed_value()
+        self.smoothing_window.append(data)
+        if len(self.smoothing_window) > self.smoothing_window_size:
+            self.smoothing_window.pop(0)
+        return np.mean(self.smoothing_window)
 
     def callback(self, raw_message):
         self.raw_data = raw_message.data.data
@@ -112,16 +118,21 @@ class EMGProcessorNode:
         elif EMG_PROCESS_METHOD == 'CST':
             for channel in REMOVED_CHANNELS:
                 hdemg_filtered[channel] = 0
-            processed_emg = EMGProcessorCST().process_reading(hdemg_filtered/100)
+            processed_emg = self.processor.process_reading(hdemg_filtered/10)
+            if processed_emg:
+                processed_emg = 10 * processed_emg[0]
+            else:
+                processed_emg = 0
             smooth_emg = self.moving_avg(processed_emg)
+            print(smooth_emg)
             self.csv_output(smooth_emg)
         else:
             raise ValueError('Invalid EMG_PROCESS_METHOD')
-        processed_message = StampedFloat64()
-        processed_message.header.stamp = rospy.get_rostime().from_sec(
+        processor_message = StampedFloat64()
+        processor_message.header.stamp = rospy.get_rostime().from_sec(
             rospy.get_time() - self.start_time)
-        processed_message.data = Float64(data=smooth_emg)
-        self.processed_pub.publish(processed_message)
+        processor_message.data = Float64(data=smooth_emg)
+        self.processed_pub.publish(processor_message)
 
 
 if __name__ == '__main__':

@@ -11,5 +11,4 @@ class MovingAverage:
     def get_smoothed_value(self):
         if not self.data:
             raise ValueError("No data points available for smoothing")
-
         return sum(self.data) / len(self.data)
