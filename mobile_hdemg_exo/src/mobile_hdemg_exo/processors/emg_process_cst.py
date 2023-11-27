@@ -35,6 +35,7 @@ class EMGProcessorCST:
         self.model = MUdecomposer(model_file)
         self.raw_readings = []
         self.cst_readings = []
+        self.saved_reading = 0.0
         self.sample_count = 0
         self.CST_prediction_step_size = 40  # samples
 
@@ -43,7 +44,10 @@ class EMGProcessorCST:
         self.sample_count += 1
         if self.sample_count % self.CST_prediction_step_size == 0:
             self.calculate_mu()
+            self.saved_reading = self.cst_readings[-1]
             return self.cst_readings[-1]
+        else:
+            return self.saved_reading
 
     def calculate_mu(self):
         """
