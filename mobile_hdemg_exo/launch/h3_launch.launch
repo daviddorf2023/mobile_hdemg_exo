@@ -5,23 +5,21 @@
     <param name = 'side' value = 'Left' />
     <param name = 'muscle_count' value = '1' />
     <param name = 'sampling_frequency' value = '512' />
-    <param name = 'num_trials' value = '1' />
     <param name = 'pwm_output_pin' value = '33' />
     <param name = 'channels_to_remove' value = '' />
     <param name = 'file_dir' value = '$(find mobile_hdemg_exo)' />
     <param name = 'startup_gui_completed' value = 'False'/>
-    <param name = 'trial_gui_completed' value = 'False'/>
     <param name = 'connected_to_emg' value = 'False'/>
     <param name = 'calibrated' value = 'False'/>
-    <param name = 'use_simulated_device' value='False'/>
 
-    <include file = '$(find h3_launch)/launch/h3_launch_torque_control.launch' />
-
-    <node name = 'rqt_multiplot' pkg = 'rqt_multiplot' type = 'rqt_multiplot' output = 'screen' />
     <node name = 'emg_stream_node' pkg = 'mobile_hdemg_exo' type = 'emg_stream_node.py' output = 'screen' />
     <node name = 'emg_processor_node' pkg = 'mobile_hdemg_exo' type = 'emg_processor_node.py' output = 'screen' />
     <node name = 'emg_visualizer_node' pkg = 'mobile_hdemg_exo' type = 'emg_visualizer_node.py' output = 'screen' />
     <node name = 'startup_gui_node' pkg = 'mobile_hdemg_exo' type = 'startup_gui_node.py' output = 'screen' />
     <node name = 'calibrate_node' pkg = 'mobile_hdemg_exo' type = 'calibrate_node.py' output = 'screen' />
     <node name = 'torque_output_node' pkg = 'mobile_hdemg_exo' type = 'torque_output_node.py' output = 'screen' />
+
+    <!-- External launch files and nodes -->
+    <include file = '$(find h3_launch)/launch/h3_launch_torque_control.launch' />
+    <node name = 'rqt_multiplot' pkg = 'rqt_multiplot' type = 'rqt_multiplot' output = 'screen' />
 </launch>

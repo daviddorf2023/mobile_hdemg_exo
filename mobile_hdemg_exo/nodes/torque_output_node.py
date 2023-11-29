@@ -15,6 +15,24 @@ SAMPLING_FREQUENCY = rospy.get_param("/sampling_frequency", int)
 
 
 class TorqueOutputNode:
+    """
+    A ROS node for streaming and processing EMG data.
+
+    Attributes:
+        r: A ROS Rate object.
+        start_time: The time at which the node was started.
+        emg_pub: A ROS publisher for the /hdEMG_stream_raw topic.
+        p: A GPIO PWM object.
+        streamer: An EMG streamer object.
+        emg_offset: The offset of the EMG data in the raw stream.
+        simulation_reading: A list of floats representing EMG data.
+
+    Methods:
+        callback: A callback function for the /hdEMG_stream_raw topic.
+        stream_emg: Streams EMG data from the EMG device.
+        process_emg: Processes EMG data.
+        publish_emg: Publishes EMG data to the /hdEMG_stream_raw topic.
+    """
 
     def __init__(self):
         if (rospy.get_param("/side") == "Left"):

@@ -11,6 +11,21 @@ SAMPLING_FREQUENCY = rospy.get_param("/sampling_frequency")
 
 
 class EMGVisualizerNode:
+    """
+    A ROS node for visualizing EMG data.
+
+    Attributes:
+        r: A ROS Rate object.
+        raw_sub: A ROS subscriber for the /hdEMG_stream_raw topic.
+        visualizer_pub: A ROS publisher for the /hdEMG_stream_visual topic.
+        raw_data: A list of integers representing EMG data.
+        start_time: The time at which the node was started.
+
+    Methods:
+        callback: A callback function for the /hdEMG_stream_raw topic.
+        visualize_emg: Normalizes, adds spacing, and removes channels from the raw EMG data for visualization.
+    """
+
     def __init__(self):
         rospy.init_node('emg_visualizer_node')
         self.r = rospy.Rate(SAMPLING_FREQUENCY)
@@ -24,7 +39,7 @@ class EMGVisualizerNode:
     def callback(self, raw_message):
         self.raw_data = raw_message.data.data
 
-    def visualize_emg(self, raw_message):
+    def visualize_emg(self):
         """
         Normalizes, adds spacing, and removes channels from the raw EMG data for visualization.
         """
