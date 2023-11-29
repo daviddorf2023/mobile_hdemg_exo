@@ -109,7 +109,6 @@ class EMGProcessorNode:
     def process_emg(self):
         notch_reading = self.notch_filter(self.raw_data)
         hdemg_filtered = signal.filtfilt(self.b, self.a, notch_reading)
-        hdemg_filtered = notch_reading
         if EMG_PROCESS_METHOD == 'RMS':
             for channel in REMOVED_CHANNELS:
                 hdemg_filtered[channel] = np.mean(hdemg_filtered)
