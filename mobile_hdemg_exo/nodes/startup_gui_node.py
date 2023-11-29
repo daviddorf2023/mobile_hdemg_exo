@@ -3,8 +3,30 @@ from tkinter import ttk
 import rospy
 
 
-class GUIApp:
+class StartupGUINode:
+    """
+    A ROS node for the startup GUI.
+
+    Attributes:
+        r: A ROS Rate object.
+        root: A Tkinter root object.
+        device_var: A Tkinter StringVar for the device dropdown.
+        method_var: A Tkinter StringVar for the method dropdown.
+        analyzer_var: A Tkinter BooleanVar for the analyzer dropdown.
+        exo_var: A Tkinter StringVar for the exoskeleton dropdown.
+        side_var: A Tkinter StringVar for the side dropdown.
+        muscles_var: A Tkinter StringVar for the muscles dropdown.
+        remove_channels_var: A Tkinter StringVar for the channels to remove entry.
+
+    Methods:
+        create_widgets: Creates the Tkinter widgets.
+        start_process: Starts the EMG processing node.
+        shutdown: Shuts down the node.
+    """
+
     def __init__(self, root):
+        rospy.init_node('emg_processor_node')
+        self.r = rospy.Rate(100)
         self.root = root
         self.root.title("SRAL hdEMG Exoskeleton")
         self.device_var = tk.StringVar()
@@ -15,7 +37,6 @@ class GUIApp:
         self.muscles_var = tk.StringVar()
         self.root.geometry("520x280")
         self.create_widgets()
-        rospy.on_shutdown(self.shutdown)
 
     def create_widgets(self):
         device_label = ttk.Label(self.root, text="Device:")
@@ -99,13 +120,11 @@ class GUIApp:
 
         rospy.set_param("/startup_gui_completed", True)
 
-    def shutdown(self):
-        self.root.destroy()
-
 
 if __name__ == "__main__":
-    rospy.init_node('startup_gui_node', anonymous=True)
     root = tk.Tk()
-    app = GUIApp(root)
-    root.mainloop()
-    rospy.spin()
+    app = StartupGUINode(root)
+    while not rospy.is_shutdown():
+        root.update_idletasks()
+        root.update()
+        app.r.sleep()

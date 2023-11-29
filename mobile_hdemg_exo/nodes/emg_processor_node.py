@@ -37,8 +37,6 @@ class EMGProcessorNode:
         if EMG_PROCESS_METHOD == 'CST':
             self.processor = EMGProcessorCST()
         self.raw_data = None
-        self.raw_timestamp = None
-        self.start_time = rospy.get_time()
         self.smoothing_window = []
         self.smoothing_window_size = SAMPLING_FREQUENCY * 10
         self.b, self.a = self.butter_bandpass(20, 100, SAMPLING_FREQUENCY)
@@ -128,8 +126,7 @@ class EMGProcessorNode:
         else:
             raise ValueError('Invalid EMG_PROCESS_METHOD')
         processor_message = StampedFloat64()
-        processor_message.header.stamp = rospy.get_rostime().from_sec(
-            rospy.get_time() - self.start_time)
+        processor_message.header.stamp = rospy.Time.now()
         processor_message.data = Float64(data=smooth_emg)
         self.processed_pub.publish(processor_message)
 
