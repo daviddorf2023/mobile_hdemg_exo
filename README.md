@@ -1,5 +1,13 @@
 # Mobile hdEMG Controller for the Technaid H3 Exoskeleton 
 
+## Easy Setup
+- Clone this repository into a ROS workspace
+- Run ```catkin_make``` in the root of the workspace
+- Source the workspace with ```source devel/setup.bash```
+- Launch the minimal EMG system with ```roslaunch mobile_hdemg_exo emg_minimal.launch``` and select
+the File option in the GUI pop-up to use a prerecorded dataset
+- Launch the full exoskeleton system with ```roslaunch mobile_hdemg_exo h3_launch.launch``` if the exoskeleton is connected to the device
+
 ## Overview
 
 This software is intended to allow for high density EMG control of the **Technaid H3 exoskeleton** for rehabilitation at Shirley Ryan AbilityLab. The package is designed to run on the **Jetson Orin Nano Developer Kit**, but can also work on any Ubuntu 20.04 system. However, the latency analyzer system only runs on systems with GPIO pins with PWM capability. The Jetson Orin Nano launches the EMG and ankle exoskeleton ROS nodes. The EMG package, ```mobile_hdemg_exo``` connects to and reads data from an **OTB Quattrocento** or **OTB Muovi+Pro** EMG device, as well as the ability to process prerecorded datasets. The package processes the raw EMG data with either a root-mean-squared method or a cumulative spike train neural network approach. It then calibrates the EMG data to the torque sensor data on the exoskeleton, and the EMG coefficients are used to convert the patient's EMG to accurate predicted torque commands to the exoskeleton. The H3 nodes control and read/write torque data from the exoskeleton.
