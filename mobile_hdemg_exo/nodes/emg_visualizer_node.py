@@ -68,5 +68,5 @@ if __name__ == '__main__':
     emg_visualizer_node = EMGVisualizerNode()
     while not rospy.is_shutdown():
         if emg_visualizer_node.raw_data is not None:
-            emg_visualizer_node.visualize_emg(emg_visualizer_node.raw_data)
+            emg_visualizer_node.visualize_emg()
         emg_visualizer_node.r.sleep()
