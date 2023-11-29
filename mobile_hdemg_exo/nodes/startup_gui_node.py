@@ -35,7 +35,7 @@ class StartupGUINode:
         self.exo_var = tk.StringVar()
         self.side_var = tk.StringVar()
         self.muscles_var = tk.StringVar()
-        self.root.geometry("520x280")
+        self.root.geometry("350x250")
         self.create_widgets()
 
     def create_widgets(self):
@@ -53,7 +53,7 @@ class StartupGUINode:
             self.root, values=method_choices, textvariable=self.method_var)
         self.method_dropdown.grid(row=1, column=1, padx=10, pady=5, sticky="w")
 
-        analyzer_label = ttk.Label(self.root, text="Latency analyzer:")
+        analyzer_label = ttk.Label(self.root, text="Latency Test:")
         analyzer_label.grid(row=2, column=0, padx=10, pady=5, sticky="w")
         analyzer_choices = ["Off", "On"]
         self.analyzer_dropdown = ttk.Combobox(
@@ -77,7 +77,7 @@ class StartupGUINode:
         self.side_dropdown.grid(row=4, column=1, padx=10, pady=5, sticky="w")
 
         remove_channels_label = ttk.Label(
-            self.root, text="Channels to Remove (comma-separated):")
+            self.root, text="Removal [1,2,...]:")
         remove_channels_label.grid(
             row=5, column=0, padx=10, pady=5, sticky="w")
         self.remove_channels_var = tk.StringVar()
@@ -89,10 +89,6 @@ class StartupGUINode:
         run_button = ttk.Button(
             self.root, text="Run", command=self.start_process)
         run_button.grid(row=6, columnspan=2, pady=10)
-
-        exit_button = ttk.Button(
-            self.root, text="Exit", command=self.root.destroy)
-        exit_button.grid(row=7, columnspan=2, pady=10)
 
     def start_process(self):
         selected_device = self.device_var.get()
