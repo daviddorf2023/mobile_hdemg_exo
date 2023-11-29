@@ -40,7 +40,8 @@ class EMGProcessorNode:
         self.raw_timestamp = None
         self.start_time = rospy.get_time()
         self.smoothing_window = []
-        self.smoothing_window_size = 2 * SAMPLING_FREQUENCY  # Default to 2 seconds
+        self.smoothing_window_size = SAMPLING_FREQUENCY  # Default to 1 second
+        self.b, self.a = self.butter_bandpass(20, 100, SAMPLING_FREQUENCY)
 
     @staticmethod
     def notch_filter(data):
@@ -57,7 +58,7 @@ class EMGProcessorNode:
         return signal.filtfilt(b, a, data)
 
     @staticmethod
-    def butter_bandpass(lowcut, highcut, fs, order=5):
+    def butter_bandpass(lowcut, highcut, fs, order=2):
         """ 
         Creates a bandpass filter.
 
@@ -107,8 +108,8 @@ class EMGProcessorNode:
 
     def process_emg(self):
         notch_reading = self.notch_filter(self.raw_data)
-        b, a = self.butter_bandpass(20, 100, SAMPLING_FREQUENCY)
-        hdemg_filtered = signal.filtfilt(b, a, notch_reading)
+        # hdemg_filtered = signal.filtfilt(self.b, self.a, notch_reading)
+        hdemg_filtered = notch_reading
         if EMG_PROCESS_METHOD == 'RMS':
             for channel in REMOVED_CHANNELS:
                 hdemg_filtered[channel] = np.mean(hdemg_filtered)
@@ -124,7 +125,6 @@ class EMGProcessorNode:
             else:
                 processed_emg = 0
             smooth_emg = self.moving_avg(processed_emg)
-            print(smooth_emg)
             self.csv_output(smooth_emg)
         else:
             raise ValueError('Invalid EMG_PROCESS_METHOD')
