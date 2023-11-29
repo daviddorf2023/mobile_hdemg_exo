@@ -60,12 +60,8 @@ class EMGStreamNode:
             self.emg_offset = 0
         elif EMG_DEVICE == 'File':
             from mobile_hdemg_exo.streamer.emg_file_streamer import EMGFileStreamer
-            # self.path = rospy.get_param(
-            #     "/file_dir") + "/data/cst_test_data_nov1/raw_emg_7.csv"
-            # self.path = rospy.get_param(
-            #     "/file_dir") + "/data/cst_test_data_nov1/sample_trap_data2.csv"
             self.path = rospy.get_param(
-                "/file_dir") + "/data/cst_test_data_nov1/reduced_trap_data2.csv"
+                "/file_dir") + "/data/cst_test_data_nov1/sample_trap_emg.csv"
             self.streamer = EMGFileStreamer(
                 MUSCLE_COUNT, SAMPLING_FREQUENCY, self.path)
             self.emg_offset = 0

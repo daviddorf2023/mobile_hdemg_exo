@@ -40,7 +40,7 @@ class EMGProcessorNode:
         self.raw_timestamp = None
         self.start_time = rospy.get_time()
         self.smoothing_window = []
-        self.smoothing_window_size = SAMPLING_FREQUENCY  # Default to 1 second
+        self.smoothing_window_size = 2 * SAMPLING_FREQUENCY  # Default to 2 seconds
 
     @staticmethod
     def notch_filter(data):
