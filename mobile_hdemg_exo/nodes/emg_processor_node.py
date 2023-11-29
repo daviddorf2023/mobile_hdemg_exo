@@ -40,7 +40,7 @@ class EMGProcessorNode:
         self.raw_timestamp = None
         self.start_time = rospy.get_time()
         self.smoothing_window = []
-        self.smoothing_window_size = SAMPLING_FREQUENCY  # Default to 1 second
+        self.smoothing_window_size = SAMPLING_FREQUENCY * 10
         self.b, self.a = self.butter_bandpass(20, 100, SAMPLING_FREQUENCY)
 
     @staticmethod
